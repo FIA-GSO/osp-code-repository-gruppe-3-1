@@ -18,6 +18,7 @@ update_user_model = api.model("UpdateUser", {
     "active": fields.Boolean(description="Is user active")
 })
 
+create_user_model = api.model("User",{})
 
 @api.route("/")
 class UserList(Resource):
