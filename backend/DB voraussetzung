@@ -1,0 +1,5 @@
+1. MySQL installiert
+2. python -m pip install mysql-connector-python
+3. pip install python-dotenv
+4. .env Datei im Ordner erstelen mit (DB_PASSWORD=Eigenes_Passwort.)
+5. SQL ausführen: CREATE DATABASE anmeldetoolmarketplace;
