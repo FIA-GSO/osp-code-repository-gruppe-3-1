@@ -12,7 +12,12 @@ user_model = api.model("User", {
     "contact_person": fields.String,
     "active": fields.Boolean,
     "created_at": fields.DateTime,
-    "updated_at": fields.DateTime
+    "updated_at": fields.DateTime,
+    "roles": fields.List(
+        fields.String,
+        attribute="role_names", 
+        description="List of role names"
+    )
 })
 
 # For updating a user (password optional)
@@ -21,10 +26,18 @@ update_user_model = api.model("UpdateUser", {
     "password": fields.String(description="Plain-text password"),
     "company_name": fields.String(description="Company name (optional)"),
     "contact_person": fields.String(description="Contact person (optional)"),
-    "active": fields.Boolean(description="Is user active")
+    "active": fields.Boolean(description="Is user active"),
+    "roles": fields.List(fields.String, description="List of roles to assign")
 })
 
-create_user_model = api.model("User",{})
+# For creating a user (password required)
+create_user_model = api.model("CreateUser", {
+    "email": fields.String(required=True, description="User login email"),
+    "password": fields.String(required=True, description="Plain-text password"),
+    "company_name": fields.String(description="Company name (optional)"),
+    "contact_person": fields.String(description="Contact person (optional)"),
+    "roles": fields.List(fields.String, description="List of roles to assign", required=False)
+})
 
 @api.route("/")
 class UserList(Resource):
@@ -42,7 +55,8 @@ class UserList(Resource):
             email=data["email"],
             password=data["password"],
             company_name=data.get("company_name"),
-            contact_person=data.get("contact_person")
+            contact_person=data.get("contact_person"),
+            roles=data.get("roles")  
         ), 201
 
 
