@@ -6,18 +6,13 @@ api = Namespace("users", description="User operations")
 # Request / Response model for Swagger
 user_model = api.model("User", {
     "id": fields.Integer(readonly=True),
-    "email": fields.String(required=True, description="User login email"),
-    "company_name": fields.String(description="Company name (optional)"),
-    "contact_person": fields.String(description="Contact person (optional)"),
-    "active": fields.Boolean(description="Is user active")
-})
-
-# For creating a user (password required)
-create_user_model = api.model("CreateUser", {
-    "email": fields.String(required=True, description="User login email"),
-    "password": fields.String(required=True, description="Plain-text password"),
-    "company_name": fields.String(description="Company name (optional)"),
-    "contact_person": fields.String(description="Contact person (optional)")
+    "email": fields.String(required=True),
+    "password":fields.String,
+    "company_name": fields.String,
+    "contact_person": fields.String,
+    "active": fields.Boolean,
+    "created_at": fields.DateTime,
+    "updated_at": fields.DateTime
 })
 
 # For updating a user (password optional)
@@ -29,6 +24,7 @@ update_user_model = api.model("UpdateUser", {
     "active": fields.Boolean(description="Is user active")
 })
 
+create_user_model = api.model("User",{})
 
 @api.route("/")
 class UserList(Resource):
