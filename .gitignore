@@ -22,3 +22,9 @@ frontend/*.local
 *.njsproj
 *.sln
 *.sw?
+venv/
+__pycache__/
+*.pyc
+.env
+instance/
+.mypy_cache/
