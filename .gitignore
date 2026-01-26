@@ -13,6 +13,7 @@ frontend/dist-ssr
 frontend/*.local
 
 backend/.env
+backend/app/config.py
 
 # Editor directories and files
 .vscode/*
