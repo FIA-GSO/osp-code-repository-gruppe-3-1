@@ -6,7 +6,13 @@ api = Namespace("users", description="User operations")
 # Request / Response model for Swagger
 user_model = api.model("User", {
     "id": fields.Integer(readonly=True),
-    "username": fields.String(required=True)
+    "email": fields.String(required=True),
+    "password":fields.String,
+    "company_name": fields.String,
+    "contact_person": fields.String,
+    "active": fields.Boolean,
+    "created_at": fields.DateTime,
+    "updated_at": fields.DateTime
 })
 
 # For updating a user (password optional)
