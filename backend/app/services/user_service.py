@@ -37,7 +37,7 @@ class UserService:
         # Assign roles if provided
         if roles:
             for role_name in roles:
-                role = Role.query.filter_by(role_name=role_name).first()
+                role = Role.query.filter_by(name=role_name).first()
                 if role:
                     user_role = UserRole(user_id=user.id, role_id=role.id)
                     user.roles.append(user_role)
@@ -66,7 +66,7 @@ class UserService:
             user.roles.clear()
             db.session.flush()  # ensure changes propagate before adding new roles
             for role_name in kwargs["roles"]:
-                role = Role.query.filter_by(role_name=role_name).first()
+                role = Role.query.filter_by(name=role_name).first()
                 if role:
                     user_role = UserRole(user_id=user.id, role_id=role.id)
                     user.roles.append(user_role)

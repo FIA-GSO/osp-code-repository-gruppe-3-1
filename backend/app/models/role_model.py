@@ -4,6 +4,6 @@ class Role(db.Model):
     __tablename__ = "role"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    role_name = db.Column(db.String(50), unique=True, nullable=False)
+    name = db.Column(db.String(50), unique=True, nullable=False)
 
     users = db.relationship("UserRole", back_populates="role", cascade="all, delete-orphan")

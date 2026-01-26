@@ -16,3 +16,7 @@ class User(db.Model):
     # Relationships
     roles = db.relationship("UserRole", back_populates="user", cascade="all, delete-orphan")
     registrations = db.relationship("Registration", back_populates="user", cascade="all, delete-orphan")
+
+    @property
+    def role_names(self):
+        return [ur.role.name for ur in self.roles]
