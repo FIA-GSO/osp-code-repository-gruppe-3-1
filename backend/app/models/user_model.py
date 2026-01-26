@@ -1,6 +1,7 @@
 # app/models/user_model.py
 from datetime import datetime
 from app.extensions import db
+from datetime import datetime
 
 class User(db.Model):
     __tablename__ = "user"
