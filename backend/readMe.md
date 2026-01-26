@@ -12,3 +12,4 @@ Für DB:
     DB_PASSWORD=secret
     DB_HOST=localhost
     DB_NAME=anmeldetoolmarketplace
+    DB_PORT=portnummer
