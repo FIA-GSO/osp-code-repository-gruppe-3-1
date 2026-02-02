@@ -33,7 +33,7 @@ body {
 /* Card */
 .login-card {
     width: 100%;
-    max-width: 420px;
+    max-width: 100%;
     background: white;
     border-radius: 10px;
     overflow: hidden;
@@ -49,7 +49,7 @@ body {
 }
 
 .login-header img {
-    width: 120px;
+    width: 100%;
     margin-bottom: 8px;
 }
 
@@ -57,9 +57,10 @@ body {
     display: block;
     letter-spacing: 2px;
     font-size: 14px;
+    text-transform: uppercase;
 }
 
-.login-header hr{
+.login-header hr {
     margin: 10px 0px;
 }
 
@@ -154,11 +155,4 @@ body {
 
 .register-link a:hover {
     text-decoration: underline;
-}
-
-/* Responsive */
-@media (max-width: 480px) {
-    .login-content {
-        padding: 20px;
-    }
 }

@@ -13,7 +13,7 @@ function RouteComponent() {
                 <div className="login-header">
                     <img src={logo} alt="GSO Köln Marketplace" />
                     <hr />
-                    <span>MARKETPLACE</span>
+                    <span>Marketplace</span>
                 </div>
 
                 <div className="login-content">
