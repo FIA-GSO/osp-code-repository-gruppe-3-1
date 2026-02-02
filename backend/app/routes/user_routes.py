@@ -7,7 +7,7 @@ api = Namespace("users", description="User operations")
 user_model = api.model("User", {
     "id": fields.Integer(readonly=True),
     "email": fields.String(required=True),
-    "password":fields.String,
+    "password_hash":fields.String,
     "company_name": fields.String,
     "contact_person": fields.String,
     "active": fields.Boolean,
@@ -23,7 +23,7 @@ user_model = api.model("User", {
 # For updating a user (password optional)
 update_user_model = api.model("UpdateUser", {
     "email": fields.String(description="User login email"),
-    "password": fields.String(description="Plain-text password"),
+    "password_hash": fields.String(description="Plain-text password"),
     "company_name": fields.String(description="Company name (optional)"),
     "contact_person": fields.String(description="Contact person (optional)"),
     "active": fields.Boolean(description="Is user active"),
@@ -33,7 +33,7 @@ update_user_model = api.model("UpdateUser", {
 # For creating a user (password required)
 create_user_model = api.model("CreateUser", {
     "email": fields.String(required=True, description="User login email"),
-    "password": fields.String(required=True, description="Plain-text password"),
+    "password_hash": fields.String(required=True, description="Plain-text password"),
     "company_name": fields.String(description="Company name (optional)"),
     "contact_person": fields.String(description="Contact person (optional)"),
     "roles": fields.List(fields.String, description="List of roles to assign", required=False)
