@@ -2,6 +2,7 @@ from app.extensions import db
 from app.models.registration_model import Registration
 from app.models.lecture_model import Lecture
 from datetime import datetime
+from app.models.status_model import Status
 
 
 class RegistrationService:
@@ -106,3 +107,19 @@ class RegistrationService:
         db.session.delete(reg)
         db.session.commit()
         return True
+    
+    #janik -----------------------!
+    @staticmethod
+    def update_registration_status(registration_id: int, new_status_id: int):
+        registration = Registration.query.get(registration_id)
+        if not registration:
+            return None, "Registration not found"
+
+        status = Status.query.get(new_status_id)
+        if not status:
+            return None, "Invalid status"
+
+        registration.status_id = new_status_id
+        db.session.commit()
+
+        return registration, None

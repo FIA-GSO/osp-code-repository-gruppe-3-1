@@ -1,5 +1,5 @@
 from flask_restx import Namespace, Resource, fields
-from flask import request
+from flask import request, jsonify
 from app.services.registration_service import RegistrationService
 
 api = Namespace("registrations", description="Registration operations")
@@ -40,6 +40,10 @@ registration_form_model = api.model("RegistrationForm", {
         "required_tech": fields.String,
         "preferred_time": fields.String
     }))
+})
+
+status_update_model = api.model("StatusUpdate", {
+    "status_id": fields.Integer(required=True, description="New status ID for the registration")
 })
 
 @api.route("/")
@@ -111,3 +115,30 @@ class RegistrationDetail(Resource):
         if not ok:
             api.abort(404, "Registration not found")
         return {"message": "Registration deleted"}
+    
+
+# Janik -------------------------!
+@api.route("/<int:registration_id>/status")
+class UpdateRegistrationStatus(Resource):
+    
+    @api.expect(status_update_model)
+    @api.marshal_with(registration_model)
+    def put(self, registration_id):
+        """Update the status of a registration"""
+        data = request.get_json()
+        if not data:
+            api.abort(400, "Missing JSON body")
+
+        new_status_id = data.get("status_id")
+        if new_status_id is None:
+            api.abort(400, "status_id is required")
+
+        registration, error = RegistrationService.update_registration_status(
+            registration_id,
+            new_status_id
+        )
+
+        if error:
+            api.abort(400, error)
+
+        return registration
