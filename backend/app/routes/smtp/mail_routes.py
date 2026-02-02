@@ -1,10 +1,7 @@
 from flask import Blueprint, request, jsonify
 from flask_mail import Message
 from app.extensions import mail
-import os;
-from dotenv import load_dotenv;
-
-load_dotenv()
+import os
 
 mail_bp = Blueprint('mail', __name__)
 
@@ -14,8 +11,6 @@ def send_mail():
     recipient = data.get('to')
     subject = data.get('subject')
     body = data.get('body')
-    
-    print("REQUEST JSON:", data)
 
     if not all([recipient, subject, body]):
         return jsonify({"error": "Missing fields"}), 400
@@ -24,9 +19,9 @@ def send_mail():
         subject=subject,
         recipients=[recipient],
         body=body,
-        sender=os.getenv('MAIL_USERNAME')
+        sender=os.getenv('MAIL_DEFAULT_SENDER')
     )
-    
+
     try:
         mail.send(msg)
         return jsonify({"message": "Email sent successfully"}), 200
