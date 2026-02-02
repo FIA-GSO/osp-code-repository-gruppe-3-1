@@ -16,6 +16,7 @@ def create_app():
     from app.models.registration_model import Registration
     from app.models.event_model import Event
     from app.models.status_model import Status
+    from app.models.lecture_model import Lecture
 
     with app.app_context():
         db.create_all()
@@ -36,7 +37,9 @@ def create_app():
     from app.routes.user_routes import api as user_ns
     api.add_namespace(user_ns, path="/api/users")
     from app.routes.auth_routes import api as auth_ns
-    api.add_namespace(auth_ns, path="/auth")
+    api.add_namespace(auth_ns, path="/api/auth")
+    from app.routes.registration_routes import api as reg_ns
+    api.add_namespace(reg_ns, path="/api/registration")
     
     # from backend.app.routes.smtp.mail_routes import mail_bp
     # app.register_blueprint(mail_bp, url_prefix='/mail')
