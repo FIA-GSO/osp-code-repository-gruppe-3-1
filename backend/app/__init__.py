@@ -7,7 +7,6 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
 
-    # Initialize extensions
     db.init_app(app)
     mail.init_app(app)
 
@@ -17,22 +16,30 @@ def create_app():
     from app.models.registration_model import Registration
     from app.models.event_model import Event
     from app.models.status_model import Status
+    from app.models.lecture_model import Lecture
 
     with app.app_context():
         db.create_all()
 
-    # Initialize REST API
+    # Swagger
     api = Api(
         app,
         title="My REST API",
         version="1.0",
         description="Example Flask REST API",
-        doc="/swagger"   # Swagger UI URL
+        doc="/swagger"   
     )
 
-    # Register routes / namespaces
+    app.secret_key = "verysecretkey"
+    app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
+    app.config["SESSION_COOKIE_HTTPONLY"] = True
+
     from app.routes.user_routes import api as user_ns
     api.add_namespace(user_ns, path="/api/users")
+    from app.routes.auth_routes import api as auth_ns
+    api.add_namespace(auth_ns, path="/api/auth")
+    from app.routes.registration_routes import api as reg_ns
+    api.add_namespace(reg_ns, path="/api/registration")
     
     from app.routes.smtp.mail_routes import mail_bp
     app.register_blueprint(mail_bp, url_prefix='/mail')
