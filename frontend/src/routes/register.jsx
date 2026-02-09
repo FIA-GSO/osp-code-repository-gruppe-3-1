@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import logo from '@/assets/logo-gso3.png';
 import { checkPasswordStrength } from '@/utils/password';
 import { useRegister } from '@/hooks/use-register';
@@ -9,6 +10,7 @@ export const Route = createFileRoute('/register')({
 });
 
 function RouteComponent() {
+    const { t } = useTranslation();
     const [isSuccess, setIsSuccess] = useState(false);
     const [error, setError] = useState('');
     const register = useRegister();
@@ -32,14 +34,14 @@ function RouteComponent() {
         setError('');
 
         if (form.password !== form.passwordConfirm) {
-            setError('Passwörter stimmen nicht überein');
+            setError(t('errors.passwordMismatch'));
             return;
         }
 
         register.mutate(form, {
             onSuccess: () => setIsSuccess(true),
             onError: (err) => {
-                setError(err.response?.data?.message || 'Registrierung fehlgeschlagen');
+                setError(err.response?.data?.message || t('errors.registrationFailed'));
             },
         });
     };
@@ -55,8 +57,8 @@ function RouteComponent() {
             >
                 <div className="w-full max-w-[430px] overflow-hidden rounded-[10px] bg-white shadow-[0_10px_30px_rgba(0,0,0,0.15)]">
                     <div className="bg-primary p-[25px] text-center text-white">
-                        <img src={logo} alt="GSO Köln Marketplace" className="mx-auto mb-1.5 w-[120px]" />
-                        <span className="block text-sm uppercase tracking-[2px]">MARKETPLACE</span>
+                        <img src={logo} alt={t('common.logoAlt')} className="mx-auto mb-1.5 w-[120px]" />
+                        <span className="block text-sm uppercase tracking-[2px]">{t('common.marketplace')}</span>
                     </div>
 
                     <div className="mt-[15px] flex items-center justify-center">
@@ -68,19 +70,19 @@ function RouteComponent() {
                             2
                         </div>
                     </div>
-                    <p className="text-center text-sm text-[#7a7a7a]">Schritt 2 von 2</p>
+                    <p className="text-center text-sm text-[#7a7a7a]">{t('auth.step', { current: 2, total: 2 })}</p>
 
                     <div className="p-[30px] text-center">
                         <div className="mx-auto mb-[15px] flex h-[70px] w-[70px] items-center justify-center rounded-full bg-[#8bc34a] text-4xl text-white">
                             ✔
                         </div>
-                        <h1 className="text-text">Registrierung erfolgreich!</h1>
-                        <p className="text-muted">Vielen Dank für Ihre Anmeldung. Sie können sich nun anmelden.</p>
+                        <h1 className="text-text">{t('auth.registrationSuccess')}</h1>
+                        <p className="text-muted">{t('auth.registrationSuccessMessage')}</p>
                         <Link
                             to="/login"
                             className="mt-[10px] inline-block w-full rounded-md bg-primary px-4 py-[14px] text-base text-white no-underline"
                         >
-                            Zum Login
+                            {t('auth.goToLogin')}
                         </Link>
                     </div>
                 </div>
@@ -98,8 +100,8 @@ function RouteComponent() {
         >
             <div className="w-full max-w-[430px] overflow-hidden rounded-[10px] bg-white shadow-[0_10px_30px_rgba(0,0,0,0.15)]">
                 <div className="bg-primary p-[25px] text-center text-white">
-                    <img src={logo} alt="GSO Köln Marketplace" className="mx-auto mb-1.5 w-[120px]" />
-                    <span className="block text-sm uppercase tracking-[2px]">MARKETPLACE</span>
+                    <img src={logo} alt={t('common.logoAlt')} className="mx-auto mb-1.5 w-[120px]" />
+                    <span className="block text-sm uppercase tracking-[2px]">{t('common.marketplace')}</span>
                 </div>
 
                 <div className="mt-[15px] flex items-center justify-center">
@@ -111,11 +113,11 @@ function RouteComponent() {
                         2
                     </div>
                 </div>
-                <p className="text-center text-sm text-[#7a7a7a]">Schritt 1 von 2</p>
+                <p className="text-center text-sm text-[#7a7a7a]">{t('auth.step', { current: 1, total: 2 })}</p>
 
                 <div className="p-[30px] text-center">
-                    <h1 className="text-text">Unternehmensregistrierung</h1>
-                    <p className="text-muted">Bitte geben Sie Ihre Unternehmensdaten ein.</p>
+                    <h1 className="text-text">{t('auth.companyRegistration')}</h1>
+                    <p className="text-muted">{t('auth.companyRegistrationDescription')}</p>
 
                     <form onSubmit={handleSubmit}>
                         {error && <div className="mb-4 text-red-500">{error}</div>}
@@ -124,7 +126,7 @@ function RouteComponent() {
                             <span className="absolute left-3 top-1/2 -translate-y-1/2">🏢</span>
                             <input
                                 name="company"
-                                placeholder="Firmenname"
+                                placeholder={t('auth.companyName')}
                                 value={form.company}
                                 onChange={handleChange}
                                 required
@@ -136,7 +138,7 @@ function RouteComponent() {
                             <span className="absolute left-3 top-1/2 -translate-y-1/2">👤</span>
                             <input
                                 name="contact"
-                                placeholder="Ansprechpartner"
+                                placeholder={t('auth.contactPerson')}
                                 value={form.contact}
                                 onChange={handleChange}
                                 required
@@ -149,7 +151,7 @@ function RouteComponent() {
                             <input
                                 type="email"
                                 name="email"
-                                placeholder="E-Mail-Adresse"
+                                placeholder={t('common.email')}
                                 value={form.email}
                                 onChange={handleChange}
                                 required
@@ -157,14 +159,14 @@ function RouteComponent() {
                             />
                         </div>
 
-                        <h3 className="text-text">Passwort erstellen</h3>
+                        <h3 className="text-text">{t('auth.createPassword')}</h3>
 
                         <div className="relative mb-[15px]">
                             <span className="absolute left-3 top-1/2 -translate-y-1/2">🔒</span>
                             <input
                                 type="password"
                                 name="password"
-                                placeholder="Passwort"
+                                placeholder={t('common.password')}
                                 value={form.password}
                                 onChange={handleChange}
                                 required
@@ -177,7 +179,7 @@ function RouteComponent() {
                             <input
                                 type="password"
                                 name="passwordConfirm"
-                                placeholder="Passwort bestätigen"
+                                placeholder={t('auth.confirmPassword')}
                                 value={form.passwordConfirm}
                                 onChange={handleChange}
                                 required
@@ -187,13 +189,13 @@ function RouteComponent() {
 
                         <div className="my-[10px] mb-[15px] text-left text-[13px] text-[#a0a0a0]">
                             <p className={passwordRules.length ? 'font-semibold text-[#2e7d32]' : ''}>
-                                • Mindestens 8 Zeichen
+                                • {t('auth.passwordMinLength')}
                             </p>
                             <p className={passwordRules.uppercase ? 'font-semibold text-[#2e7d32]' : ''}>
-                                • Mindestens ein Großbuchstabe
+                                • {t('auth.passwordUppercase')}
                             </p>
                             <p className={passwordRules.number ? 'font-semibold text-[#2e7d32]' : ''}>
-                                • Mindestens eine Zahl
+                                • {t('auth.passwordNumber')}
                             </p>
                         </div>
 
@@ -201,14 +203,14 @@ function RouteComponent() {
                             className="mt-[10px] w-full cursor-pointer rounded-md border-none bg-primary px-4 py-[14px] text-base text-white hover:bg-primary-dark"
                             disabled={register.isPending}
                         >
-                            {register.isPending ? 'Wird registriert...' : 'Registrieren'}
+                            {register.isPending ? t('auth.registerPending') : t('auth.register')}
                         </button>
                     </form>
 
                     <div className="mt-4 text-sm text-muted">
-                        Schon ein Konto?{' '}
+                        {t('auth.hasAccount')}{' '}
                         <Link to="/login" className="font-semibold text-primary no-underline hover:underline">
-                            Jetzt anmelden
+                            {t('auth.loginNow')}
                         </Link>
                     </div>
                 </div>

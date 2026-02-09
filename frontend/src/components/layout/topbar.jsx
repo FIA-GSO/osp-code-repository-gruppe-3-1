@@ -1,6 +1,8 @@
 import { useNavigate } from '@tanstack/react-router';
+import { useTranslation } from 'react-i18next';
 
 export default function Topbar() {
+    const { t } = useTranslation();
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -25,7 +27,7 @@ export default function Topbar() {
                         className="cursor-pointer border-none bg-transparent text-[13px] text-[#6b7280] hover:underline"
                         onClick={handleLogout}
                     >
-                        Abmelden
+                        {t('auth.logout')}
                     </button>
                 </div>
             </div>

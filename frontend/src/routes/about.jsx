@@ -12,7 +12,7 @@ function RouteComponent() {
         <div className="flex flex-col gap-2">
             {t('term.hello')} "/about"!
             <Link to="/" className="font-semibold text-blue-500">
-                Go to index
+                {t('navigation.goToIndex')}
             </Link>
         </div>
     );
