@@ -1,4 +1,10 @@
-import { createFileRoute } from '@tanstack/react-router'; import Sidebar from '@/components/layout/sidebar'; import Topbar from '@/components/layout/topbar'; import StatusCard from '@/components/ui/status-card'; import Card from '@/components/ui/card'; import { useAuthStore } from '@/stores/auth';
+import { createFileRoute } from '@tanstack/react-router'; 
+import Sidebar from '@/components/layout/sidebar'; 
+import Topbar from '@/components/layout/topbar'; 
+import StatusCard from '@/components/ui/status-card'; 
+import Card from '@/components/ui/card'; 
+import { useAuthStore } from '@/stores/auth';
+import { Link } from '@tanstack/react-router';
 import backgroundImage from '@/assets/Background.png'
 export const Route = createFileRoute('/dashboard-teacher/registrierungen')({
     // beforeLoad: () => {
@@ -11,6 +17,7 @@ export const Route = createFileRoute('/dashboard-teacher/registrierungen')({
 })
 
 function RouteComponent() {
+    const registration ={id: 1}
     return (
          <div
             className="flex min-h-screen bg-cover bg-center bg-no-repeat"
@@ -29,6 +36,7 @@ function RouteComponent() {
                         <StatusCard label="Abgelehnt" count={1} type="danger" />
                     </div>
                     <Card title="Alle Registrierungen">
+                        <p>Filterung für Tag + Status machen</p>
                         <div className="block overflow-x-auto md:table md:w-full">
                             <table
                                 className="w-full border-separate"
@@ -59,10 +67,11 @@ function RouteComponent() {
                                         <td className="p-3 text-success-text">
                                             ✔ Angenommen
                                         </td>
-                                        <td className="p-3">
-                                            <button className="mr-2 rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]">
-                                                Details
-                                            </button>
+                                       <td className="p-3">
+                                        <Link to={`/dashboard-teacher/details/registration/${registration.id}`}
+                                            className="rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]"  >
+                                            Details
+                                        </Link>
                                         </td>
                                     </tr>
 
@@ -81,9 +90,11 @@ function RouteComponent() {
                                             <button className="mr-2 rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]">
                                                 ✖
                                             </button>
-                                            <button className="rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]">
-                                                Details
-                                            </button>
+                                           <Link to={`/dashboard-teacher/details/registration/${registration.id}`}
+                                            className="rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]"  >
+                                            Details
+                                        </Link>
+
                                         </td>
                                     </tr>
 
@@ -95,10 +106,11 @@ function RouteComponent() {
                                         <td className="p-3 text-error-text">
                                             ✖ Abgelehnt
                                         </td>
-                                        <td className="p-3">
-                                            <button className="rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]">
-                                                Details
-                                            </button>
+                                     <td className="p-3">
+                                        <Link to={`/dashboard-teacher/details/registration/${registration.id}`}
+                                            className="rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]"  >
+                                            Details
+                                        </Link>
                                         </td>
                                     </tr>
                                 </tbody>

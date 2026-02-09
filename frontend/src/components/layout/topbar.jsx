@@ -20,12 +20,7 @@ export default function Topbar() {
     return (
         <header className="flex h-[60px] items-center justify-end border-b border-border bg-white/85 px-7 backdrop-blur-sm">
             <div className="flex items-center gap-[18px]">
-                <div className="relative">
-                    🔔{' '}
-                    <span className="absolute -right-2 -top-1.5 rounded-full bg-[#e53935] px-1.5 py-0.5 text-[11px] text-white">
-                        2
-                    </span>
-                </div>
+
 
                 <div className="flex items-center gap-2.5">
                     <img src={avatarIconImage} alt="User" className="h-8 w-8 rounded-full" />

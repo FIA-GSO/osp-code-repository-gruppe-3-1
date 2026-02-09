@@ -49,6 +49,7 @@ function RouteComponent() {
                                         <th className="text-[13px] text-muted">Stühle</th>
                                         <th className="text-[13px] text-muted">Tische</th>
                                         <th className="text-[13px] text-muted">Weiteres</th>
+                                        <th>Hallenanzahl benutzen</th>
                                     </tr>
                                 </thead>
                                 <tbody>

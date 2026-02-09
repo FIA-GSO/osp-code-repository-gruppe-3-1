@@ -7,8 +7,8 @@ import StatusCard from '@/components/ui/status-card';
 import Card from '@/components/ui/card';
 import backgroundImage from '@/assets/Background.png'
 import { Link } from '@tanstack/react-router';
-import { getCurrentUser, getUserId } from "../api/authApi";
-import { getUserRegistrations } from "../api/registrationsApi";
+import { getCurrentUser, getUserId } from "../../api/authApi";
+import { getUserRegistrations } from "../../api/registrationsApi";
 
 
 export const Route = createFileRoute('/dashboard-user/')({
@@ -16,16 +16,33 @@ export const Route = createFileRoute('/dashboard-user/')({
 });
 
 function RouteComponent() {
+const events = [
+  {
+    id: 1,
+    name: 'Tag der Ausbildung 2026',
+    date: '15. März 2026',
+    is_locked: false, // Anmeldung OFFEN
+  },
+  {
+    id: 2,
+    name: 'Karrieretag IT 2026',
+    date: '10. Juni 2026',
+    is_locked: true, // Anmeldung GESPERRT
+  },
+];
+
+ 
+
     const { t } = useTranslation();
 
-        const [user, setUser] = useState(null);
+    const [user, setUser] = useState(null);
     const [registrationsData, setRegistrationsData] = useState(null);
 
     useEffect(() => {
         getCurrentUser()
             .then(setUser)
             .catch((err) => console.error("Failed to fetch current user:", err));
-        
+
         getUserRegistrations(getUserId())
             .then(setRegistrationsData)
             .catch((err) => console.error("Failed to fetch registrations for user:", err));
@@ -62,7 +79,7 @@ function RouteComponent() {
 
                     {/* STATUS */}
                     <div className="mb-[26px] grid grid-cols-1 gap-4 md:grid-cols-3">
-                         <StatusCard label="Bestätigt" count={registrationsData.CountBestaetigt} type="success" />
+                        <StatusCard label="Bestätigt" count={registrationsData.CountBestaetigt} type="success" />
                         <StatusCard label="Eingereicht" count={registrationsData.CountEingereicht} type="warning" />
                         <StatusCard label="Abgelehnt" count={registrationsData.CountAbgelehnt} type="danger" />
                     </div>
@@ -103,7 +120,7 @@ function RouteComponent() {
                                                         <td className={`status ${status.type}`}>{status.label}</td>
                                                         <td>
                                                             <Link to="/dashboard-user/bearbeiten/infostand/1" className="rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]">
-                                                        Bearbeiten</Link>
+                                                                Bearbeiten</Link>
                                                         </td>
                                                     </tr>
                                                 );
@@ -112,54 +129,48 @@ function RouteComponent() {
                                     </table>
                                 </div>
                             </Card>
-
-                            <Card title={t('dashboard.myPresentations')}>
-                                <div className="block overflow-x-auto md:table md:w-full">
-                                    <table className="w-full border-separate" style={{ borderSpacing: '0 8px' }}>
-                                        <thead>
-                                            <tr>
-                                                <th className="text-[13px] text-muted">{t('dashboard.title')}</th>
-                                                <th className="text-[13px] text-muted">{t('dashboard.description')}</th>
-                                                <th className="text-[13px] text-muted">{t('status.status')}</th>
-                                                <th className="text-[13px] text-muted">{t('dashboard.actions')}</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr className="bg-[#fafbfc]">
-                                                <td className="cursor-pointer p-3 text-primary">KI in der Ausbildung</td>
-                                                <td className="p-3">Einführung in den Einsatz von KI</td>
-                                                <td className="p-3 text-warning-text">{t('status.submittedIcon')}</td>
-                                                <td className="p-3">
-                                                    <button className="mr-2 cursor-pointer rounded-md border-none bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]">
-                                                        {t('common.details')}
-                                                    </button>
-                                                    <button className="cursor-pointer rounded-md border-none bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]">
-                                                        {t('common.edit')}
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </Card>
                         </div>
-
                         {/* RECHTS */}
-                        <div className="flex">
-                            <Card title={t('dashboard.upcomingEvents')} className="flex-1">
-                                <p className="cursor-pointer text-primary">Tag der Ausbildung 2026</p>
-                                <small className="text-muted">15. März 2026</small>
-                                <p className="text-sm">{t('dashboard.registrationOpen')}</p>
-
-                                <hr className="my-3 border-border" />
-
-                                <p className="cursor-pointer text-primary">Karrieretag IT 2026</p>
-                                <small className="text-muted">10. Juni 2026</small>
-                                <p className="text-sm text-muted">{t('dashboard.registrationClosed')}</p>
-                            </Card>
+                        <div className="flex" >
+                           <Card title="Bevorstehende Veranstaltungen" className="full-height">
+  {events.map((event) => (
+<div key={event.id} className="mb-4">
+      {/* Veranstaltungsname */}
+<p className="link font-medium">
+        {event.name}
+</p>
+ 
+      {/* Datum */}
+<small className="text-muted">
+        {event.date}
+</small>
+ 
+      {/* ANMELDEN BUTTON */}
+<div className="mt-2">
+<Link
+          to={`/dashboard-user/anmelden/${event.id}`}
+          className={`
+            block w-full rounded-md px-4 py-2 text-center text-sm font-medium
+            ${
+              event.is_locked
+                ? 'pointer-events-none cursor-not-allowed bg-gray-200 text-gray-400'
+                : 'bg-primary text-white hover:bg-primary/90'
+            }
+          `}
+>
+          {event.is_locked
+            ? 'Anmeldung geschlossen'
+            : 'Jetzt anmelden'}
+</Link>
+</div>
+ 
+      <hr className="mt-4" />
+</div>
+  ))}
+</Card>
                         </div>
                     </div>
-                </div>
+                </div >
             </main >
         </div >
     );

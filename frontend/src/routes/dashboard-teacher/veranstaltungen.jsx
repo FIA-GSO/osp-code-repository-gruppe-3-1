@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'; import Sidebar from '@/components/layout/sidebar'; import Topbar from '@/components/layout/topbar'; import Card from '@/components/ui/card'; import { useAuthStore } from '@/stores/auth';
 import backgroundImage from '@/assets/Background.png'
+import { Link } from '@tanstack/react-router';
 export const Route = createFileRoute('/dashboard-teacher/veranstaltungen')({
   // beforeLoad: () => {
   //   const role = useAuthStore.getState().user?.role;

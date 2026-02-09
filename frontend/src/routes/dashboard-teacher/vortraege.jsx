@@ -1,5 +1,11 @@
-import { createFileRoute } from '@tanstack/react-router'; import Sidebar from '@/components/layout/sidebar'; import Topbar from '@/components/layout/topbar'; import StatusCard from '@/components/ui/status-card'; import Card from '@/components/ui/card'; import { useAuthStore } from '@/stores/auth';
+import { createFileRoute } from '@tanstack/react-router'; 
+import Sidebar from '@/components/layout/sidebar'; 
+import Topbar from '@/components/layout/topbar'; 
+import StatusCard from '@/components/ui/status-card'; 
+import Card from '@/components/ui/card'; 
 import backgroundImage from '@/assets/Background.png'
+import { useState } from 'react';
+import { Link } from '@tanstack/react-router';
 export const Route = createFileRoute('/dashboard-teacher/vortraege')({
   // beforeLoad: () => {
   //   const role = useAuthStore.getState().user?.role;
@@ -10,7 +16,40 @@ export const Route = createFileRoute('/dashboard-teacher/vortraege')({
   component: RouteComponent,
 })
 
+
+
+
 function RouteComponent() {
+      const registration ={id: 1}
+      const lectures = [
+  {
+    id: 1,
+    title: 'KI in der Ausbildung',
+    event: 'Tag der Ausbildung 2026',
+    status: 'offen',
+  },
+  {
+    id: 2,
+    title: 'Cloud Basics',
+    event: 'Karrieretag IT 2026',
+    status: 'angenommen',
+  },
+  {
+    id: 3,
+    title: 'IT-Security',
+    event: 'Tag der Ausbildung 2026',
+    status: 'abgelehnt',
+  },
+];
+const [statusFilter, setStatusFilter] = useState('');const [eventFilter, setEventFilter] = useState('');const [search, setSearch] = useState('');
+const filteredLectures = lectures.filter((lecture) => {
+  return (
+    (statusFilter === '' || lecture.status === statusFilter) &&
+    (eventFilter === '' || lecture.event === eventFilter) &&
+    lecture.title.toLowerCase().includes(search.toLowerCase())
+  );
+});
+
   return (
     <div className="flex min-h-screen bg-cover bg-center" style={{
       backgroundImage: `linear-gradient(rgba(255,255,255,.75),rgba(255,255,255,.75)),   url(${backgroundImage})   `
@@ -27,6 +66,30 @@ function RouteComponent() {
             <StatusCard label="Abgelehnt" count={1} type="danger" />
           </div>
           <Card title="Alle Vorträge">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+    <select value={statusFilter}onChange={(e) => setStatusFilter(e.target.value)}
+      className="rounded-md border p-2"
+    >
+      <option value="">Alle Status</option>
+      <option value="offen">Offen</option>
+      <option value="angenommen">Angenommen</option>
+      <option value="abgelehnt">Abgelehnt</option>
+    </select>
+
+    <select value={eventFilter}onChange={(e) => setEventFilter(e.target.value)}
+      className="rounded-md border p-2"
+    >
+      <option value="">Alle Veranstaltungen</option>
+      <option value="Tag der Ausbildung 2026">
+        Tag der Ausbildung 2026
+      </option>
+      <option value="Karrieretag IT 2026">
+        Karrieretag IT 2026
+      </option>
+    </select>
+  </div>
+       
+       
             <div className="block overflow-x-auto md:table md:w-full">
               <table
                 className="w-full border-separate"
@@ -49,58 +112,60 @@ function RouteComponent() {
                   </tr>
                 </thead>
 
-                <tbody>
-                  <tr className="bg-[#fafbfc]">
-                    <td className="cursor-pointer p-3 text-primary">
-                      KI in der Ausbildung
-                    </td>
-                    <td className="p-3">Tag der Ausbildung 2026</td>
-                    <td className="p-3 text-warning-text">
-                      ⏳ Offen
-                    </td>
-                    <td className="p-3">
-                      <button className="mr-2 rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]">
-                        ✔
-                      </button>
-                      <button className="mr-2 rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]">
-                        ✖
-                      </button>
-                      <button className="rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]">
-                        Details
-                      </button>
-                    </td>
-                  </tr>
+               <tbody>
+  {filteredLectures.map((lecture) => (
+    <tr key={lecture.id} className="bg-[#fafbfc]">
+      {/* TITEL */}
+      <td className="cursor-pointer p-3 text-primary">
+        {lecture.title}
+      </td>
 
-                  <tr className="bg-[#fafbfc]">
-                    <td className="cursor-pointer p-3 text-primary">
-                      Cloud Basics
-                    </td>
-                    <td className="p-3">Karrieretag IT 2026</td>
-                    <td className="p-3 text-success-text">
-                      ✔ Angenommen
-                    </td>
-                    <td className="p-3">
-                      <button className="rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]">
-                        Details
-                      </button>
-                    </td>
-                  </tr>
+      {/* EVENT */}
+      <td className="p-3">
+        {lecture.event}
+      </td>
 
-                  <tr className="bg-[#fafbfc]">
-                    <td className="cursor-pointer p-3 text-primary">
-                      IT-Security Grundlagen
-                    </td>
-                    <td className="p-3">Jobmesse Südstadt 2025</td>
-                    <td className="p-3 text-error-text">
-                      ✖ Abgelehnt
-                    </td>
-                    <td className="p-3">
-                      <button className="rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]">
-                        Details
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
+      {/* STATUS */}
+      <td className="p-3">
+        {lecture.status === 'offen' && (
+          <span className="text-warning-text">⏳ Offen</span>
+        )}
+        {lecture.status === 'angenommen' && (
+          <span className="text-success-text">✔ Angenommen</span>
+        )}
+        {lecture.status === 'abgelehnt' && (
+          <span className="text-error-text">✖ Abgelehnt</span>
+        )}
+      </td>
+
+      {/* AKTIONEN */}
+      <td className="p-3">
+        {/* Nur wenn OFFEN */}
+        {lecture.status === 'offen' && (
+          <><button className="mr-2 rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]"onClick={() =>
+                console.log('Vortrag annehmen', lecture.id)
+              }
+            >
+              ✔
+            </button>
+
+            <button className="mr-2 rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]"onClick={() =>
+                console.log('Vortrag ablehnen', lecture.id)
+              }
+            >
+              ✖
+            </button>
+          </>        )}
+
+        {/* Details immer */}
+        <Link to={`/dashboard-teacher/details/lecture/${lecture.id}`}
+          className="rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]"        >
+          Details
+        </Link>
+      </td>
+    </tr>
+  ))}
+</tbody>
               </table>
             </div>
           </Card>

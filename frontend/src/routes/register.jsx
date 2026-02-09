@@ -206,6 +206,7 @@ function RouteComponent() {
                         >
                             {register.isPending ? t('auth.registerPending') : t('auth.register')}
                         </button>
+                        <p>Datenschutzerklärung Checkbox + Vorträge einrechung formular</p>
                     </form>
 
                     <div className="mt-4 text-sm text-muted">
