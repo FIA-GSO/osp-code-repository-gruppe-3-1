@@ -1,23 +1,22 @@
-import { createFileRoute, useNavigate, Link } from '@tanstack/react-router'
-import { useState } from "react";
-import logo from '../assets/Logo-GSO3.png'
-import "./register.css";
-import { checkPasswordStrength } from "./utils/passwordStrength";
-
+import { createFileRoute, useNavigate, Link } from '@tanstack/react-router';
+import { useState } from 'react';
+import logo from '../assets/Logo-GSO3.png';
+import './register.css';
+import { checkPasswordStrength } from '../utils/password';
 
 export const Route = createFileRoute('/register')({
     component: RouteComponent,
-})
+});
 
 function RouteComponent() {
     const navigate = useNavigate();
 
     const [form, setForm] = useState({
-        company: "",
-        contact: "",
-        email: "",
-        password: "",
-        passwordConfirm: "",
+        company: '',
+        contact: '',
+        email: '',
+        password: '',
+        passwordConfirm: '',
     });
 
     const passwordRules = checkPasswordStrength(form.password);
@@ -34,7 +33,6 @@ function RouteComponent() {
     return (
         <div className="register-wrapper">
             <div className="register-card">
-
                 {/* Header */}
                 <div className="register-header">
                     <img src={logo} alt="GSO Köln Marketplace" />
@@ -57,41 +55,68 @@ function RouteComponent() {
                     <form onSubmit={handleSubmit}>
                         <div className="input-group">
                             <span className="icon">🏢</span>
-                            <input name="company" placeholder="Firmenname" value={form.company} onChange={handleChange} required />
+                            <input
+                                name="company"
+                                placeholder="Firmenname"
+                                value={form.company}
+                                onChange={handleChange}
+                                required
+                            />
                         </div>
 
                         <div className="input-group">
                             <span className="icon">👤</span>
-                            <input name="contact" placeholder="Ansprechpartner" value={form.contact} onChange={handleChange} required />
+                            <input
+                                name="contact"
+                                placeholder="Ansprechpartner"
+                                value={form.contact}
+                                onChange={handleChange}
+                                required
+                            />
                         </div>
 
                         <div className="input-group">
                             <span className="icon">📧</span>
-                            <input type="email" name="email" placeholder="E-Mail-Adresse" value={form.email} onChange={handleChange} required />
+                            <input
+                                type="email"
+                                name="email"
+                                placeholder="E-Mail-Adresse"
+                                value={form.email}
+                                onChange={handleChange}
+                                required
+                            />
                         </div>
 
                         <h3>Passwort erstellen</h3>
 
                         <div className="input-group">
                             <span className="icon">🔒</span>
-                            <input type="password" name="password" placeholder="Passwort" value={form.password} onChange={handleChange} required />
+                            <input
+                                type="password"
+                                name="password"
+                                placeholder="Passwort"
+                                value={form.password}
+                                onChange={handleChange}
+                                required
+                            />
                         </div>
 
                         <div className="input-group">
                             <span className="icon">🔒</span>
-                            <input type="password" name="passwordConfirm" placeholder="Passwort bestätigen" value={form.passwordConfirm} onChange={handleChange} required />
+                            <input
+                                type="password"
+                                name="passwordConfirm"
+                                placeholder="Passwort bestätigen"
+                                value={form.passwordConfirm}
+                                onChange={handleChange}
+                                required
+                            />
                         </div>
 
                         <div className="password-rules">
-                            <p className={passwordRules.length ? "valid" : ""}>
-                                • Mindestens 8 Zeichen
-                            </p>
-                            <p className={passwordRules.uppercase ? "valid" : ""}>
-                                • Mindestens ein Großbuchstabe
-                            </p>
-                            <p className={passwordRules.number ? "valid" : ""}>
-                                • Mindestens eine Zahl
-                            </p>
+                            <p className={passwordRules.length ? 'valid' : ''}>• Mindestens 8 Zeichen</p>
+                            <p className={passwordRules.uppercase ? 'valid' : ''}>• Mindestens ein Großbuchstabe</p>
+                            <p className={passwordRules.number ? 'valid' : ''}>• Mindestens eine Zahl</p>
                         </div>
 
                         <button className="btn-primary">Registrieren</button>
