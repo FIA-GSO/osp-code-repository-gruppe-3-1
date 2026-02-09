@@ -1,13 +1,13 @@
-import { createFileRoute } from '@tanstack/react-router'
-import "./dashboardUser.css";
-import Sidebar from "./components/Sidebar";
-import Topbar from "./components/Topbar";
-import StatusCard from "./components/StatusCard";
-import Card from "./components/Card";
+import { createFileRoute } from '@tanstack/react-router';
+import './dashboardUser.css';
+import Sidebar from '../components/sidebar';
+import Topbar from '../components/topbar';
+import StatusCard from '../components/status-card';
+import Card from '../components/card';
 
 export const Route = createFileRoute('/dashboardUser')({
     component: RouteComponent,
-})
+});
 
 function RouteComponent() {
     return (
@@ -54,30 +54,6 @@ function RouteComponent() {
                                         <tr>
                                             <td className="link">Tag der Ausbildung 2026</td>
                                             <td>Vortrag</td>
-                                            <td className="status warning">⏳ Eingereicht</td>
-                                            <td>
-                                                <button>Details</button>
-                                                <button>Bearbeiten</button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </Card>
-
-                            <Card title="Meine Vorträge">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Titel</th>
-                                            <th>Beschreibung</th>
-                                            <th>Status</th>
-                                            <th>Aktionen</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td className="link">KI in der Ausbildung</td>
-                                            <td>Einführung in den Einsatz von KI</td>
                                             <td className="status warning">⏳ Eingereicht</td>
                                             <td>
                                                 <button>Details</button>
