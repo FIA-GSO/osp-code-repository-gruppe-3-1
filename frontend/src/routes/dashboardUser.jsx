@@ -1,9 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router';
 import './dashboardUser.css';
-import Sidebar from '../components/Sidebar';
-import Topbar from '../components/Topbar';
-import StatusCard from '../components/StatusCard';
-import Card from '../components/Card';
+import Sidebar from '../components/sidebar';
+import Topbar from '../components/topbar';
+import StatusCard from '../components/status-card';
+import Card from '../components/card';
 
 export const Route = createFileRoute('/dashboardUser')({
     component: RouteComponent,
