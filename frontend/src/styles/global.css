@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #1f6fc6;
+  --color-primary-dark: #185aa3;
+  --color-bg: #f6f8fb;
+  --color-card: #ffffff;
+  --color-text: #2e2e2e;
+  --color-muted: #8a8a8a;
+  --color-border: #eef1f5;
+  --color-success: #66bb6a;
+  --color-success-text: #43a047;
+  --color-warning: #ffca28;
+  --color-warning-text: #f9a825;
+  --color-danger: #ef5350;
+  --font-family-sans: "Segoe UI", Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}

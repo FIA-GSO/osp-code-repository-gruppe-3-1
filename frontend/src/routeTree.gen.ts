@@ -9,29 +9,23 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as RegisterSuccessRouteImport } from './routes/registerSuccess'
 import { Route as RegisterRouteImport } from './routes/register'
-import { Route as PasswordForgottenRouteImport } from './routes/passwordForgotten'
+import { Route as PasswordForgottenRouteImport } from './routes/password-forgotten'
 import { Route as LoginRouteImport } from './routes/login'
-import { Route as DashboardUserRouteImport } from './routes/dashboardUser'
+import { Route as DashboardUserRouteImport } from './routes/dashboard-user'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
 
-const RegisterSuccessRoute = RegisterSuccessRouteImport.update({
-  id: '/registerSuccess',
-  path: '/registerSuccess',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PasswordForgottenRoute = PasswordForgottenRouteImport.update({
-  id: '/passwordForgotten',
-  path: '/passwordForgotten',
+  id: '/password-forgotten',
+  path: '/password-forgotten',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -40,8 +34,8 @@ const LoginRoute = LoginRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardUserRoute = DashboardUserRouteImport.update({
-  id: '/dashboardUser',
-  path: '/dashboardUser',
+  id: '/dashboard-user',
+  path: '/dashboard-user',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -67,21 +61,19 @@ const AuthenticatedAppRoute = AuthenticatedAppRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/dashboardUser': typeof DashboardUserRoute
+  '/dashboard-user': typeof DashboardUserRoute
   '/login': typeof LoginRoute
-  '/passwordForgotten': typeof PasswordForgottenRoute
+  '/password-forgotten': typeof PasswordForgottenRoute
   '/register': typeof RegisterRoute
-  '/registerSuccess': typeof RegisterSuccessRoute
   '/app': typeof AuthenticatedAppRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/dashboardUser': typeof DashboardUserRoute
+  '/dashboard-user': typeof DashboardUserRoute
   '/login': typeof LoginRoute
-  '/passwordForgotten': typeof PasswordForgottenRoute
+  '/password-forgotten': typeof PasswordForgottenRoute
   '/register': typeof RegisterRoute
-  '/registerSuccess': typeof RegisterSuccessRoute
   '/app': typeof AuthenticatedAppRoute
 }
 export interface FileRoutesById {
@@ -89,11 +81,10 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/about': typeof AboutRoute
-  '/dashboardUser': typeof DashboardUserRoute
+  '/dashboard-user': typeof DashboardUserRoute
   '/login': typeof LoginRoute
-  '/passwordForgotten': typeof PasswordForgottenRoute
+  '/password-forgotten': typeof PasswordForgottenRoute
   '/register': typeof RegisterRoute
-  '/registerSuccess': typeof RegisterSuccessRoute
   '/_authenticated/app': typeof AuthenticatedAppRoute
 }
 export interface FileRouteTypes {
@@ -101,32 +92,29 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
-    | '/dashboardUser'
+    | '/dashboard-user'
     | '/login'
-    | '/passwordForgotten'
+    | '/password-forgotten'
     | '/register'
-    | '/registerSuccess'
     | '/app'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
-    | '/dashboardUser'
+    | '/dashboard-user'
     | '/login'
-    | '/passwordForgotten'
+    | '/password-forgotten'
     | '/register'
-    | '/registerSuccess'
     | '/app'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/about'
-    | '/dashboardUser'
+    | '/dashboard-user'
     | '/login'
-    | '/passwordForgotten'
+    | '/password-forgotten'
     | '/register'
-    | '/registerSuccess'
     | '/_authenticated/app'
   fileRoutesById: FileRoutesById
 }
@@ -138,18 +126,10 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   PasswordForgottenRoute: typeof PasswordForgottenRoute
   RegisterRoute: typeof RegisterRoute
-  RegisterSuccessRoute: typeof RegisterSuccessRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/registerSuccess': {
-      id: '/registerSuccess'
-      path: '/registerSuccess'
-      fullPath: '/registerSuccess'
-      preLoaderRoute: typeof RegisterSuccessRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/register': {
       id: '/register'
       path: '/register'
@@ -157,10 +137,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/passwordForgotten': {
-      id: '/passwordForgotten'
-      path: '/passwordForgotten'
-      fullPath: '/passwordForgotten'
+    '/password-forgotten': {
+      id: '/password-forgotten'
+      path: '/password-forgotten'
+      fullPath: '/password-forgotten'
       preLoaderRoute: typeof PasswordForgottenRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -171,10 +151,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/dashboardUser': {
-      id: '/dashboardUser'
-      path: '/dashboardUser'
-      fullPath: '/dashboardUser'
+    '/dashboard-user': {
+      id: '/dashboard-user'
+      path: '/dashboard-user'
+      fullPath: '/dashboard-user'
       preLoaderRoute: typeof DashboardUserRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -229,7 +209,6 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   PasswordForgottenRoute: PasswordForgottenRoute,
   RegisterRoute: RegisterRoute,
-  RegisterSuccessRoute: RegisterSuccessRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
