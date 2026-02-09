@@ -3,6 +3,7 @@ import { useState } from 'react';
 import logo from '@/assets/logo-gso3.png';
 import { checkPasswordStrength } from '@/utils/password';
 import { useRegister } from '@/hooks/use-register';
+import backgroundImage from '@/assets/Background.png'
 
 export const Route = createFileRoute('/register')({
     component: RouteComponent,
@@ -50,7 +51,7 @@ function RouteComponent() {
                 className="flex min-h-screen items-center justify-center bg-cover bg-center bg-no-repeat p-5"
                 style={{
                     backgroundImage:
-                        "linear-gradient(rgba(255,255,255,0.65), rgba(255,255,255,0.65)), url('/background.png')",
+                        `linear-gradient(rgba(255,255,255,0.65), rgba(255,255,255,0.65)), url(${backgroundImage})`,
                 }}
             >
                 <div className="w-full max-w-[430px] overflow-hidden rounded-[10px] bg-white shadow-[0_10px_30px_rgba(0,0,0,0.15)]">
@@ -93,7 +94,7 @@ function RouteComponent() {
             className="flex min-h-screen items-center justify-center bg-cover bg-center bg-no-repeat p-5"
             style={{
                 backgroundImage:
-                    "linear-gradient(rgba(255,255,255,0.65), rgba(255,255,255,0.65)), url('/background.png')",
+                    "linear-gradient(rgba(255,255,255,0.65), rgba(255,255,255,0.65)), url(${backgroundImage})",
             }}
         >
             <div className="w-full max-w-[430px] overflow-hidden rounded-[10px] bg-white shadow-[0_10px_30px_rgba(0,0,0,0.15)]">

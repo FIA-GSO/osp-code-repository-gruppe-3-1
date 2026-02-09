@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
 import logo from '@/assets/logo-gso3.png';
+import backgroundImage from '@/assets/Background.png';
 import { useLogin } from '@/hooks/use-login';
 
 export const Route = createFileRoute('/login')({
@@ -40,7 +41,7 @@ function RouteComponent() {
         <div
             className="flex min-h-screen w-full items-center justify-center bg-cover bg-center bg-no-repeat p-5"
             style={{
-                backgroundImage: "linear-gradient(rgba(255,255,255,0.6), rgba(255,255,255,0.6)), url('/background.png')",
+                backgroundImage: `linear-gradient rgba(255,255,255,0.6),rgba(255,255,255,0.6)), url(${backgroundImage})`,
             }}
         >
             <div className="w-full max-w-[420px] overflow-hidden rounded-[10px] bg-white shadow-[0_10px_30px_rgba(0,0,0,0.15)]">

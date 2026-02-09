@@ -1,4 +1,5 @@
 import { useNavigate } from '@tanstack/react-router';
+import avatarIconImage from '@/assets/avatar.jpg'
 
 export default function Topbar() {
     const navigate = useNavigate();
@@ -19,7 +20,7 @@ export default function Topbar() {
                 </div>
 
                 <div className="flex items-center gap-2.5">
-                    <img src="/avatar.png" alt="User" className="h-8 w-8 rounded-full" />
+                    <img src={avatarIconImage} alt="User" className="h-8 w-8 rounded-full" />
                     <span>Max Müller</span>
                     <button
                         className="cursor-pointer border-none bg-transparent text-[13px] text-[#6b7280] hover:underline"

@@ -3,8 +3,10 @@ import Sidebar from '@/components/layout/sidebar';
 import Topbar from '@/components/layout/topbar';
 import StatusCard from '@/components/ui/status-card';
 import Card from '@/components/ui/card';
+import backgroundImage from '@/assets/Background.png'
+import { Link } from '@tanstack/react-router';
 
-export const Route = createFileRoute('/dashboard-user')({
+export const Route = createFileRoute('/dashboard-user/')({
     component: RouteComponent,
 });
 
@@ -14,7 +16,8 @@ function RouteComponent() {
             className="flex min-h-screen bg-cover bg-center bg-no-repeat"
             style={{
                 backgroundImage:
-                    "linear-gradient(rgba(255,255,255,0.75), rgba(255,255,255,0.75)), url('/background.png')",
+                    `linear-gradient(rgba(255,255,255,0.75), rgba(255,255,255,0.75)),   url(${backgroundImage})`
+                ,
             }}
         >
             <Sidebar />
@@ -33,11 +36,20 @@ function RouteComponent() {
                     </div>
 
                     {/* HAUPTGRID */}
-                    <div className="grid grid-cols-1 gap-6 lg:grid-cols-[2fr_1fr]">
+                    <div className="grid grid-cols-1 gap-6 lg:grid-cols-[2fr_1fr]"
+                        style={{
+                            height:
+                                `55vh`
+                            ,
+                        }}>
                         {/* LINKS */}
                         <div className="flex flex-col gap-[22px]">
-                            <Card title="Meine Registrierungen">
-                                <div className="block overflow-x-auto md:table md:w-full">
+                            <Card title="Meine Registrierungen" >
+                                <div className="block overflow-x-auto md:table md:w-full" style={{
+                                    height:
+                                        `55vh`
+                                    ,
+                                }}>
                                     <table className="w-full border-separate" style={{ borderSpacing: '0 8px' }}>
                                         <thead>
                                             <tr>
@@ -53,12 +65,8 @@ function RouteComponent() {
                                                 <td className="p-3">Infostand</td>
                                                 <td className="p-3 text-success-text">✔ Bestätigt</td>
                                                 <td className="p-3">
-                                                    <button className="mr-2 cursor-pointer rounded-md border-none bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]">
-                                                        Details
-                                                    </button>
-                                                    <button className="cursor-pointer rounded-md border-none bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]">
-                                                        Bearbeiten
-                                                    </button>
+                                                    <Link to="/dashboard-user/bearbeiten/infostand/1" className="rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]">
+                                                        Bearbeiten</Link>
                                                 </td>
                                             </tr>
                                             <tr className="bg-[#fafbfc]">
@@ -66,42 +74,8 @@ function RouteComponent() {
                                                 <td className="p-3">Vortrag</td>
                                                 <td className="p-3 text-warning-text">⏳ Eingereicht</td>
                                                 <td className="p-3">
-                                                    <button className="mr-2 cursor-pointer rounded-md border-none bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]">
-                                                        Details
-                                                    </button>
-                                                    <button className="cursor-pointer rounded-md border-none bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]">
-                                                        Bearbeiten
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </Card>
-
-                            <Card title="Meine Vorträge">
-                                <div className="block overflow-x-auto md:table md:w-full">
-                                    <table className="w-full border-separate" style={{ borderSpacing: '0 8px' }}>
-                                        <thead>
-                                            <tr>
-                                                <th className="text-[13px] text-muted">Titel</th>
-                                                <th className="text-[13px] text-muted">Beschreibung</th>
-                                                <th className="text-[13px] text-muted">Status</th>
-                                                <th className="text-[13px] text-muted">Aktionen</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr className="bg-[#fafbfc]">
-                                                <td className="cursor-pointer p-3 text-primary">KI in der Ausbildung</td>
-                                                <td className="p-3">Einführung in den Einsatz von KI</td>
-                                                <td className="p-3 text-warning-text">⏳ Eingereicht</td>
-                                                <td className="p-3">
-                                                    <button className="mr-2 cursor-pointer rounded-md border-none bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]">
-                                                        Details
-                                                    </button>
-                                                    <button className="cursor-pointer rounded-md border-none bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]">
-                                                        Bearbeiten
-                                                    </button>
+                                                    <Link to="/dashboard-user/bearbeiten/vortrag/1" className="rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]">
+                                                        Bearbeiten</Link>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -126,7 +100,7 @@ function RouteComponent() {
                         </div>
                     </div>
                 </div>
-            </main>
-        </div>
+            </main >
+        </div >
     );
 }

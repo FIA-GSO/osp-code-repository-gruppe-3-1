@@ -1,15 +1,124 @@
-export default function Sidebar() {
-    return (
-        <aside className="hidden w-[230px] bg-primary text-white md:block">
-            <div className="p-[22px] text-center">
-                <img src="/logo-gso3.png" alt="GSO Köln Marketplace" className="w-[120px]" />
-            </div>
+import { Link } from '@tanstack/react-router';
 
-            <nav>
-                <a className="block cursor-pointer px-[22px] py-[14px] text-white no-underline opacity-90 hover:bg-white/15">
-                    Dashboard
-                </a>
-            </nav>
-        </aside>
+import { useAuthStore } from '@/stores/auth';
+import logo from '@/assets/Logo-GSO3.png'
+
+/**
+
+* Zentrale Sidebar
+
+* – eine Sidebar für alle Rollen
+
+* – Navigation wird rollenabhängig angezeigt
+
+*/
+
+export default function Sidebar() {
+
+    const role = useAuthStore((state) => state.user?.role);
+
+    return (
+        <aside className="w-[230px] bg-primary text-white"
+            style={{
+                justifyItems:
+                    `center`
+                ,
+            }}>
+
+            {/* Logo */}
+            < div className="p-6 text-center" >
+                <img src={logo} alt="GSO Köln Marketplace" className="mx-auto w-[100%]" />
+            </div >
+
+            {/* Navigation */}
+            < nav className="flex flex-col" >
+
+                {/* ================= USER ================= */}
+
+                {
+                    // role === 'user' &&
+                    (
+                        <SidebarLink
+
+                            to="/dashboard-user"
+
+                            label="Dashboard"
+
+                        />
+
+                    )
+                }
+
+                {/* ================= LEHRER ================= */}
+
+                {
+                    // role === 'teacher' && 
+                    (
+                        <>
+                            <SidebarLink
+
+                                to="/dashboard-teacher/registrierungen"
+
+                                label="Registrierungen"
+
+                            />
+                            <SidebarLink
+
+                                to="/dashboard-teacher/vortraege"
+
+                                label="Vorträge"
+
+                            />
+                            <SidebarLink
+
+                                to="/dashboard-teacher/veranstaltungen"
+
+                                label="Veranstaltungen"
+
+                            />
+                        </>
+
+                    )
+                }
+
+                {/* ================= HELFER ================= */}
+
+                {
+                    // role === 'helper' && 
+                    (
+                        <SidebarLink
+
+                            to="/dashboardHelper"
+
+                            label="Helfer Dashboard"
+
+                        />
+
+                    )
+                }
+            </nav >
+        </aside >
+
     );
+
+}
+
+/**
+
+* Einheitlicher Sidebar-Link
+
+* – Active-State über TanStack Router
+
+* – vermeidet doppeltes Styling
+
+*/
+
+function SidebarLink({ to, label }) {
+    return (
+        <Link to={to} className={({ isActive }) => `px-6 py-3 text-white no-underline${isActive ? 'bg-white/20' : 'hover:bg-white/10'}`}>
+            {label}
+        </Link>
+
+    );
+
 }
