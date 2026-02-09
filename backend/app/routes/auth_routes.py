@@ -12,6 +12,8 @@ login_model = api.model("Login", {
 user_session_model = api.model("UserSession", {
     "id": fields.Integer,
     "email": fields.String,
+    "contact_person": fields.String,
+    "company_name": fields.String,
     "roles": fields.List(fields.String)
 })
 
@@ -29,7 +31,9 @@ class Login(Resource):
         return {
             "id": user.id,
             "email": user.email,
-            "roles": [r.role.name for r in user.roles]
+            "roles": [r.role.name for r in user.roles],
+            "contact_person": user.contact_person,
+            "company_name": user.company_name,
         }, 200
 
 
@@ -51,5 +55,7 @@ class Me(Resource):
         return {
             "id": user.id,
             "email": user.email,
-            "roles": [r.role.name for r in user.roles]
+            "roles": [r.role.name for r in user.roles],
+            "contact_person": user.contact_person,
+            "company_name": user.company_name
         }

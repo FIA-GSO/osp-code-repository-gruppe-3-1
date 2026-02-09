@@ -1,9 +1,13 @@
+import { useEffect, useState } from "react";
 import { createFileRoute } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import Sidebar from '@/components/layout/sidebar';
 import Topbar from '@/components/layout/topbar';
 import StatusCard from '@/components/ui/status-card';
 import Card from '@/components/ui/card';
+import { getCurrentUser, getUserId } from "../api/authApi";
+import { getUserRegistrations } from "../api/registrationsApi";
+
 
 export const Route = createFileRoute('/dashboard-user')({
     component: RouteComponent,
@@ -11,6 +15,31 @@ export const Route = createFileRoute('/dashboard-user')({
 
 function RouteComponent() {
     const { t } = useTranslation();
+
+        const [user, setUser] = useState(null);
+    const [registrationsData, setRegistrationsData] = useState(null);
+
+    useEffect(() => {
+        getCurrentUser()
+            .then(setUser)
+            .catch((err) => console.error("Failed to fetch current user:", err));
+        
+        getUserRegistrations(getUserId())
+            .then(setRegistrationsData)
+            .catch((err) => console.error("Failed to fetch registrations for user:", err));
+    }, []);
+
+    const getStatusLabel = (statusId) => {
+        switch (statusId) {
+            case 1: return { label: "⏳ Eingereicht", type: "warning" };
+            case 2: return { label: "✔ Bestätigt", type: "success" };
+            case 3: return { label: "✖ Abgelehnt", type: "danger" };
+            default: return { label: "Unbekannt", type: "info" };
+        }
+    };
+
+    if (!user || !registrationsData) return <div>Laden...</div>; // Loading state
+
 
     return (
         <div
@@ -26,13 +55,13 @@ function RouteComponent() {
                 <Topbar />
 
                 <div className="max-w-[1100px] p-8">
-                    <h1 className="mb-[22px] text-text">{t('dashboard.welcome', { company: 'Müller GmbH' })}</h1>
+                    <h1 className="mb-[22px] text-text">{t('dashboard.welcome', { company: user.company_name })}</h1>
 
                     {/* STATUS */}
                     <div className="mb-[26px] grid grid-cols-1 gap-4 md:grid-cols-3">
-                        <StatusCard label={t('status.confirmed')} count={1} type="success" />
-                        <StatusCard label={t('status.submitted')} count={1} type="warning" />
-                        <StatusCard label={t('status.rejected')} count={0} type="danger" />
+                         <StatusCard label="Bestätigt" count={registrationsData.CountBestaetigt} type="success" />
+                        <StatusCard label="Eingereicht" count={registrationsData.CountEingereicht} type="warning" />
+                        <StatusCard label="Abgelehnt" count={registrationsData.CountAbgelehnt} type="danger" />
                     </div>
 
                     {/* HAUPTGRID */}
@@ -51,32 +80,22 @@ function RouteComponent() {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr className="bg-[#fafbfc]">
-                                                <td className="cursor-pointer p-3 text-primary">Tag der Ausbildung 2026</td>
-                                                <td className="p-3">{t('dashboard.infoStand')}</td>
-                                                <td className="p-3 text-success-text">{t('status.confirmedIcon')}</td>
-                                                <td className="p-3">
-                                                    <button className="mr-2 cursor-pointer rounded-md border-none bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]">
-                                                        {t('common.details')}
-                                                    </button>
-                                                    <button className="cursor-pointer rounded-md border-none bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]">
-                                                        {t('common.edit')}
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <tr className="bg-[#fafbfc]">
-                                                <td className="cursor-pointer p-3 text-primary">Tag der Ausbildung 2026</td>
-                                                <td className="p-3">{t('dashboard.presentation')}</td>
-                                                <td className="p-3 text-warning-text">{t('status.submittedIcon')}</td>
-                                                <td className="p-3">
-                                                    <button className="mr-2 cursor-pointer rounded-md border-none bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]">
-                                                        {t('common.details')}
-                                                    </button>
-                                                    <button className="cursor-pointer rounded-md border-none bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]">
-                                                        {t('common.edit')}
-                                                    </button>
-                                                </td>
-                                            </tr>
+                                            {registrationsData.registrations.map((reg) => {
+                                                const status = getStatusLabel(reg.status_id);
+                                                return (
+                                                    <tr key={reg.id}>
+                                                        <td className="link">{reg.event?.name}</td>
+                                                        <td>
+                                                            {reg.with_lecture ? "Ja" : "Nein"}
+                                                        </td>
+                                                        <td className={`status ${status.type}`}>{status.label}</td>
+                                                        <td>
+                                                            <button>Details</button>
+                                                            <button>Bearbeiten</button>
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            })}
                                         </tbody>
                                     </table>
                                 </div>

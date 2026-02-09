@@ -1,41 +1,40 @@
+import { login, saveSession } from "../api/authApi";
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import logo from '@/assets/logo-gso3.png';
-import { useLogin } from '@/hooks/use-login';
 
 export const Route = createFileRoute('/login')({
     component: RouteComponent,
 });
 
 function RouteComponent() {
-    const { t } = useTranslation();
     const navigate = useNavigate();
-    const login = useLogin();
+    const { t } = useTranslation();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setError('');
+        setError("");
 
-        login.mutate(
-            { email, password },
-            {
-                onSuccess: () => {
-                    navigate({ to: '/dashboard-user' });
-                },
-                onError: (err) => {
-                    if (err.response) {
-                        setError(err.response.data.message || t('errors.loginFailed'));
-                    } else {
-                        setError(t('errors.serverUnreachable'));
-                    }
-                },
-            },
-        );
+        try {
+            const data = await login(email, password);
+
+            saveSession(data);
+
+            navigate({ to: "/dashboard-user" }); 
+
+        } catch (err) {
+            console.log(err);
+            if (err.response) {
+                setError(err.response.data.message || "Login fehlgeschlagen");
+            } else {
+                setError("Server nicht erreichbar");
+            }
+        }
     };
 
     return (
