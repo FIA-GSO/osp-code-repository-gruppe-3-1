@@ -75,7 +75,7 @@ const events = [
                 <Topbar />
 
                 <div className="max-w-[1100px] p-8">
-                    <h1 className="mb-[22px] text-text">{t('dashboard.welcome', { company: user.company_name })}</h1>
+                    <h1 className="mb-[22px] text-text">Willkommen { user.company_name }</h1>
 
                     {/* STATUS */}
                     <div className="mb-[26px] grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -93,11 +93,10 @@ const events = [
                         }}>
                         {/* LINKS */}
                         <div className="flex flex-col gap-[22px]">
-                            <Card title={t('dashboard.myRegistrations')}>
-                                <div className="block overflow-x-auto md:table md:w-full" style={{
+                            <Card title="Meine Registrierungen">
+                                <div className="block overflow-x-auto md:table md:w-full w-[101.5%]" style={{
                                     height:
-                                        `55vh`
-                                    ,
+                                        `55vh`,
                                 }}>
                                     <table className="w-full border-separate" style={{ borderSpacing: '0 8px' }}>
                                         <thead>
@@ -131,8 +130,8 @@ const events = [
                             </Card>
                         </div>
                         {/* RECHTS */}
-                        <div className="flex" >
-                           <Card title="Bevorstehende Veranstaltungen" className="full-height">
+                        <div className="flex">
+                           <Card title="Bevorstehende Veranstaltungen" className="w-[100%] ml-[4px] full-height">
   {events.map((event) => (
 <div key={event.id} className="mb-4">
       {/* Veranstaltungsname */}

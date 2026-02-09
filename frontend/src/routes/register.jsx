@@ -11,10 +11,14 @@ export const Route = createFileRoute('/register')({
 });
 
 function RouteComponent() {
+
+
     const { t } = useTranslation();
     const [isSuccess, setIsSuccess] = useState(false);
     const [error, setError] = useState('');
     const register = useRegister();
+
+    const [acceptedPrivacy, setAcceptedPrivacy] = useState(false);
 
     const [form, setForm] = useState({
         company: '',
@@ -24,28 +28,58 @@ function RouteComponent() {
         passwordConfirm: '',
     });
 
+    
+
     const passwordRules = checkPasswordStrength(form.password);
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
+const isFormComplete =
+  form.company.trim() !== '' &&
+  form.contact.trim() !== '' &&
+  form.email.trim() !== '' &&
+  form.password !== '' &&
+  form.passwordConfirm !== '';
+const isPasswordValid =
+  passwordRules.length &&
+  passwordRules.uppercase &&
+  passwordRules.number;
+const isFormValid =
+  isFormComplete &&
+  isPasswordValid &&
+  form.password === form.passwordConfirm &&
+  acceptedPrivacy &&
+  !register.isPending;
+const handleSubmit = (e) => {
+  e.preventDefault();
+  setError('');
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setError('');
+  if (!isFormValid) {
+    return;
+  }
 
-        if (form.password !== form.passwordConfirm) {
-            setError(t('errors.passwordMismatch'));
-            return;
-        }
+  if (form.password !== form.passwordConfirm) {
+    setError(t('errors.passwordMismatch'));
+    return;
+  }
 
-        register.mutate(form, {
-            onSuccess: () => setIsSuccess(true),
-            onError: (err) => {
-                setError(err.response?.data?.message || t('errors.registrationFailed'));
-            },
-        });
-    };
+  register.mutate(
+    {
+      ...form,
+      privacyAccepted: true, // 🔒 Backend-ready   
+       },
+    {
+      onSuccess: () => setIsSuccess(true),
+      onError: (err) => {
+        setError(
+          err.response?.data?.message ||
+            t('errors.registrationFailed')
+        );
+      },
+    }
+  );
+};
 
     if (isSuccess) {
         return (
@@ -199,14 +233,32 @@ function RouteComponent() {
                                 • {t('auth.passwordNumber')}
                             </p>
                         </div>
-
+<div className="mb-[15px] text-left text-sm">
+  <label className="flex items-start gap-2">
+    <input type="checkbox"checked={acceptedPrivacy}onChange={(e) => setAcceptedPrivacy(e.target.checked)}
+      className="mt-1"
+    />
+    <span className="text-[#7a7a7a]">
+      Ich habe die{' '}
+      <Link to="/datenschutz"target="_blank"className="text-primary underline"      >
+        Datenschutzerklärung
+      </Link>{' '}
+      gelesen und stimme der Verarbeitung meiner Daten gemäß DSGVO zu.
+    </span>
+  </label>
+</div>
                         <button
-                            className="mt-[10px] w-full cursor-pointer rounded-md border-none bg-primary px-4 py-[14px] text-base text-white hover:bg-primary-dark"
-                            disabled={register.isPending}
-                        >
-                            {register.isPending ? t('auth.registerPending') : t('auth.register')}
-                        </button>
-                        <p>Datenschutzerklärung Checkbox + Vorträge einrechung formular</p>
+  type="submit"  disabled={!isFormValid}  className={`
+    mt-[10px] w-full rounded-md border-none px-4 py-[14px] text-base
+    ${
+      isFormValid
+        ? 'bg-primary text-white hover:bg-primary-dark cursor-pointer'        : 'bg-[#d0d7e2] text-[#7a7a7a] cursor-not-allowed'    }
+  `}
+>
+  {register.isPending    ? t('auth.registerPending')
+    : t('auth.register')}
+</button>
+                       
                     </form>
 
                     <div className="mt-4 text-sm text-muted">

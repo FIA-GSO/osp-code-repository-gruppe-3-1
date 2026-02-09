@@ -1,124 +1,213 @@
-import { createFileRoute } from '@tanstack/react-router'; 
-import Sidebar from '@/components/layout/sidebar'; 
-import Topbar from '@/components/layout/topbar'; 
-import StatusCard from '@/components/ui/status-card'; 
-import Card from '@/components/ui/card'; 
-import { useAuthStore } from '@/stores/auth';
-import { Link } from '@tanstack/react-router';
-import backgroundImage from '@/assets/Background.png'
+import { createFileRoute, Link } from '@tanstack/react-router';import { useState } from 'react';import Sidebar from '@/components/layout/sidebar';import Topbar from '@/components/layout/topbar';import StatusCard from '@/components/ui/status-card';import Card from '@/components/ui/card';import backgroundImage from '@/assets/Background.png';
 export const Route = createFileRoute('/dashboard-teacher/registrierungen')({
-    // beforeLoad: () => {
-    //     const role = useAuthStore.getState().user?.role;
-    //     if (role !== 'teacher') {
-    //         throw new Error('Unauthorized');
-    //     }
-    // },
-    component: RouteComponent,
-})
-
+  component: RouteComponent,
+});
 function RouteComponent() {
-    const registration ={id: 1}
+  /* =====================================================
+     1️⃣ TESTDATEN (exakt eure bisherigen Tabellenzeilen)
+     ===================================================== */
+    const registrations = [
+    {
+      id: 1,
+      event: 'Tag der Ausbildung 2026',
+      company: 'TechSolutions AG',
+      status: 'angenommen',
+      email: 'kontakt@techsolutions.de',
+    },
+    {
+      id: 2,
+      event: 'Tag der Ausbildung 2026',
+      company: 'FutureIT GmbH',
+      status: 'offen',
+      email: 'kontakt@futureit.de',
+    },
+    {
+      id: 3,
+      event: 'Karrieretag IT 2026',
+      company: 'NetSystems AG',
+      status: 'abgelehnt',
+      email: 'kontakt@netsystems.de',
+    },
+  ];
+
+  /* =====================================================
+     2️⃣ FILTER-STATE (gleiches Pattern wie Lecture)
+     ===================================================== */const [statusFilter, setStatusFilter] = useState('');
+  const [eventFilter, setEventFilter] = useState('');
+
+  const filteredRegistrations = registrations.filter((reg) => {
     return (
-         <div
-            className="flex min-h-screen bg-cover bg-center bg-no-repeat"
-            style={{
-                backgroundImage: `linear-gradient(rgba(255,255,255,0.75),rgba(255,255,255,0.75)),url(${backgroundImage})`,
-            }}
-        >
-            <Sidebar />
-            <main className="flex-1">
-                <Topbar />
-                <div className="max-w-[1100px] p-8">
-                    <h1 className="mb-6">Lehrer – Registrierungen</h1>
-                    <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3">
-                        <StatusCard label="Angenommen" count={3} type="success" />
-                        <StatusCard label="Offen" count={2} type="warning" />
-                        <StatusCard label="Abgelehnt" count={1} type="danger" />
-                    </div>
-                    <Card title="Alle Registrierungen">
-                        <p>Filterung für Tag + Status machen</p>
-                        <div className="block overflow-x-auto md:table md:w-full">
-                            <table
-                                className="w-full border-separate"
-                                style={{ borderSpacing: '0 8px' }}
-                            >
-                                <thead>
-                                    <tr>
-                                        <th className="p-3 text-left text-[13px] text-muted">
-                                            Veranstaltung
-                                        </th>
-                                        <th className="p-3 text-left text-[13px] text-muted">
-                                            Firma
-                                        </th>
-                                        <th className="p-3 text-left text-[13px] text-muted">
-                                            Status
-                                        </th>
-                                        <th className="p-3 text-left text-[13px] text-muted">
-                                            Aktionen
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr className="bg-[#fafbfc]">
-                                        <td className="cursor-pointer p-3 text-primary">
-                                            Tag der Ausbildung 2026
-                                        </td>
-                                        <td className="p-3">TechSolutions AG</td>
-                                        <td className="p-3 text-success-text">
-                                            ✔ Angenommen
-                                        </td>
-                                       <td className="p-3">
-                                        <Link to={`/dashboard-teacher/details/registration/${registration.id}`}
-                                            className="rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]"  >
-                                            Details
-                                        </Link>
-                                        </td>
-                                    </tr>
-
-                                    <tr className="bg-[#fafbfc]">
-                                        <td className="cursor-pointer p-3 text-primary">
-                                            Tag der Ausbildung 2026
-                                        </td>
-                                        <td className="p-3">FutureIT GmbH</td>
-                                        <td className="p-3 text-warning-text">
-                                            ⏳ Offen
-                                        </td>
-                                        <td className="p-3">
-                                            <button className="mr-2 rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]">
-                                                ✔
-                                            </button>
-                                            <button className="mr-2 rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]">
-                                                ✖
-                                            </button>
-                                           <Link to={`/dashboard-teacher/details/registration/${registration.id}`}
-                                            className="rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]"  >
-                                            Details
-                                        </Link>
-
-                                        </td>
-                                    </tr>
-
-                                    <tr className="bg-[#fafbfc]">
-                                        <td className="cursor-pointer p-3 text-primary">
-                                            Karrieretag IT 2026
-                                        </td>
-                                        <td className="p-3">NetSystems AG</td>
-                                        <td className="p-3 text-error-text">
-                                            ✖ Abgelehnt
-                                        </td>
-                                     <td className="p-3">
-                                        <Link to={`/dashboard-teacher/details/registration/${registration.id}`}
-                                            className="rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]"  >
-                                            Details
-                                        </Link>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </Card>
-                </div>
-            </main>
-        </div>
+      (statusFilter === '' || reg.status === statusFilter) &&
+      (eventFilter === '' || reg.event === eventFilter)
     );
+  });
+
+  /* =====================================================
+     3️⃣ AKTIONEN (✔ / ✖ bleiben voll funktionsfähig)
+     ===================================================== */
+    const handleAccept = async (registration) => {
+    try {
+      await fetch('http://127.0.0.1:5000/api/smtp/registration/status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: registration.email,
+          status: 'angenommen',
+          event_name: registration.event,
+        }),
+      });
+      console.log('Registrierung angenommen:', registration.id);
+    } catch (error) {
+      console.error('Fehler beim Annehmen:', error);
+    }
+  };
+
+  const handleReject = async (registration) => {
+    try {
+      await fetch('http://127.0.0.1:5000/api/smtp/registration/status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: registration.email,
+          status: 'abgelehnt',
+          event_name: registration.event,
+        }),
+      });
+      console.log('Registrierung abgelehnt:', registration.id);
+    } catch (error) {
+      console.error('Fehler beim Ablehnen:', error);
+    }
+  };
+
+  return (
+    <div className="flex min-h-screen bg-cover bg-center bg-no-repeat"style={{backgroundImage: `linear-gradient(rgba(255,255,255,0.75),rgba(255,255,255,0.75)),url(${backgroundImage})`,
+      }}
+    >
+      <Sidebar />
+      <main className="flex-1">
+        <Topbar />
+
+        <div className="max-w-[1100px] p-8">
+          <h1 className="mb-6">Lehrer – Registrierungen</h1>
+
+          {/* STATUS */}
+          <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3">
+            <StatusCard label="Angenommen" count={1} type="success" />
+            <StatusCard label="Offen" count={1} type="warning" />
+            <StatusCard label="Abgelehnt" count={1} type="danger" />
+          </div>
+
+          <Card title="Alle Registrierungen">
+            {/* ================= FILTER ================= */}
+            <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+              <select value={statusFilter}onChange={(e) => setStatusFilter(e.target.value)}
+                className="rounded-md border p-2"
+              >
+                <option value="">Alle Status</option>
+                <option value="offen">Offen</option>
+                <option value="angenommen">Angenommen</option>
+                <option value="abgelehnt">Abgelehnt</option>
+              </select>
+
+              <select value={eventFilter}onChange={(e) => setEventFilter(e.target.value)}
+                className="rounded-md border p-2"
+              >
+                <option value="">Alle Veranstaltungen</option>
+                <option value="Tag der Ausbildung 2026">
+                  Tag der Ausbildung 2026
+                </option>
+                <option value="Karrieretag IT 2026">
+                  Karrieretag IT 2026
+                </option>
+              </select>
+            </div>
+
+            {/* ================= TABELLE ================= */}
+            <div className="block overflow-x-auto md:table md:w-full">
+              <table className="w-full border-separate"style={{ borderSpacing: '0 8px' }}
+              >
+                <thead>
+                  <tr>
+                    <th className="p-3 text-left text-[13px] text-muted">
+                      Veranstaltung
+                    </th>
+                    <th className="p-3 text-left text-[13px] text-muted">
+                      Firma
+                    </th>
+                    <th className="p-3 text-left text-[13px] text-muted">
+                      Status
+                    </th>
+                    <th className="p-3 text-left text-[13px] text-muted">
+                      Aktionen
+                    </th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {filteredRegistrations.map((registration) => (
+                    <tr key={registration.id} className="bg-[#fafbfc]">
+                      <td className="cursor-pointer p-3 text-primary">
+                        {registration.event}
+                      </td>
+
+                      <td className="p-3">
+                        {registration.company}
+                      </td>
+
+                      <td className="p-3">
+                        {registration.status === 'offen' && (
+                          <span className="text-warning-text">
+                            ⏳ Offen
+                          </span>
+                        )}
+                        {registration.status === 'angenommen' && (
+                          <span className="text-success-text">
+                            ✔ Angenommen
+                          </span>
+                        )}
+                        {registration.status === 'abgelehnt' && (
+                          <span className="text-error-text">
+                            ✖ Abgelehnt
+                          </span>
+                        )}
+                      </td>
+
+                      <td className="p-3">
+                        {/* ✔ / ✖ NUR BEI OFFEN */}
+                        {registration.status === 'offen' && (
+                          <><button onClick={() =>
+                                handleAccept(registration)
+                              }
+                              className="mr-2 rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]"
+                              title="Annehmen"
+                            >
+                              ✔
+                            </button>
+
+                            <button onClick={() =>
+                                handleReject(registration)
+                              }
+                              className="mr-2 rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]"
+                              title="Ablehnen"
+                            >
+                              ✖
+                            </button>
+                          </>                        )}
+
+                        {/* DETAILS IMMER */}
+                        <Link to={`/dashboard-teacher/details/registrierung/${registration.id}`}
+                          className="rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]"                        >
+                          Details
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </Card>
+        </div>
+      </main>
+    </div>
+  );
 }

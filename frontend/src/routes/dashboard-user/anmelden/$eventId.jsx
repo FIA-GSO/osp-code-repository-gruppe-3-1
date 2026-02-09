@@ -90,8 +90,20 @@ const applyTemplate = (templateId) => {
         });
       }, [eventId]);
 
-   const handleSubmit = (e) => {
+   const handleSubmit = async (e) => {
         e.preventDefault();
+
+        await fetch('/api/smtp/registration/received', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: user.email,
+                event: event.name,
+                hasLecture: registration.with_lecture,
+            }),
+        });
 
         if (!acceptedPrivacy) {
             alert('Bitte stimmen Sie der Datenschutzerklärung zu.');
@@ -117,7 +129,7 @@ const applyTemplate = (templateId) => {
             lecture: registration.with_lecture ? lecture : null,
             privacyAccepted: acceptedPrivacy,
         });
-        
+    
     };
 
     if (!event) {
@@ -325,7 +337,7 @@ function ActionButtons() {
     />
     <span className="text-sm">
       Ich habe die{' '}
-      <a href="https://www.gso-koeln.de/"target="_blank"rel="noopener noreferrer"className="text-primary underline"      >
+      <a href="https://www.gso-koeln.de/datenschutzerklaerung/" target="_blank"rel="noopener noreferrer"className="text-primary underline"      >
         Datenschutzerklärung
       </a>{' '}
       gelesen und stimme der Verarbeitung meiner Daten gemäß DSGVO zu.
