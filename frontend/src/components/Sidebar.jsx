@@ -1,4 +1,4 @@
-import logo from '../../assets/Logo-GSO3.png'
+import logo from '../assets/Logo-GSO3.png'
 
 export default function Sidebar() {
   return (

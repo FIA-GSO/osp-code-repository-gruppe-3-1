@@ -36,6 +36,7 @@ function RouteComponent() {
                 {/* Header */}
                 <div className="register-header">
                     <img src={logo} alt="GSO Köln Marketplace" />
+                    <hr />
                     <span>MARKETPLACE</span>
                 </div>
 

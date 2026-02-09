@@ -1,5 +1,5 @@
 import { useNavigate } from "@tanstack/react-router";
-import logo from '../../assets/avatar.jpg'
+import logo from '../assets/avatar.jpg'
 export default function Topbar() {
   const navigate = useNavigate();
 
