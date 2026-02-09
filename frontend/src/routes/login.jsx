@@ -1,18 +1,8 @@
-<<<<<<< HEAD
-import { createFileRoute } from '@tanstack/react-router'
-import "./login.css"
-import logo from '../assets/Logo-GSO3.png'
-import { Link, useNavigate } from '@tanstack/react-router';
-
-import { useState } from "react";
 import { login, saveSession } from "../api/authApi";
-=======
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import logo from '@/assets/logo-gso3.png';
-import { useLogin } from '@/hooks/use-login';
->>>>>>> origin/main
 
 export const Route = createFileRoute('/login')({
     component: RouteComponent,
@@ -21,7 +11,6 @@ export const Route = createFileRoute('/login')({
 function RouteComponent() {
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const login = useLogin();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -36,7 +25,7 @@ function RouteComponent() {
 
             saveSession(data);
 
-            navigate({ to: "/dashboardUser" }); 
+            navigate({ to: "/dashboard-user" }); 
 
         } catch (err) {
             console.log(err);
