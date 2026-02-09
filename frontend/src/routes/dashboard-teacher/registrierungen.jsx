@@ -3,7 +3,6 @@ import Sidebar from '@/components/layout/sidebar';
 import Topbar from '@/components/layout/topbar'; 
 import StatusCard from '@/components/ui/status-card'; 
 import Card from '@/components/ui/card'; 
-import { useAuthStore } from '@/stores/auth';
 import { Link } from '@tanstack/react-router';
 import backgroundImage from '@/assets/Background.png'
 export const Route = createFileRoute('/dashboard-teacher/registrierungen')({

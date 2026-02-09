@@ -8,8 +8,6 @@ import Topbar from '@/components/layout/topbar';
 
 import Card from '@/components/ui/card';
 
-import { useAuthStore } from '@/stores/auth';
-
 import backgroundImage from '@/assets/background.png';
  
 /**

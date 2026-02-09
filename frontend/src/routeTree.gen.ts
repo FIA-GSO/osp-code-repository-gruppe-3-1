@@ -14,13 +14,11 @@ import { Route as PasswordForgottenRouteImport } from './routes/password-forgott
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as DashboardHelperRouteImport } from './routes/dashboardHelper'
 import { Route as AboutRouteImport } from './routes/about'
-import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardUserIndexRouteImport } from './routes/dashboard-user/index'
 import { Route as DashboardTeacherVortraegeRouteImport } from './routes/dashboard-teacher/vortraege'
 import { Route as DashboardTeacherVeranstaltungenRouteImport } from './routes/dashboard-teacher/veranstaltungen'
 import { Route as DashboardTeacherRegistrierungenRouteImport } from './routes/dashboard-teacher/registrierungen'
-import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
 import { Route as DashboardUserAnmeldenEventIdRouteImport } from './routes/dashboard-user/anmelden/$eventId'
 import { Route as DashboardUserBearbeitenVortragRegistrationIDRouteImport } from './routes/dashboard-user/bearbeiten/vortrag/$registrationID'
 import { Route as DashboardUserBearbeitenInfostandRegistrationIDRouteImport } from './routes/dashboard-user/bearbeiten/infostand/$registrationID'
@@ -52,10 +50,6 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedRoute = AuthenticatedRouteImport.update({
-  id: '/_authenticated',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -84,11 +78,6 @@ const DashboardTeacherRegistrierungenRoute =
     path: '/dashboard-teacher/registrierungen',
     getParentRoute: () => rootRouteImport,
   } as any)
-const AuthenticatedAppRoute = AuthenticatedAppRouteImport.update({
-  id: '/app',
-  path: '/app',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
 const DashboardUserAnmeldenEventIdRoute =
   DashboardUserAnmeldenEventIdRouteImport.update({
     id: '/dashboard-user/anmelden/$eventId',
@@ -127,7 +116,6 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/password-forgotten': typeof PasswordForgottenRoute
   '/register': typeof RegisterRoute
-  '/app': typeof AuthenticatedAppRoute
   '/dashboard-teacher/registrierungen': typeof DashboardTeacherRegistrierungenRoute
   '/dashboard-teacher/veranstaltungen': typeof DashboardTeacherVeranstaltungenRoute
   '/dashboard-teacher/vortraege': typeof DashboardTeacherVortraegeRoute
@@ -145,7 +133,6 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/password-forgotten': typeof PasswordForgottenRoute
   '/register': typeof RegisterRoute
-  '/app': typeof AuthenticatedAppRoute
   '/dashboard-teacher/registrierungen': typeof DashboardTeacherRegistrierungenRoute
   '/dashboard-teacher/veranstaltungen': typeof DashboardTeacherVeranstaltungenRoute
   '/dashboard-teacher/vortraege': typeof DashboardTeacherVortraegeRoute
@@ -159,13 +146,11 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/about': typeof AboutRoute
   '/dashboardHelper': typeof DashboardHelperRoute
   '/login': typeof LoginRoute
   '/password-forgotten': typeof PasswordForgottenRoute
   '/register': typeof RegisterRoute
-  '/_authenticated/app': typeof AuthenticatedAppRoute
   '/dashboard-teacher/registrierungen': typeof DashboardTeacherRegistrierungenRoute
   '/dashboard-teacher/veranstaltungen': typeof DashboardTeacherVeranstaltungenRoute
   '/dashboard-teacher/vortraege': typeof DashboardTeacherVortraegeRoute
@@ -185,7 +170,6 @@ export interface FileRouteTypes {
     | '/login'
     | '/password-forgotten'
     | '/register'
-    | '/app'
     | '/dashboard-teacher/registrierungen'
     | '/dashboard-teacher/veranstaltungen'
     | '/dashboard-teacher/vortraege'
@@ -203,7 +187,6 @@ export interface FileRouteTypes {
     | '/login'
     | '/password-forgotten'
     | '/register'
-    | '/app'
     | '/dashboard-teacher/registrierungen'
     | '/dashboard-teacher/veranstaltungen'
     | '/dashboard-teacher/vortraege'
@@ -216,13 +199,11 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/_authenticated'
     | '/about'
     | '/dashboardHelper'
     | '/login'
     | '/password-forgotten'
     | '/register'
-    | '/_authenticated/app'
     | '/dashboard-teacher/registrierungen'
     | '/dashboard-teacher/veranstaltungen'
     | '/dashboard-teacher/vortraege'
@@ -236,7 +217,6 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   AboutRoute: typeof AboutRoute
   DashboardHelperRoute: typeof DashboardHelperRoute
   LoginRoute: typeof LoginRoute
@@ -290,13 +270,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated': {
-      id: '/_authenticated'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof AuthenticatedRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -331,13 +304,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/dashboard-teacher/registrierungen'
       preLoaderRoute: typeof DashboardTeacherRegistrierungenRouteImport
       parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/app': {
-      id: '/_authenticated/app'
-      path: '/app'
-      fullPath: '/app'
-      preLoaderRoute: typeof AuthenticatedAppRouteImport
-      parentRoute: typeof AuthenticatedRoute
     }
     '/dashboard-user/anmelden/$eventId': {
       id: '/dashboard-user/anmelden/$eventId'
@@ -377,21 +343,8 @@ declare module '@tanstack/react-router' {
   }
 }
 
-interface AuthenticatedRouteChildren {
-  AuthenticatedAppRoute: typeof AuthenticatedAppRoute
-}
-
-const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
-  AuthenticatedAppRoute: AuthenticatedAppRoute,
-}
-
-const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
-  AuthenticatedRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AuthenticatedRoute: AuthenticatedRouteWithChildren,
   AboutRoute: AboutRoute,
   DashboardHelperRoute: DashboardHelperRoute,
   LoginRoute: LoginRoute,

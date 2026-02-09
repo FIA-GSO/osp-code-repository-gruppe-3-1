@@ -1,15 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router'
-import Sidebar from '@/components/layout/sidebar'; import Topbar from '@/components/layout/topbar'; import Card from '@/components/ui/card'; import { useAuthStore } from '@/stores/auth';
-import backgroundImage from '@/assets/Background.png'
+import Sidebar from '@/components/layout/sidebar'; import Topbar from '@/components/layout/topbar'; import Card from '@/components/ui/card';
 
 
 export const Route = createFileRoute('/dashboardHelper')({
-    // beforeLoad: () => {
-    //     const role = useAuthStore.getState().user?.role;
-    //     if (role !== 'helper') {
-    //         throw new Error('Unauthorized');
-    //     }
-    // },
 
     component: RouteComponent,
 })

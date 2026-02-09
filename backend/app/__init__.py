@@ -45,6 +45,8 @@ def create_app():
     api.add_namespace(auth_ns, path="/api/auth")
     from app.routes.registration_routes import api as reg_ns
     api.add_namespace(reg_ns, path="/api/registration")
+    from app.routes.event_routes import api as event_ns
+    api.add_namespace(event_ns, path="/api/events")
     
     from app.routes.smtp.mail_routes import mail_bp
     app.register_blueprint(mail_bp, url_prefix='/mail')

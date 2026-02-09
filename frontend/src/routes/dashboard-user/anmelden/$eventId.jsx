@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'; import { useEffect, useState } from 'react';
-import Sidebar from '@/components/layout/sidebar'; import Topbar from '@/components/layout/topbar'; import Card from '@/components/ui/card'; import backgroundImage from '@/assets/background.png'; import { useAuthStore } from '@/stores/auth';
+import Sidebar from '@/components/layout/sidebar'; import Topbar from '@/components/layout/topbar'; import Card from '@/components/ui/card'; import backgroundImage from '@/assets/background.png'; 
 
 export const Route = createFileRoute('/dashboard-user/anmelden/$eventId')({
     component: RouteComponent,

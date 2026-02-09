@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import logo from '@/assets/logo-gso3.png';
 import { checkPasswordStrength } from '@/utils/password';
-import { useRegister } from '@/hooks/use-register';
 import backgroundImage from '@/assets/Background.png'
+import { createUser } from '../api/userApi'
 
 export const Route = createFileRoute('/register')({
     component: RouteComponent,
@@ -14,7 +14,6 @@ function RouteComponent() {
     const { t } = useTranslation();
     const [isSuccess, setIsSuccess] = useState(false);
     const [error, setError] = useState('');
-    const register = useRegister();
 
     const [form, setForm] = useState({
         company: '',
@@ -39,12 +38,17 @@ function RouteComponent() {
             return;
         }
 
-        register.mutate(form, {
-            onSuccess: () => setIsSuccess(true),
-            onError: (err) => {
-                setError(err.response?.data?.message || t('errors.registrationFailed'));
-            },
-        });
+        if(!passwordRules.number || !passwordRules.length || !passwordRules.uppercase) {
+            setError(t("errors.passwordNotStrong"));
+            return;
+        }
+        
+
+        const res = createUser(form.email, form.company, form.contact, form.password);
+
+        if(res){
+            setIsSuccess(true);
+        }
     };
 
     if (isSuccess) {
@@ -202,9 +206,8 @@ function RouteComponent() {
 
                         <button
                             className="mt-[10px] w-full cursor-pointer rounded-md border-none bg-primary px-4 py-[14px] text-base text-white hover:bg-primary-dark"
-                            disabled={register.isPending}
                         >
-                            {register.isPending ? t('auth.registerPending') : t('auth.register')}
+                            {t('auth.register')}
                         </button>
                         <p>Datenschutzerklärung Checkbox + Vorträge einrechung formular</p>
                     </form>
