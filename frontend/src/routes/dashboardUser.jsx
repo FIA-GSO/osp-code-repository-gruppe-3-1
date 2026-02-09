@@ -63,30 +63,6 @@ function RouteComponent() {
                                     </tbody>
                                 </table>
                             </Card>
-
-                            <Card title="Meine Vorträge">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Titel</th>
-                                            <th>Beschreibung</th>
-                                            <th>Status</th>
-                                            <th>Aktionen</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td className="link">KI in der Ausbildung</td>
-                                            <td>Einführung in den Einsatz von KI</td>
-                                            <td className="status warning">⏳ Eingereicht</td>
-                                            <td>
-                                                <button>Details</button>
-                                                <button>Bearbeiten</button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </Card>
                         </div>
 
                         {/* RECHTS */}

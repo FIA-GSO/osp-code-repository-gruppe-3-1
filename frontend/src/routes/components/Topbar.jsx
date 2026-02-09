@@ -1,4 +1,5 @@
 import { useNavigate } from "@tanstack/react-router";
+import logo from '../../assets/avatar.jpg'
 export default function Topbar() {
   const navigate = useNavigate();
 
@@ -15,7 +16,7 @@ export default function Topbar() {
         </div>
 
         <div className="user-menu">
-          <img src="/avatar.png" alt="User" />
+          <img src={logo} alt="User" />
           <span>Max Müller</span>
           <button className="logout-btn" onClick={handleLogout}>
             Abmelden

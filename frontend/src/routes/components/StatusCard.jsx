@@ -1,7 +1,7 @@
 export default function StatusCard({ label, count, type }) {
   return (
     <div className={`status-card ${type}`}>
-      <div className="icon">
+      <div className="icons">
         {type === "success" && "✔"}
         {type === "warning" && "⏳"}
         {type === "danger" && "✖"}
