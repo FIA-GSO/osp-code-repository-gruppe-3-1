@@ -4,6 +4,13 @@ from app.services.registration_service import RegistrationService
 
 api = Namespace("registrations", description="Registration operations")
 
+event_model = api.model("Event", {
+    "id": fields.Integer,
+    "name": fields.String,
+    "event_date": fields.Date,
+    "registration_locked": fields.Boolean
+})
+
 registration_model = api.model("Registration", {
     "id": fields.Integer,
     "user_id": fields.Integer,
@@ -21,7 +28,8 @@ registration_model = api.model("Registration", {
         "speaker": fields.String,
         "required_tech": fields.String,
         "preferred_time": fields.String
-    }))
+    })),
+    "event": fields.Nested(event_model)
 })
 
 registration_form_model = api.model("RegistrationForm", {
@@ -40,6 +48,13 @@ registration_form_model = api.model("RegistrationForm", {
         "required_tech": fields.String,
         "preferred_time": fields.String
     }))
+})
+
+dashboard_user_registrations = api.model("UserRegistrationsDashboard", {
+    "registrations": fields.List(fields.Nested(registration_model)),
+    "CountEingereicht": fields.Integer,
+    "CountBestaetigt": fields.Integer,
+    "CountAbgelehnt": fields.Integer
 })
 
 status_update_model = api.model("StatusUpdate", {
@@ -116,6 +131,13 @@ class RegistrationDetail(Resource):
             api.abort(404, "Registration not found")
         return {"message": "Registration deleted"}
     
+@api.route("/user/<int:user_id>")
+class RegistrationsByUser(Resource):
+
+    @api.marshal_with(dashboard_user_registrations)
+    def get(self, user_id):
+        regs = RegistrationService.get_by_user_id(user_id)
+        return regs
 
 # Janik -------------------------!
 @api.route("/<int:registration_id>/status")
@@ -142,3 +164,4 @@ class UpdateRegistrationStatus(Resource):
             api.abort(400, error)
 
         return registration
+    
