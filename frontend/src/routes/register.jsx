@@ -1,15 +1,17 @@
-import { createFileRoute, useNavigate, Link } from '@tanstack/react-router';
+import { createFileRoute, Link } from '@tanstack/react-router';
 import { useState } from 'react';
-import logo from '../assets/Logo-GSO3.png';
-import './register.css';
-import { checkPasswordStrength } from '../utils/password';
+import logo from '@/assets/logo-gso3.png';
+import { checkPasswordStrength } from '@/utils/password';
+import { useRegister } from '@/hooks/use-register';
 
 export const Route = createFileRoute('/register')({
     component: RouteComponent,
 });
 
 function RouteComponent() {
-    const navigate = useNavigate();
+    const [isSuccess, setIsSuccess] = useState(false);
+    const [error, setError] = useState('');
+    const register = useRegister();
 
     const [form, setForm] = useState({
         company: '',
@@ -27,56 +29,123 @@ function RouteComponent() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Backend bewusst nicht angebunden (UI only)navigate("/register/success");
+        setError('');
+
+        if (form.password !== form.passwordConfirm) {
+            setError('Passwörter stimmen nicht überein');
+            return;
+        }
+
+        register.mutate(form, {
+            onSuccess: () => setIsSuccess(true),
+            onError: (err) => {
+                setError(err.response?.data?.message || 'Registrierung fehlgeschlagen');
+            },
+        });
     };
 
+    if (isSuccess) {
+        return (
+            <div
+                className="flex min-h-screen items-center justify-center bg-cover bg-center bg-no-repeat p-5"
+                style={{
+                    backgroundImage:
+                        "linear-gradient(rgba(255,255,255,0.65), rgba(255,255,255,0.65)), url('/background.png')",
+                }}
+            >
+                <div className="w-full max-w-[430px] overflow-hidden rounded-[10px] bg-white shadow-[0_10px_30px_rgba(0,0,0,0.15)]">
+                    <div className="bg-primary p-[25px] text-center text-white">
+                        <img src={logo} alt="GSO Köln Marketplace" className="mx-auto mb-1.5 w-[120px]" />
+                        <span className="block text-sm uppercase tracking-[2px]">MARKETPLACE</span>
+                    </div>
+
+                    <div className="mt-[15px] flex items-center justify-center">
+                        <div className="flex h-[26px] w-[26px] items-center justify-center rounded-full bg-primary text-sm text-white">
+                            1
+                        </div>
+                        <div className="h-1 w-20 bg-primary"></div>
+                        <div className="flex h-[26px] w-[26px] items-center justify-center rounded-full bg-primary text-sm text-white">
+                            2
+                        </div>
+                    </div>
+                    <p className="text-center text-sm text-[#7a7a7a]">Schritt 2 von 2</p>
+
+                    <div className="p-[30px] text-center">
+                        <div className="mx-auto mb-[15px] flex h-[70px] w-[70px] items-center justify-center rounded-full bg-[#8bc34a] text-4xl text-white">
+                            ✔
+                        </div>
+                        <h1 className="text-text">Registrierung erfolgreich!</h1>
+                        <p className="text-muted">Vielen Dank für Ihre Anmeldung. Sie können sich nun anmelden.</p>
+                        <Link
+                            to="/login"
+                            className="mt-[10px] inline-block w-full rounded-md bg-primary px-4 py-[14px] text-base text-white no-underline"
+                        >
+                            Zum Login
+                        </Link>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     return (
-        <div className="register-wrapper">
-            <div className="register-card">
-                {/* Header */}
-                <div className="register-header">
-                    <img src={logo} alt="GSO Köln Marketplace" />
-                    <span>MARKETPLACE</span>
+        <div
+            className="flex min-h-screen items-center justify-center bg-cover bg-center bg-no-repeat p-5"
+            style={{
+                backgroundImage:
+                    "linear-gradient(rgba(255,255,255,0.65), rgba(255,255,255,0.65)), url('/background.png')",
+            }}
+        >
+            <div className="w-full max-w-[430px] overflow-hidden rounded-[10px] bg-white shadow-[0_10px_30px_rgba(0,0,0,0.15)]">
+                <div className="bg-primary p-[25px] text-center text-white">
+                    <img src={logo} alt="GSO Köln Marketplace" className="mx-auto mb-1.5 w-[120px]" />
+                    <span className="block text-sm uppercase tracking-[2px]">MARKETPLACE</span>
                 </div>
 
-                {/* Progress */}
-                <div className="stepper">
-                    <div className="step active">1</div>
-                    <div className="step-line active"></div>
-                    <div className="step">2</div>
+                <div className="mt-[15px] flex items-center justify-center">
+                    <div className="flex h-[26px] w-[26px] items-center justify-center rounded-full bg-primary text-sm text-white">
+                        1
+                    </div>
+                    <div className="h-1 w-20 bg-primary"></div>
+                    <div className="flex h-[26px] w-[26px] items-center justify-center rounded-full bg-[#d0d7e2] text-sm text-white">
+                        2
+                    </div>
                 </div>
-                <p className="step-text">Schritt 1 von 2</p>
+                <p className="text-center text-sm text-[#7a7a7a]">Schritt 1 von 2</p>
 
-                {/* Content */}
-                <div className="register-content">
-                    <h1>Unternehmensregistrierung</h1>
-                    <p>Bitte geben Sie Ihre Unternehmensdaten ein.</p>
+                <div className="p-[30px] text-center">
+                    <h1 className="text-text">Unternehmensregistrierung</h1>
+                    <p className="text-muted">Bitte geben Sie Ihre Unternehmensdaten ein.</p>
 
                     <form onSubmit={handleSubmit}>
-                        <div className="input-group">
-                            <span className="icon">🏢</span>
+                        {error && <div className="mb-4 text-red-500">{error}</div>}
+
+                        <div className="relative mb-[15px]">
+                            <span className="absolute left-3 top-1/2 -translate-y-1/2">🏢</span>
                             <input
                                 name="company"
                                 placeholder="Firmenname"
                                 value={form.company}
                                 onChange={handleChange}
                                 required
+                                className="w-full rounded-md border border-[#ccc] py-3 pl-[42px] pr-[14px] focus:border-primary focus:outline-none"
                             />
                         </div>
 
-                        <div className="input-group">
-                            <span className="icon">👤</span>
+                        <div className="relative mb-[15px]">
+                            <span className="absolute left-3 top-1/2 -translate-y-1/2">👤</span>
                             <input
                                 name="contact"
                                 placeholder="Ansprechpartner"
                                 value={form.contact}
                                 onChange={handleChange}
                                 required
+                                className="w-full rounded-md border border-[#ccc] py-3 pl-[42px] pr-[14px] focus:border-primary focus:outline-none"
                             />
                         </div>
 
-                        <div className="input-group">
-                            <span className="icon">📧</span>
+                        <div className="relative mb-[15px]">
+                            <span className="absolute left-3 top-1/2 -translate-y-1/2">📧</span>
                             <input
                                 type="email"
                                 name="email"
@@ -84,13 +153,14 @@ function RouteComponent() {
                                 value={form.email}
                                 onChange={handleChange}
                                 required
+                                className="w-full rounded-md border border-[#ccc] py-3 pl-[42px] pr-[14px] focus:border-primary focus:outline-none"
                             />
                         </div>
 
-                        <h3>Passwort erstellen</h3>
+                        <h3 className="text-text">Passwort erstellen</h3>
 
-                        <div className="input-group">
-                            <span className="icon">🔒</span>
+                        <div className="relative mb-[15px]">
+                            <span className="absolute left-3 top-1/2 -translate-y-1/2">🔒</span>
                             <input
                                 type="password"
                                 name="password"
@@ -98,11 +168,12 @@ function RouteComponent() {
                                 value={form.password}
                                 onChange={handleChange}
                                 required
+                                className="w-full rounded-md border border-[#ccc] py-3 pl-[42px] pr-[14px] focus:border-primary focus:outline-none"
                             />
                         </div>
 
-                        <div className="input-group">
-                            <span className="icon">🔒</span>
+                        <div className="relative mb-[15px]">
+                            <span className="absolute left-3 top-1/2 -translate-y-1/2">🔒</span>
                             <input
                                 type="password"
                                 name="passwordConfirm"
@@ -110,20 +181,35 @@ function RouteComponent() {
                                 value={form.passwordConfirm}
                                 onChange={handleChange}
                                 required
+                                className="w-full rounded-md border border-[#ccc] py-3 pl-[42px] pr-[14px] focus:border-primary focus:outline-none"
                             />
                         </div>
 
-                        <div className="password-rules">
-                            <p className={passwordRules.length ? 'valid' : ''}>• Mindestens 8 Zeichen</p>
-                            <p className={passwordRules.uppercase ? 'valid' : ''}>• Mindestens ein Großbuchstabe</p>
-                            <p className={passwordRules.number ? 'valid' : ''}>• Mindestens eine Zahl</p>
+                        <div className="my-[10px] mb-[15px] text-left text-[13px] text-[#a0a0a0]">
+                            <p className={passwordRules.length ? 'font-semibold text-[#2e7d32]' : ''}>
+                                • Mindestens 8 Zeichen
+                            </p>
+                            <p className={passwordRules.uppercase ? 'font-semibold text-[#2e7d32]' : ''}>
+                                • Mindestens ein Großbuchstabe
+                            </p>
+                            <p className={passwordRules.number ? 'font-semibold text-[#2e7d32]' : ''}>
+                                • Mindestens eine Zahl
+                            </p>
                         </div>
 
-                        <button className="btn-primary">Registrieren</button>
+                        <button
+                            className="mt-[10px] w-full cursor-pointer rounded-md border-none bg-primary px-4 py-[14px] text-base text-white hover:bg-primary-dark"
+                            disabled={register.isPending}
+                        >
+                            {register.isPending ? 'Wird registriert...' : 'Registrieren'}
+                        </button>
                     </form>
 
-                    <div className="login-link">
-                        Schon ein Konto? <Link to="/login">Jetzt anmelden</Link>
+                    <div className="mt-4 text-sm text-muted">
+                        Schon ein Konto?{' '}
+                        <Link to="/login" className="font-semibold text-primary no-underline hover:underline">
+                            Jetzt anmelden
+                        </Link>
                     </div>
                 </div>
             </div>
