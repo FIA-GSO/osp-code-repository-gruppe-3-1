@@ -1,20 +1,29 @@
 import api from "./apiClient";
 
 export async function login(email, password) {
-    const res = await api.post("/auth/login", { email, password });
+    const res = await api.post("/auth/login", { email, password }, { withCredentials: true });
     return res.data;
 }
 
+export async function getCurrentUser() {
+    const res = await api.get("/auth/me", { withCredentials: true });
+    return res.data;
+}
+
+export async function logout() {
+    return api.post("/auth/logout", { withCredentials: true }); 
+}
+
 export function saveSession(data) {
-    localStorage.setItem("token", data.token);
-    localStorage.setItem("userId", data.user.id);
+    localStorage.setItem("name", data.email);
+    localStorage.setItem("userId", data.id);
 }
 
 export function getUserId() {
     return Number(localStorage.getItem("userId"));
 }
 
-export function logout() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("userId");
+export function getUserName() {
+    return String(localStorage.getItem("name"));
 }
+

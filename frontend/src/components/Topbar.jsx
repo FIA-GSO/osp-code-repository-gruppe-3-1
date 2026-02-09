@@ -1,12 +1,20 @@
 import { useNavigate } from "@tanstack/react-router";
+import { logout as logoutApi } from "../api/authApi"; 
 import logo from '../assets/avatar.jpg'
 export default function Topbar() {
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    localStorage.removeItem("authToken");
-    navigate({ to: "/login" });
-  };
+const handleLogout = async () => {
+    try {
+      await logoutApi();
+    } catch (err) {
+      console.error("Logout failed:", err);
+    } finally {
+      localStorage.removeItem("name");
+      localStorage.removeItem("userId");
+      navigate({ to: "/login" });
+    }
+};
 
   return (
     <header className="topbar">

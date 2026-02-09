@@ -1,38 +1,35 @@
 import { createFileRoute } from '@tanstack/react-router'
 import "./login.css"
 import logo from '../assets/Logo-GSO3.png'
-import { Link } from '@tanstack/react-router';
-
+import { Link, useNavigate } from '@tanstack/react-router';
 
 import { useState } from "react";
-import axios from "axios"; // Praktisch für HTTP-Anfragen
-
+import { login, saveSession } from "../api/authApi";
 
 export const Route = createFileRoute('/login')({
     component: RouteComponent,
 })
 
 function RouteComponent() {
+    const navigate = useNavigate();
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
     const handleSubmit = async (e) => {
-        e.preventDefault(); // Verhindert, dass die Seite neu lädt
+        e.preventDefault();
         setError("");
 
         try {
-            const response = await axios.post("http://localhost:5000/api/auth/login", {
-                email,
-                password,
-            });
-            console.log(response)
+            const data = await login(email, password);
 
-            console.log("Erfolgreich eingeloggt:", response.data);
-            // Optional: Token speichern, z.B. localStorage.setItem("token", response.data.token)
-            // Weiterleitung nach Login, z.B. router.navigate('/dashboard')
+            saveSession(data);
+
+            navigate({ to: "/dashboardUser" }); 
+
         } catch (err) {
+            console.log(err);
             if (err.response) {
                 setError(err.response.data.message || "Login fehlgeschlagen");
             } else {

@@ -65,6 +65,7 @@ status_update_model = api.model("StatusUpdate", {
 class RegistrationList(Resource):
     @api.marshal_list_with(registration_model)
     def get(self):
+        """Get all registrations"""
         return RegistrationService.get_all()
 
 
@@ -74,6 +75,7 @@ class RegistrationForm(Resource):
     @api.expect(registration_form_model)
     @api.marshal_with(registration_model, code=201)
     def post(self):
+        """Create a registration"""
         data = request.json
 
         lecture_payload = data.get("lecture") if data.get("with_lecture") else None
@@ -97,6 +99,7 @@ class RegistrationFormUpdate(Resource):
     @api.expect(registration_form_model)
     @api.marshal_with(registration_model)
     def put(self, registration_id):
+        """Update a registration by Id"""
         data = request.json
 
         lecture_payload = data.get("lecture") if data.get("with_lecture") else None
@@ -120,12 +123,14 @@ class RegistrationDetail(Resource):
 
     @api.marshal_with(registration_model)
     def get(self, registration_id):
+        """"Get a registration by Id"""
         reg = RegistrationService.get_by_id(registration_id)
         if not reg:
             api.abort(404, "Registration not found")
         return reg
 
     def delete(self, registration_id):
+        """"Delete a registration by Id"""
         ok = RegistrationService.delete_registration(registration_id)
         if not ok:
             api.abort(404, "Registration not found")
@@ -136,6 +141,7 @@ class RegistrationsByUser(Resource):
 
     @api.marshal_with(dashboard_user_registrations)
     def get(self, user_id):
+        """Get a registration for a user with userId"""
         regs = RegistrationService.get_by_user_id(user_id)
         return regs
 
