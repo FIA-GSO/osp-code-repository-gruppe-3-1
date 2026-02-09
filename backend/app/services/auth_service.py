@@ -18,6 +18,8 @@ class AuthService:
         session["user_id"] = user.id
         session["email"] = user.email
         session["roles"] = [r.role.name for r in user.roles]
+        session["company_name"] = user.company_name
+        session["contact_person"] = user.contact_person
 
         return user
 

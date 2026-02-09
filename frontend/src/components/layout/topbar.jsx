@@ -1,14 +1,22 @@
 import { useNavigate } from '@tanstack/react-router';
 import avatarIconImage from '@/assets/avatar.jpg'
+import { useTranslation } from 'react-i18next';
 
 export default function Topbar() {
+    const { t } = useTranslation();
     const navigate = useNavigate();
 
-    const handleLogout = () => {
-        localStorage.removeItem('authToken');
-        navigate({ to: '/login' });
+    const handleLogout = async () => {
+        try {
+          await logoutApi();
+        } catch (err) {
+          console.error("Logout failed:", err);
+        } finally {
+          localStorage.removeItem("name");
+          localStorage.removeItem("userId");
+          navigate({ to: "/login" });
+        }
     };
-
     return (
         <header className="flex h-[60px] items-center justify-end border-b border-border bg-white/85 px-7 backdrop-blur-sm">
             <div className="flex items-center gap-[18px]">
@@ -26,7 +34,7 @@ export default function Topbar() {
                         className="cursor-pointer border-none bg-transparent text-[13px] text-[#6b7280] hover:underline"
                         onClick={handleLogout}
                     >
-                        Abmelden
+                        {t('auth.logout')}
                     </button>
                 </div>
             </div>

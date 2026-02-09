@@ -2,6 +2,7 @@ import { Link } from '@tanstack/react-router';
 
 import { useAuthStore } from '@/stores/auth';
 import logo from '@/assets/Logo-GSO3.png'
+import { useTranslation } from 'react-i18next';
 
 /**
 

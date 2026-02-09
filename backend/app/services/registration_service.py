@@ -108,6 +108,21 @@ class RegistrationService:
         db.session.commit()
         return True
     
+    @staticmethod
+    def get_by_user_id(user_id):   
+        regs = Registration.query.filter_by(user_id=user_id).all()
+
+        count1 = sum(1 for r in regs if r.status_id == 1)
+        count2 = sum(1 for r in regs if r.status_id == 2)
+        count3 = sum(1 for r in regs if r.status_id == 3)
+
+        return {
+            "registrations": regs,
+            "CountEingereicht": count1,
+            "CountBestaetigt": count2,
+            "CountAbgelehnt": count3
+        }
+    
     #janik -----------------------!
     @staticmethod
     def update_registration_status(registration_id: int, new_status_id: int):
