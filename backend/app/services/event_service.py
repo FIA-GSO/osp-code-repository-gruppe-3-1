@@ -56,8 +56,7 @@ class EventService:
         if not event:
             return None, "Event not found"
 
-        # Get all registrations for this event
-        registrations = Registration.query.filter_by(event_id=event_id).all()
+        registrations = Registration.query.filter_by(event_id=event_id, status_id=2).all()
 
         total_chairs = sum(r.chairs_needed or 0 for r in registrations)
         total_tables = sum(r.tables_needed or 0 for r in registrations)
@@ -71,8 +70,17 @@ class EventService:
 
         return {
             "event_id": event_id,
+            "event_name": event.name,
             "total_chairs": total_chairs,
             "total_tables": total_tables,
             "combined_required_tech": combined_required_tech,
             "halls_needed": halls_needed
-        }, None
+        }, 
+
+
+    @staticmethod
+    def get_all_event_summaries():
+        """Return a list of summaries for all events"""
+        events = db.session.query(Event).all()
+        summaries = [EventService.get_event_summary(e.id) for e in events]
+        return summaries

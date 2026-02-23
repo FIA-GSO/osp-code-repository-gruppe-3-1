@@ -4,11 +4,9 @@ import { useEffect, useState } from 'react';
 import Sidebar from '@/components/layout/sidebar';
 import Topbar from '@/components/layout/topbar';
 import Card from '@/components/ui/card';
-
 import backgroundImage from '@/assets/background.png';
 
-import api from '@/api/apiClient'; // axios instance
-
+import { getRegistrationById, updateRegistration } from '@/api/registrationsApi';
 
 export const Route = createFileRoute(
   '/dashboard-user/bearbeiten/infostand/$registrationID'
@@ -16,22 +14,18 @@ export const Route = createFileRoute(
   component: RouteComponent,
 });
 
-
 function RouteComponent() {
   const { registrationID } = Route.useParams();
   const navigate = useNavigate();
   const [registration, setRegistration] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-
-  // -------------------------------
-  // Load registration data
-  // -------------------------------
+  // Load registration
   useEffect(() => {
     async function loadRegistration() {
       try {
-        const res = await api.get(`/registration/${registrationID}`);
-        setRegistration(res.data);
+        const data = await getRegistrationById(registrationID);
+        setRegistration(data);
       } catch (err) {
         console.error("Failed to load registration:", err);
       } finally {
@@ -42,25 +36,20 @@ function RouteComponent() {
     loadRegistration();
   }, [registrationID]);
 
-
-  // -------------------------------
   // Submit handler
-  // -------------------------------
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      await api.put(`/registration/${registrationID}`, registration);
+      await updateRegistration(registrationID, registration);
       navigate({ to: '/dashboard-user' });
     } catch (err) {
       console.error("Update failed:", err);
+      alert("Beim Speichern ist ein Fehler aufgetreten.");
     }
   };
 
-
-  // -------------------------------
   // Loading state
-  // -------------------------------
   if (isLoading || !registration) {
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -69,17 +58,12 @@ function RouteComponent() {
     );
   }
 
-
-  // -------------------------------
-  // UI
-  // -------------------------------
   return (
     <PageWrapper>
       <h1 className="mb-6 text-xl font-semibold">Infostand bearbeiten</h1>
 
       <Card title="Infostand-Antrag">
         <form onSubmit={handleSubmit} className="space-y-4">
-          
           <Input
             label="Tische"
             type="number"
@@ -113,13 +97,7 @@ function RouteComponent() {
   );
 }
 
-
-
-
-// -----------------------------------------------------------
-// Layout + Inputs
-// -----------------------------------------------------------
-
+// Layout + Input components
 function PageWrapper({ children }) {
   return (
     <div
@@ -143,8 +121,6 @@ function PageWrapper({ children }) {
   );
 }
 
-
-
 function Input({ label, ...props }) {
   return (
     <div>
@@ -156,7 +132,6 @@ function Input({ label, ...props }) {
     </div>
   );
 }
-
 
 function Textarea({ label, ...props }) {
   return (
@@ -170,7 +145,6 @@ function Textarea({ label, ...props }) {
     </div>
   );
 }
-
 
 function ActionButtons() {
   return (
@@ -192,4 +166,3 @@ function ActionButtons() {
     </div>
   );
 }
-

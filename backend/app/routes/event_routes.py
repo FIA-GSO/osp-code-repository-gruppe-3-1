@@ -19,6 +19,7 @@ event_create_model = api.model("EventCreate", {
 
 event_summary_model = api.model("EventSummary", {
     "event_id": fields.Integer,
+    "event_name": fields.String,
     "total_chairs": fields.Integer,
     "total_tables": fields.Integer,
     "combined_required_tech": fields.String,
@@ -92,3 +93,10 @@ class EventSummary(Resource):
         if error:
             api.abort(404, error)
         return summary
+    
+@api.route("/summary")
+class AllEventSummaries(Resource):
+    def get(self):
+        """Get summaries for all events"""
+        summaries = EventService.get_all_event_summaries()
+        return summaries

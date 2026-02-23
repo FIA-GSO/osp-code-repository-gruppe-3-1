@@ -14,3 +14,8 @@ export async function toggleEventLock(eventId, isLocked) {
     const res = await api.put(`/events/${eventId}`, { registration_locked: isLocked }, { withCredentials: true });
     return res.data;
 }
+
+export async function getAllEventSummaries() {
+    const res = await api.get("/events/summary", { withCredentials: true });
+    return res.data;
+}
