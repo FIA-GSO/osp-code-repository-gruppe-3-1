@@ -1,6 +1,11 @@
-import axios from "./apiClient";
+import api from "./apiClient";
 
 export async function getAllEvents() {
-    const res = await axios.get("/events/");
+    const res = await api.get("/events/");
+    return res.data;
+}
+
+export async function getEventById(eventId) {
+    const res = await api.get(`/events/${eventId}`, { withCredentials: true });
     return res.data;
 }
