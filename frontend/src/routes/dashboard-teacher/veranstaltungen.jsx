@@ -3,8 +3,11 @@ import { useEffect, useState } from 'react';
 import Sidebar from '@/components/layout/sidebar';
 import Topbar from '@/components/layout/topbar';
 import Card from '@/components/ui/card';
-import backgroundImage from '@/assets/Background.png';
 import { getAllEvents, toggleEventLock } from '../../api/eventsApi';
+import backgroundImage from '@/assets/Background.png'
+import { Link } from '@tanstack/react-router';
+import StatusIcon from "@/components/ui/StatusIcon";
+
 
 export const Route = createFileRoute('/dashboard-teacher/veranstaltungen')({
   component: RouteComponent,
@@ -60,24 +63,53 @@ function RouteComponent() {
                   </tr>
                 </thead>
                 <tbody>
-                  {events.map(event => (
-                    <tr key={event.id} className="bg-[#fafbfc]">
-                      <td className="cursor-pointer p-3 text-primary">{event.name}</td>
-                      <td className="p-3">
-                        <span className={event.registration_locked ? "text-error-text font-medium" : "text-success-text font-medium"}>
-                          {event.registration_locked ? "Gesperrt" : "Offen"}
-                        </span>
-                      </td>
-                      <td className="p-3">
-                        <button
-                          className="rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]"
-                          onClick={() => handleToggleLock(event.id, event.registration_locked)}
-                        >
-                          {event.registration_locked ? "Entsperren" : "Sperren"}
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
+                  <tr className="bg-[#fafbfc]">
+                    <td className="cursor-pointer p-3 text-primary">
+                      Tag der Ausbildung 2026
+                    </td>
+                    <td className="p-3">GSO Köln</td>
+                    <td className="p-3">
+                        <StatusIcon type="openText" />
+                    </td>
+                    <td className="p-3">
+                      <button className="rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]">
+                        Sperren
+                      </button>
+                    </td>
+                  </tr>
+
+                  <tr className="bg-[#fafbfc]">
+                    <td className="cursor-pointer p-3 text-primary">
+                      Karrieretag IT 2026
+                    </td>
+                    <td className="p-3">Berufskolleg Südstadt</td>
+                    <td className="p-3">
+                                            <StatusIcon type="closedText" />
+
+                    </td>
+                    <td className="p-3">
+                      <button className="rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]">
+                        Entsperren
+                      </button>
+                    </td>
+                  </tr>
+
+                  <tr className="bg-[#fafbfc]">
+                    <td className="cursor-pointer p-3 text-primary">
+                      Jobmesse Südstadt 2025
+                    </td>
+                    <td className="p-3">BK Südstadt</td>
+                    <td className="p-3">
+                      <span className="text-success-text font-medium">
+                        Offen
+                      </span>
+                    </td>
+                    <td className="p-3">
+                      <button className="rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]">
+                        Sperren
+                      </button>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
             </div>

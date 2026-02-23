@@ -6,6 +6,9 @@ import Card from '@/components/ui/card';
 import backgroundImage from '@/assets/Background.png'
 import { useState } from 'react';
 import { Link } from '@tanstack/react-router';
+
+import StatusIcon from "@/components/ui/StatusIcon";
+
 export const Route = createFileRoute('/dashboard-teacher/vortraege')({
   // beforeLoad: () => {
   //   const role = useAuthStore.getState().user?.role;
@@ -16,17 +19,14 @@ export const Route = createFileRoute('/dashboard-teacher/vortraege')({
   component: RouteComponent,
 })
 
-
-
-
 function RouteComponent() {
-      const lecture ={id: 1}
       const lectures = [
   {
     id: 1,
     title: 'KI in der Ausbildung',
     event: 'Tag der Ausbildung 2026',
     status: 'offen',
+    email: 'pravingnanasooriyan@gmail.com',
   },
   {
     id: 2,
@@ -44,15 +44,18 @@ function RouteComponent() {
 
 const handleAccept = async (lecture) => {
   // Status lokal ändern (oder API)
-  await fetch('/api/smtp/lecture/status', {
+  await fetch('http://127.0.0.1:5000/mail/lecture/status', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       email: lecture.email,
-      status: 'angenommen',
-      event: lecture.event,
+      status: 'accept',
+      event_name: lecture.event,
+      contact: "einfügen",
+      lecture_title: "einfügen",
+      event_date:"einfügen",
     }),
   });
 };
@@ -60,17 +63,17 @@ const handleAccept = async (lecture) => {
 const handleReject = async (lecture) => {
   try {
     // TODO (Backend):// PUT /api/lecture/{id}/status -> abgelehnt
-    await fetch('/api/smtp/lecture/status', {
+    await fetch('http://127.0.0.1:5000/mail/lecture/status', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         email: lecture.email,
-        status: 'abgelehnt',
+        status: 'rejected',
         event_name: lecture.event,
-
-        // optional später:// reason: 'Alle Standplätze sind vergeben'  
+        contact: "einfügen",
+        lecture_title: "einfügen", 
             }),
     });
 
@@ -167,13 +170,13 @@ const filteredLectures = lectures.filter((lecture) => {
       {/* STATUS */}
       <td className="p-3">
         {lecture.status === 'offen' && (
-          <span className="text-warning-text">⏳ Offen</span>
+          <span className="text-warning-text">{<StatusIcon type="pending" />}</span>
         )}
         {lecture.status === 'angenommen' && (
-          <span className="text-success-text">✔ Angenommen</span>
+          <span className="text-success-text">{ <StatusIcon type="accepted" />}</span>
         )}
         {lecture.status === 'abgelehnt' && (
-          <span className="text-error-text">✖ Abgelehnt</span>
+          <span className="text-error-text">{<StatusIcon type="rejected" />}</span>
         )}
       </td>
 

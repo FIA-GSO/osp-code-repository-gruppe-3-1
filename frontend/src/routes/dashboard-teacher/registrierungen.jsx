@@ -1,18 +1,16 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
-
 import Sidebar from '@/components/layout/sidebar';
 import Topbar from '@/components/layout/topbar';
 import StatusCard from '@/components/ui/status-card';
 import Card from '@/components/ui/card';
 import { getRegistrations, changeStatus } from "../../api/registrationsApi";
 import backgroundImage from '@/assets/Background.png';
-
+import StatusIcon from "@/components/ui/StatusIcon";
 
 export const Route = createFileRoute('/dashboard-teacher/registrierungen')({
   component: RouteComponent,
 });
-
 
 function RouteComponent() {
   const [registrations, setRegistrations] = useState([]);
@@ -32,6 +30,63 @@ function RouteComponent() {
       } finally {
         setIsLoading(false);
       }
+function RouteComponent() {
+  /* =====================================================
+     1️⃣ TESTDATEN (exakt eure bisherigen Tabellenzeilen)
+     ===================================================== */
+    const registrations = [
+    {
+      id: 1,
+      event: 'Tag der Ausbildung 2026',
+      company: 'TechSolutions AG',
+      status: 'angenommen',
+      email: 'kontakt@techsolutions.de',
+    },
+    {
+      id: 2,
+      event: 'Tag der Ausbildung 2026',
+      company: 'FutureIT GmbH',
+      status: 'offen',
+      email: 'pravingnanasooriyan@gmail.com',
+    },
+    {
+      id: 3,
+      event: 'Karrieretag IT 2026',
+      company: 'NetSystems AG',
+      status: 'abgelehnt',
+      email: 'kontakt@netsystems.de',
+    },
+  ];
+
+  /* =====================================================
+     2️⃣ FILTER-STATE (gleiches Pattern wie Lecture)
+     ===================================================== */const [statusFilter, setStatusFilter] = useState('');
+  const [eventFilter, setEventFilter] = useState('');
+
+  const filteredRegistrations = registrations.filter((reg) => {
+    return (
+      (statusFilter === '' || reg.status === statusFilter) &&
+      (eventFilter === '' || reg.event === eventFilter)
+    );
+  });
+
+  /* =====================================================
+     3️⃣ AKTIONEN (✔ / ✖ bleiben voll funktionsfähig)
+     ===================================================== */
+    const handleAccept = async (registration) => {
+    try {
+      await fetch('http://127.0.0.1:5000/mail/registration/status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: registration.email,
+          status: 'accepted',
+          event_name: registration.event,
+        }),
+      });
+      console.log('Registrierung angenommen:', registration.id);
+    } catch (error) {
+      console.error('Fehler beim Annehmen:', error);
     }
 
     load();
@@ -47,6 +102,18 @@ function RouteComponent() {
     } catch (err) {
       console.error("Status update failed:", err);
       alert("Konnte Status nicht aktualisieren.");
+      await fetch('http://127.0.0.1:5000/mail/registration/status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: registration.email,
+          status: 'rejected',
+          event_name: registration.event,
+        }),
+      });
+      console.log('Registrierung abgelehnt:', registration.id);
+    } catch (error) {
+      console.error('Fehler beim Ablehnen:', error);
     }
   }
 
@@ -115,68 +182,70 @@ function RouteComponent() {
                 </thead>
 
                 <tbody>
-                  {registrations.map((reg) => {
-                    let statusLabel = "";
-                    let statusClass = "";
+                  {filteredRegistrations.map((registration) => (
+                    <tr key={registration.id} className="bg-[#fafbfc]">
+                      <td className="cursor-pointer p-3 text-primary">
+                        {registration.event}
+                      </td>
 
-                    switch (reg.status_id) {
-                      case 2:
-                        statusLabel = "✔ Bestätigt";
-                        statusClass = "text-success-text";
-                        break;
-                      case 3:
-                        statusLabel = "✖ Abgelehnt";
-                        statusClass = "text-error-text";
-                        break;
-                      default:
-                        statusLabel = "⏳ Eingereicht";
-                        statusClass = "text-warning-text";
-                    }
+                      <td className="p-3">
+                        {registration.company}
+                      </td>
 
-                    return (
-                      <tr key={reg.id} className="bg-[#fafbfc]">
-                        <td className="cursor-pointer p-3 text-primary">
-                          {reg.event?.name || "Unbekannt"}
-                        </td>
+                      <td className="p-3">
+                        {registration.status === 'offen' && (
+                          <span className="text-warning-text">
+                          <button>
+  <StatusIcon type="pending" />
+</button>
+                          </span>
+                        )}
+                        {registration.status === 'angenommen' && (
+                          <span className="text-success-text">
+                           <button>
+  <StatusIcon type="accepted" />
+</button>
+                          </span>
+                        )}
+                        {registration.status === 'abgelehnt' && (
+                          <span className="text-error-text">
+                         <button>
+  <StatusIcon type="rejected" />
+</button>
+                          </span>
+                        )}
+                      </td>
 
-                        <td className="p-3">
-                          {reg.user?.company_name || "Firma unbekannt"}
-                        </td>
+                      <td className="p-3">
+                        {/* ✔ / ✖ NUR BEI OFFEN */}
+                        {registration.status === 'offen' && (
+                          <><button onClick={() =>
+                                handleAccept(registration)
+                              }
+                              className="mr-2 rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]"
+                              title="Annehmen"
+                            >
+                                <StatusIcon type="accepted" />
+                            </button>
 
-                        <td className={`p-3 ${statusClass}`}>
-                          {statusLabel}
-                        </td>
+                            <button onClick={() =>
+                                handleReject(registration)
+                              }
+                              className="mr-2 rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]"
+                              title="Ablehnen"
+                            >
+                                <StatusIcon type="rejected" />
+                            </button>
+                          </>                        )}
 
-                        <td className="p-3 flex gap-2">
-                          {/* ACCEPT / REJECT only when status = eingereicht */}
-                          {reg.status_id === 1 && (
-                            <>
-                              <button
-                                className="rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]"
-                                onClick={() => updateStatus(reg.id, 2)}
-                              >
-                                ✔
-                              </button>
-
-                              <button
-                                className="rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]"
-                                onClick={() => updateStatus(reg.id, 3)}
-                              >
-                                ✖
-                              </button>
-                            </>
-                          )}
-
-                          <Link
-                            to={`/dashboard-teacher/details/registration/${reg.id}`}
-                            className="rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]"
-                          >
-                            Details
-                          </Link>
-                        </td>
-                      </tr>
-                    );
-                  })}
+                        {/* DETAILS IMMER */}
+                        <Link to={`/dashboard-teacher/details/registrierung/${registration.id}`}
+                          className="rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]"                        >
+                          Details
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
 
               </table>

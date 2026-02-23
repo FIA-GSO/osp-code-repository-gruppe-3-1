@@ -5,20 +5,18 @@ import logo from '@/assets/logo-gso3.png';
 import { checkPasswordStrength } from '@/utils/password';
 import backgroundImage from '@/assets/Background.png'
 import { createUser } from '../api/userApi'
+import { useMutation } from "@tanstack/react-query";
 
 export const Route = createFileRoute('/register')({
     component: RouteComponent,
 });
 
 function RouteComponent() {
-
-
     const { t } = useTranslation();
     const [isSuccess, setIsSuccess] = useState(false);
     const [error, setError] = useState('');
 
     const [acceptedPrivacy, setAcceptedPrivacy] = useState(false);
-
     const [form, setForm] = useState({
         company: '',
         contact: '',
@@ -27,7 +25,15 @@ function RouteComponent() {
         passwordConfirm: '',
     });
 
-    
+    const register = useMutation({
+  mutationFn: (data) =>
+    createUser(
+      data.email,
+      data.company,
+      data.contact,
+      data.password
+    ),
+});
 
     const passwordRules = checkPasswordStrength(form.password);
 
@@ -75,15 +81,36 @@ const handleSubmit = (e) => {
         }
     };
 
+  &&
+  !register.isPending;
+
+  setError("");
+ 
+  if (!isFormValid) return;
+ 
+  register.mutate(
+    { ...form, privacyAccepted: true },
+    {
+      onSuccess: () => {
+        setIsSuccess(true);
+      },
+      onError: (err) => {
+        setError(
+          err.response?.data?.message ||
+          t("errors.registrationFailed")
+        );
+      },
+    }
+  );
+};
     if (isSuccess) {
         return (
-            <div
-                className="flex min-h-screen items-center justify-center bg-cover bg-center bg-no-repeat p-5"
-                style={{
-                    backgroundImage:
-                        `linear-gradient(rgba(255,255,255,0.65), rgba(255,255,255,0.65)), url(${backgroundImage})`,
-                }}
-            >
+            <div className="flex min-h-screen items-center justify-center bg-cover bg-center bg-no-repeat p-5" 
+                        style={{
+                backgroundImage:
+                    `linear-gradient(rgba(255,255,255,0.75), rgba(255,255,255,0.75)),   url(${backgroundImage})`
+                ,
+            }}>
                 <div className="w-full max-w-[430px] overflow-hidden rounded-[10px] bg-white shadow-[0_10px_30px_rgba(0,0,0,0.15)]">
                     <div className="bg-primary p-[25px] text-center text-white">
                         <img src={logo} alt={t('common.logoAlt')} className="mx-auto mb-1.5 w-[120px]" />
@@ -124,7 +151,8 @@ const handleSubmit = (e) => {
             className="flex min-h-screen items-center justify-center bg-cover bg-center bg-no-repeat p-5"
             style={{
                 backgroundImage:
-                    "linear-gradient(rgba(255,255,255,0.65), rgba(255,255,255,0.65)), url(${backgroundImage})",
+                    `linear-gradient(rgba(255,255,255,0.75), rgba(255,255,255,0.75)),   url(${backgroundImage})`
+                ,
             }}
         >
             <div className="w-full max-w-[430px] overflow-hidden rounded-[10px] bg-white shadow-[0_10px_30px_rgba(0,0,0,0.15)]">
@@ -265,4 +293,3 @@ const handleSubmit = (e) => {
         </div>
     );
 }
-
