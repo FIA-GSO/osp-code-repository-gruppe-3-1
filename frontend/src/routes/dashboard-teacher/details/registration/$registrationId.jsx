@@ -8,9 +8,7 @@ import backgroundImage from '@/assets/background.png';
 
 import { getRegistrationById } from '@/api/registrationsApi';
 
-export const Route = createFileRoute(
-  '/dashboard-teacher/details/registration/$registrationId',
-)({
+export const Route = createFileRoute('/dashboard-teacher/details/registration/$registrationId')({
   component: RouteComponent,
 });
 

@@ -9,7 +9,7 @@ const resources = {
 };
 
 function initI18n() {
-    const defaultLanguage = 'en';
+    const defaultLanguage = 'de';
 
     i18nUse(initReactI18next).init({
         compatibilityJSON: 'v4',

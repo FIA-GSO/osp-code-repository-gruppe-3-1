@@ -57,46 +57,42 @@ const isFormValid =
   acceptedPrivacy 
 const handleSubmit = (e) => {
   e.preventDefault();
-  setError('');
-
-  if (!isFormValid) {
-    return;
-  }
-
-  if (form.password !== form.passwordConfirm) {
-    setError(t('errors.passwordMismatch'));
-    return;
-  }
-
-        if(!passwordRules.number || !passwordRules.length || !passwordRules.uppercase) {
-            setError(t("errors.passwordNotStrong"));
-            return;
-        }
-        
-
-        const res = createUser(form.email, form.company, form.contact, form.password);
-
-        if(res){
-            setIsSuccess(true);
-        }
-    };
-
-  &&
-  !register.isPending;
-
   setError("");
  
+  // Formular vollständig?
   if (!isFormValid) return;
  
+  // Passwortgleichheit prüfen
+  if (form.password !== form.passwordConfirm) {
+    setError(t("errors.passwordMismatch"));
+    return;
+  }
+ 
+  // Passwortstärke prüfen
+  if (
+    !passwordRules.length ||
+    !passwordRules.uppercase ||
+    !passwordRules.number
+  ) {
+    setError(t("errors.passwordNotStrong"));
+    return;
+  }
+ 
+  // Registrierung ausführen
   register.mutate(
-    { ...form, privacyAccepted: true },
+    {
+      email: form.email,
+      company: form.company,
+      contact: form.contact,
+      password: form.password,
+    },
     {
       onSuccess: () => {
         setIsSuccess(true);
       },
       onError: (err) => {
         setError(
-          err.response?.data?.message ||
+          err?.response?.data?.message ||
           t("errors.registrationFailed")
         );
       },
@@ -277,7 +273,7 @@ const handleSubmit = (e) => {
                                 ? 'bg-primary text-white hover:bg-primary-dark cursor-pointer'        : 'bg-[#d0d7e2] text-[#7a7a7a] cursor-not-allowed'    }
                         `}
                         >
-                        
+                        Registrieren
                         </button>
                                             
                     </form>

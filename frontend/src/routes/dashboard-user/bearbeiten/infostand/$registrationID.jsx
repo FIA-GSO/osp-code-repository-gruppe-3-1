@@ -25,7 +25,16 @@ function RouteComponent() {
     async function loadRegistration() {
       try {
         const data = await getRegistrationById(registrationID);
-        setRegistration(data);
+        setRegistration({
+  ...data,
+  lecture: data.lecture || {
+    title: '',
+    description: '',
+    speaker: '',
+    required_tech: '',
+    preferred_time: '',
+  },
+});
       } catch (err) {
         console.error("Failed to load registration:", err);
       } finally {
@@ -38,16 +47,15 @@ function RouteComponent() {
 
   // Submit handler
   const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      await updateRegistration(registrationID, registration);
-      navigate({ to: '/dashboard-user' });
-    } catch (err) {
-      console.error("Update failed:", err);
-      alert("Beim Speichern ist ein Fehler aufgetreten.");
-    }
-  };
+ e.preventDefault();
+  try {
+    await updateRegistration(registrationID, registration);
+    navigate({ to: '/dashboard-user' });
+  } catch (err) {
+    console.error("Update failed:", err);
+    alert("Beim Speichern ist ein Fehler aufgetreten.");
+  }
+};
 
   // Loading state
   if (isLoading || !registration) {
@@ -63,35 +71,140 @@ function RouteComponent() {
       <h1 className="mb-6 text-xl font-semibold">Infostand bearbeiten</h1>
 
       <Card title="Infostand-Antrag">
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <Input
-            label="Tische"
-            type="number"
-            value={registration.tables_needed}
-            onChange={(e) =>
-              setRegistration({ ...registration, tables_needed: Number(e.target.value) })
-            }
-          />
+        <form onSubmit={handleSubmit} className="space-y-6">
 
-          <Input
-            label="Stühle"
-            type="number"
-            value={registration.chairs_needed}
-            onChange={(e) =>
-              setRegistration({ ...registration, chairs_needed: Number(e.target.value) })
-            }
-          />
+  <Input
+    label="Tische"
+    type="number"
+    value={registration.tables_needed}
+    onChange={(e) =>
+      setRegistration({
+        ...registration,
+        tables_needed: Number(e.target.value),
+      })
+    }
+  />
 
-          <Textarea
-            label="Bemerkungen"
-            value={registration.remarks}
-            onChange={(e) =>
-              setRegistration({ ...registration, remarks: e.target.value })
-            }
-          />
+  <Input
+    label="Stühle"
+    type="number"
+    value={registration.chairs_needed}
+    onChange={(e) =>
+      setRegistration({
+        ...registration,
+        chairs_needed: Number(e.target.value),
+      })
+    }
+  />
 
-          <ActionButtons />
-        </form>
+  <Textarea
+    label="Bemerkungen"
+    value={registration.remarks}
+    onChange={(e) =>
+      setRegistration({
+        ...registration,
+        remarks: e.target.value,
+      })
+    }
+  />
+
+  {/* ========================= */}
+  {/* VORTRAG CHECKBOX */}
+  {/* ========================= */}
+  <div className="flex items-center gap-2">
+    <input
+      type="checkbox"
+      checked={registration.with_lecture}
+      onChange={(e) =>
+        setRegistration({
+          ...registration,
+          with_lecture: e.target.checked,
+        })
+      }
+    />
+    <label>Vortrag zusätzlich registrieren (optional)</label>
+  </div>
+
+  {/* ========================= */}
+  {/* VORTRAG FELDER */}
+  {/* ========================= */}
+  {registration.with_lecture && (
+    <Card title="Vortrag (Speaker)">
+
+      <Input
+        label="Titel des Vortrags"
+        value={registration.lecture?.title || ''}
+        onChange={(e) =>
+          setRegistration({
+            ...registration,
+            lecture: {
+              ...registration.lecture,
+              title: e.target.value,
+            },
+          })
+        }
+      />
+
+      <Textarea
+        label="Beschreibung"
+        value={registration.lecture?.description || ''}
+        onChange={(e) =>
+          setRegistration({
+            ...registration,
+            lecture: {
+              ...registration.lecture,
+              description: e.target.value,
+            },
+          })
+        }
+      />
+
+      <Input
+        label="Referent / Sprecher"
+        value={registration.lecture?.speaker || ''}
+        onChange={(e) =>
+          setRegistration({
+            ...registration,
+            lecture: {
+              ...registration.lecture,
+              speaker: e.target.value,
+            },
+          })
+        }
+      />
+
+      <Input
+        label="Benötigte Technik"
+        value={registration.lecture?.required_tech || ''}
+        onChange={(e) =>
+          setRegistration({
+            ...registration,
+            lecture: {
+              ...registration.lecture,
+              required_tech: e.target.value,
+            },
+          })
+        }
+      />
+
+      <Input
+        label="Bevorzugte Uhrzeit"
+        value={registration.lecture?.preferred_time || ''}
+        onChange={(e) =>
+          setRegistration({
+            ...registration,
+            lecture: {
+              ...registration.lecture,
+              preferred_time: e.target.value,
+            },
+          })
+        }
+      />
+    </Card>
+  )}
+  <ActionButtons />
+
+</form>
       </Card>
     </PageWrapper>
   );
@@ -151,7 +264,7 @@ function ActionButtons() {
     <div className="flex gap-3 pt-4">
       <button
         type="submit"
-        className="rounded-md bg-primary px-4 py-2 text-white"
+        className="rounded-md bg-primary px-4 py-2 text-white cursor-pointer"
       >
         Speichern
       </button>

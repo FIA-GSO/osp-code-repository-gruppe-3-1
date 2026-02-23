@@ -7,8 +7,15 @@ import Card from '@/components/ui/card';
 import { getRegistrations, changeStatus } from "../../api/registrationsApi";
 import backgroundImage from '@/assets/Background.png';
 import StatusIcon from "@/components/ui/StatusIcon";
+import { getUserRole } from '@/api/authApi';
+import { redirect } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/dashboard-teacher/registrierungen')({
+        beforeLoad: () => {
+    if (getUserRole() !== "teacher" && getUserRole() !== "admin") {
+      throw redirect({ to: '/login' });
+    }
+  },
   component: RouteComponent,
 });
 
@@ -17,105 +24,72 @@ function RouteComponent() {
   const [isLoading, setIsLoading] = useState(true);
 
 
-  // -------------------------------------
+  const loadRegistrations = async () => {
+  setIsLoading(true);
+  try {
+    const res = await getRegistrations();
+    setRegistrations(res);
+  } catch (err) {
+    console.error("Failed to load registrations:", err);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
   // Load all registrations
-  // -------------------------------------
-  useEffect(() => {
-    async function load() {
-      try {
-        const res = await getRegistrations();
-        setRegistrations(res);
-      } catch (err) {
-        console.error("Failed to load registrations:", err);
-      } finally {
-        setIsLoading(false);
-      }
-function RouteComponent() {
-  /* =====================================================
-     1️⃣ TESTDATEN (exakt eure bisherigen Tabellenzeilen)
-     ===================================================== */
-    const registrations = [
-    {
-      id: 1,
-      event: 'Tag der Ausbildung 2026',
-      company: 'TechSolutions AG',
-      status: 'angenommen',
-      email: 'kontakt@techsolutions.de',
-    },
-    {
-      id: 2,
-      event: 'Tag der Ausbildung 2026',
-      company: 'FutureIT GmbH',
-      status: 'offen',
-      email: 'pravingnanasooriyan@gmail.com',
-    },
-    {
-      id: 3,
-      event: 'Karrieretag IT 2026',
-      company: 'NetSystems AG',
-      status: 'abgelehnt',
-      email: 'kontakt@netsystems.de',
-    },
-  ];
+// -------------------------------------
+useEffect(() => {
+  loadRegistrations();
+}, []); // 👈 💯💯💯💯💯💯
+
 
   /* =====================================================
      2️⃣ FILTER-STATE (gleiches Pattern wie Lecture)
-     ===================================================== */const [statusFilter, setStatusFilter] = useState('');
-  const [eventFilter, setEventFilter] = useState('');
+     ===================================================== */
+
+const [statusFilter, setStatusFilter] = useState(0);
+const [eventFilter, setEventFilter] = useState('');
+
 
   const filteredRegistrations = registrations.filter((reg) => {
-    return (
-      (statusFilter === '' || reg.status === statusFilter) &&
-      (eventFilter === '' || reg.event === eventFilter)
-    );
-  });
+  return (
+    (statusFilter === 0 || reg.status_id === statusFilter) &&
+    (eventFilter === '' || reg.event?.name === eventFilter)
+  );
+});
 
-  /* =====================================================
-     3️⃣ AKTIONEN (✔ / ✖ bleiben voll funktionsfähig)
-     ===================================================== */
-    const handleAccept = async (registration) => {
+  // -------------------------------------
+  // Update registration status 💯💯💯
+  // -------------------------------------
+  async function updateStatus(registration, newStatus) {
     try {
+      await changeStatus(registration.id, newStatus);
+
       await fetch('http://127.0.0.1:5000/mail/registration/status', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          email: registration.email,
-          status: 'accepted',
-          event_name: registration.event,
+          email: "pravingnanasooriyan@gmail.com",
+          status: newStatus === 3 ? 'rejected' : 'accepted',
+          event_name: registration.event.name,
         }),
       });
-      console.log('Registrierung angenommen:', registration.id);
-    } catch (error) {
-      console.error('Fehler beim Annehmen:', error);
-    }
-
-    load();
-  }, []);
-
-
-  // -------------------------------------
-  // Update registration status
-  // -------------------------------------
-  async function updateStatus(id, newStatus) {
-    try {
-      await changeStatus(id, newStatus);
+         console.log('Registrierung abgelehnt:', registration.id);
+      loadRegistrations();
     } catch (err) {
       console.error("Status update failed:", err);
+      console.log(err);
       alert("Konnte Status nicht aktualisieren.");
-      await fetch('http://127.0.0.1:5000/mail/registration/status', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: registration.email,
-          status: 'rejected',
-          event_name: registration.event,
-        }),
-      });
-      console.log('Registrierung abgelehnt:', registration.id);
-    } catch (error) {
-      console.error('Fehler beim Ablehnen:', error);
-    }
   }
+}
+
+const uniqueEvents = [
+  ...new Set(
+    registrations
+      .map((reg) => reg.event?.name)
+      .filter(Boolean)
+  ),
+];
 
 
   // -------------------------------------
@@ -165,9 +139,33 @@ function RouteComponent() {
 
           {/* TABLE */}
           <Card title="Alle Registrierungen">
-            <p>Filterung für Tag + Status machen</p>
 
             <div className="block overflow-x-auto md:table md:w-full">
+<select
+  value={statusFilter}
+  onChange={(e) => setStatusFilter(Number(e.target.value))}
+  className="rounded-md border p-2"
+>
+  <option value={0}>Alle Status</option>
+  <option value={1}>Offen</option>
+  <option value={2}>Angenommen</option>
+  <option value={3}>Abgelehnt</option>
+</select>
+
+ <select
+  value={eventFilter}
+  onChange={(e) => setEventFilter(e.target.value)}
+  className="rounded-md border p-2"
+>
+  <option value="">Alle Veranstaltungen</option>
+
+  {uniqueEvents.map((eventName) => (
+    <option key={eventName} value={eventName}>
+      {eventName}
+    </option>
+  ))}
+</select>
+
               <table
                 className="w-full border-separate"
                 style={{ borderSpacing: '0 8px' }}
@@ -185,32 +183,32 @@ function RouteComponent() {
                   {filteredRegistrations.map((registration) => (
                     <tr key={registration.id} className="bg-[#fafbfc]">
                       <td className="cursor-pointer p-3 text-primary">
-                        {registration.event}
+                       {registration.event?.name || "Unbekanntes Event"}
                       </td>
 
                       <td className="p-3">
-                        {registration.company}
+                        {registration.user?.company_name || "Unbekannte Firma"}
                       </td>
 
                       <td className="p-3">
-                        {registration.status === 'offen' && (
+                        {registration?.status_id ===1 && (
                           <span className="text-warning-text">
                           <button>
-  <StatusIcon type="pending" />
+  <StatusIcon type="pendingFull" />
 </button>
                           </span>
                         )}
-                        {registration.status === 'angenommen' && (
+                        {registration?.status_id === 2 && (
                           <span className="text-success-text">
                            <button>
-  <StatusIcon type="accepted" />
+  <StatusIcon type="acceptedFull" />
 </button>
                           </span>
                         )}
-                        {registration.status === 'abgelehnt' && (
+                        {registration?.status_id === 3 && (
                           <span className="text-error-text">
                          <button>
-  <StatusIcon type="rejected" />
+  <StatusIcon type="rejectedFull" />
 </button>
                           </span>
                         )}
@@ -218,9 +216,9 @@ function RouteComponent() {
 
                       <td className="p-3">
                         {/* ✔ / ✖ NUR BEI OFFEN */}
-                        {registration.status === 'offen' && (
+                        {registration.status_id === 1 && (
                           <><button onClick={() =>
-                                handleAccept(registration)
+                                updateStatus(registration, 2)
                               }
                               className="mr-2 rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]"
                               title="Annehmen"
@@ -229,7 +227,7 @@ function RouteComponent() {
                             </button>
 
                             <button onClick={() =>
-                                handleReject(registration)
+                                updateStatus(registration, 3)
                               }
                               className="mr-2 rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]"
                               title="Ablehnen"
@@ -239,10 +237,13 @@ function RouteComponent() {
                           </>                        )}
 
                         {/* DETAILS IMMER */}
-                        <Link to={`/dashboard-teacher/details/registrierung/${registration.id}`}
-                          className="rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]"                        >
-                          Details
-                        </Link>
+                       <Link
+                        to="/dashboard-teacher/details/registration/$registrationId"
+                        params={{ registrationId: registration.id }}
+                        className="rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]"
+                      >
+                        Details
+                      </Link>
                       </td>
                     </tr>
                   ))}

@@ -100,8 +100,8 @@ function RouteComponent() {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                email: user.email,
-                event_name: event.name,
+                email: "pravingnanasooriyan@gmail.com",
+                event_name: event !== null ? event.name : "",
                 has_Lecture: registration.with_lecture,
             }),
         });
@@ -238,11 +238,13 @@ function RouteComponent() {
                     >
                         <option value="">Keine Vorlage auswählen</option>
 
-                        {previousRegistrations.registrations.map((reg) => (
-                            <option key={reg.id} value={reg.id}>
-                                {reg.event.name}
-                            </option>
-                        ))}
+                     {previousRegistrations?.registrations?.length > 0 && previousRegistrations.registrations.map((reg) =>reg.event ? (
+                        <option key={reg.id} value={reg.id}>
+                            {reg.event.name}
+                        </option>
+                        ) : null
+                    )
+                    }
                     </select>
 
                     <p className="mt-2 text-xs text-muted">

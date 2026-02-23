@@ -11,8 +11,16 @@ import { getCurrentUser, getUserId } from "../../api/authApi";
 import { getUserRegistrations } from "../../api/registrationsApi";
 import { getAllEvents } from "../../api/eventsApi";
 import StatusIcon from "@/components/ui/StatusIcon";
+import { getUserRole } from '@/api/authApi';
+import { redirect } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/dashboard-user/')({
+          beforeLoad: () => {
+            console.log(getUserRole())
+    if (getUserRole() !== "user" && getUserRole() !== "admin") {
+      throw redirect({ to: '/login' });
+    }
+  },
     component: RouteComponent,
 });
 
@@ -40,14 +48,14 @@ function RouteComponent() {
 
     const getStatusLabel = (statusId) => {
         switch (statusId) {
-            case 1: return { text: "Eingereicht", icon:"pending", type: "warning" };
-            case 2: return { text: "Bestätigt", icon:"accepted", type: "success" };
-            case 3: return { text: "Abgelehnt", icon:"rejected", type: "danger" };
+            case 1: return (<StatusIcon type="pendingFull"></StatusIcon>)
+            case 2: return (<StatusIcon type="acceptedFull"></StatusIcon>)
+            case 3: return (<StatusIcon type="rejectedFull"></StatusIcon>)
             default: return { label: "Unbekannt", icon: null, type: "info" };
         }
     };
 
-    if (!user || !registrationsData) return <div>Laden...</div>; // Loading state
+    if (!user || !registrationsData || !events) return <div>Laden...</div>; // Loading state
 
 
     return (
@@ -106,7 +114,7 @@ function RouteComponent() {
                                                         <td>
                                                             {reg.with_lecture ? "Ja" : "Nein"}
                                                         </td>
-                                                        <td className={`status ${status.type}`}>{status.icon && <StatusIcon type={status.icon} />} {status.text}</td>
+                                                        <td>{status}</td>
                                                         <td>
                                                             <Link to={`/dashboard-user/bearbeiten/infostand/${reg.id}`} className="rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]">
                                                                 Bearbeiten</Link>

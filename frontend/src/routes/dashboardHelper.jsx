@@ -5,12 +5,20 @@ import Card from '@/components/ui/card';
 import backgroundImage from '@/assets/Background.png'
 import { useEffect, useState } from 'react';
 import { getAllEventSummaries } from '@/api/eventsApi';
+import { getUserRole } from '@/api/authApi';
+import { redirect } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/dashboardHelper')({
+      beforeLoad: () => {
+    if (getUserRole() !== "helper" && getUserRole() !== "admin") {
+      throw redirect({ to: '/login' });
+    }
+  },
     component: RouteComponent,
 })
 
 function RouteComponent() {
+    
     const [summaries, setSummaries] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
