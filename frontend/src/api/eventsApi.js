@@ -1,7 +1,7 @@
 import api from "./apiClient";
 
 export async function getAllEvents() {
-    const res = await api.get("/events/");
+    const res = await api.get("/events/", { withCredentials: true });
     return res.data;
 }
 
