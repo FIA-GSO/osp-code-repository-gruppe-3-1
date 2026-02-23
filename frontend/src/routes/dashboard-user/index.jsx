@@ -110,7 +110,7 @@ function RouteComponent() {
                                                         </td>
                                                         <td className={`status ${status.type}`}>{status.label}</td>
                                                         <td>
-                                                            <Link to="/dashboard-user/bearbeiten/infostand/1" className="rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]">
+                                                            <Link to={`/dashboard-user/bearbeiten/infostand/${reg.id}`} className="rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]">
                                                                 Bearbeiten</Link>
                                                         </td>
                                                     </tr>

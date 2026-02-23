@@ -11,6 +11,13 @@ event_model = api.model("Event", {
     "registration_locked": fields.Boolean
 })
 
+user_model = api.model("User", {
+    "id": fields.Integer,
+    "company_name": fields.String,
+    "email": fields.String,
+    "role_id": fields.Integer
+})
+
 registration_model = api.model("Registration", {
     "id": fields.Integer,
     "user_id": fields.Integer,
@@ -29,7 +36,8 @@ registration_model = api.model("Registration", {
         "required_tech": fields.String,
         "preferred_time": fields.String
     })),
-    "event": fields.Nested(event_model)
+    "event": fields.Nested(event_model),
+    "user": fields.Nested(user_model)
 })
 
 registration_form_model = api.model("RegistrationForm", {
