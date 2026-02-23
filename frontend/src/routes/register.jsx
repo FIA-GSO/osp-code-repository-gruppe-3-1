@@ -15,6 +15,7 @@ function RouteComponent() {
     const { t } = useTranslation();
     const [isSuccess, setIsSuccess] = useState(false);
     const [error, setError] = useState('');
+
     const [acceptedPrivacy, setAcceptedPrivacy] = useState(false);
     const [form, setForm] = useState({
         company: '',
@@ -54,11 +55,35 @@ const isFormValid =
   isPasswordValid &&
   form.password === form.passwordConfirm &&
   acceptedPrivacy 
+const handleSubmit = (e) => {
+  e.preventDefault();
+  setError('');
+
+  if (!isFormValid) {
+    return;
+  }
+
+  if (form.password !== form.passwordConfirm) {
+    setError(t('errors.passwordMismatch'));
+    return;
+  }
+
+        if(!passwordRules.number || !passwordRules.length || !passwordRules.uppercase) {
+            setError(t("errors.passwordNotStrong"));
+            return;
+        }
+        
+
+        const res = createUser(form.email, form.company, form.contact, form.password);
+
+        if(res){
+            setIsSuccess(true);
+        }
+    };
+
   &&
   !register.isPending;
 
-const handleSubmit = (e) => {
-  e.preventDefault();
   setError("");
  
   if (!isFormValid) return;
@@ -230,31 +255,31 @@ const handleSubmit = (e) => {
                                 • {t('auth.passwordNumber')}
                             </p>
                         </div>
-<div className="mb-[15px] text-left text-sm">
-  <label className="flex items-start gap-2">
-    <input type="checkbox"checked={acceptedPrivacy}onChange={(e) => setAcceptedPrivacy(e.target.checked)}
-      className="mt-1"
-    />
-    <span className="text-[#7a7a7a]">
-      Ich habe die{' '}
-      <Link to="/datenschutz"target="_blank"className="text-primary underline"      >
-        Datenschutzerklärung
-      </Link>{' '}
-      gelesen und stimme der Verarbeitung meiner Daten gemäß DSGVO zu.
-    </span>
-  </label>
-</div>
-                        <button
-  type="submit"  disabled={!isFormValid}  className={`
-    mt-[10px] w-full rounded-md border-none px-4 py-[14px] text-base
-    ${
-      isFormValid
-        ? 'bg-primary text-white hover:bg-primary-dark cursor-pointer'        : 'bg-[#d0d7e2] text-[#7a7a7a] cursor-not-allowed'    }
-  `}
->
-  {/* {register.isPending    ? t('auth.registerPending'): t('auth.register')} */}
-</button>
-
+                        <div className="mb-[15px] text-left text-sm">
+                        <label className="flex items-start gap-2">
+                            <input type="checkbox"checked={acceptedPrivacy}onChange={(e) => setAcceptedPrivacy(e.target.checked)}
+                            className="mt-1"
+                            />
+                            <span className="text-[#7a7a7a]">
+                            Ich habe die{' '}
+                            <Link to="/datenschutz"target="_blank"className="text-primary underline"      >
+                                Datenschutzerklärung
+                            </Link>{' '}
+                            gelesen und stimme der Verarbeitung meiner Daten gemäß DSGVO zu.
+                            </span>
+                        </label>
+                        </div>
+                                                <button
+                        type="submit"  disabled={!isFormValid}  className={`
+                            mt-[10px] w-full rounded-md border-none px-4 py-[14px] text-base
+                            ${
+                            isFormValid
+                                ? 'bg-primary text-white hover:bg-primary-dark cursor-pointer'        : 'bg-[#d0d7e2] text-[#7a7a7a] cursor-not-allowed'    }
+                        `}
+                        >
+                        
+                        </button>
+                                            
                     </form>
 
                     <div className="mt-4 text-sm text-muted">

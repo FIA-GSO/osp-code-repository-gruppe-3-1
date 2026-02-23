@@ -1,5 +1,7 @@
 from app.extensions import db
 from app.models.event_model import Event
+from app.models.registration_model import Registration
+import math
 
 class EventService:
 
@@ -47,3 +49,38 @@ class EventService:
         db.session.delete(event)
         db.session.commit()
         return True
+
+    @staticmethod
+    def get_event_summary(event_id: int):
+        event = Event.query.get(event_id)
+        if not event:
+            return None, "Event not found"
+
+        registrations = Registration.query.filter_by(event_id=event_id, status_id=2).all()
+
+        total_chairs = sum(r.chairs_needed or 0 for r in registrations)
+        total_tables = sum(r.tables_needed or 0 for r in registrations)
+
+        # Combine all required techs from lectures
+        combined_required_tech = ", ".join(
+            r.lecture.required_tech for r in registrations if r.with_lecture and r.lecture and r.lecture.required_tech
+        )
+
+        halls_needed = math.ceil(total_tables / 30) if total_tables > 0 else 0
+
+        return {
+            "event_id": event_id,
+            "event_name": event.name,
+            "total_chairs": total_chairs,
+            "total_tables": total_tables,
+            "combined_required_tech": combined_required_tech,
+            "halls_needed": halls_needed
+        }, 
+
+
+    @staticmethod
+    def get_all_event_summaries():
+        """Return a list of summaries for all events"""
+        events = db.session.query(Event).all()
+        summaries = [EventService.get_event_summary(e.id) for e in events]
+        return summaries

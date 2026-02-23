@@ -17,6 +17,15 @@ event_create_model = api.model("EventCreate", {
     "registration_locked": fields.Boolean(default=False),
 })
 
+event_summary_model = api.model("EventSummary", {
+    "event_id": fields.Integer,
+    "event_name": fields.String,
+    "total_chairs": fields.Integer,
+    "total_tables": fields.Integer,
+    "combined_required_tech": fields.String,
+    "halls_needed": fields.Integer
+})
+
 
 @api.route("/")
 class EventList(Resource):
@@ -74,3 +83,20 @@ class EventDetail(Resource):
         if not ok:
             api.abort(404, "Event not found")
         return {"message": "Event deleted"}
+
+@api.route("/<int:event_id>/summary")
+class EventSummary(Resource):
+    @api.marshal_with(event_summary_model)
+    def get(self, event_id):
+        """Get summary info for a single event"""
+        summary, error = EventService.get_event_summary(event_id)
+        if error:
+            api.abort(404, error)
+        return summary
+    
+@api.route("/summary")
+class AllEventSummaries(Resource):
+    def get(self):
+        """Get summaries for all events"""
+        summaries = EventService.get_all_event_summaries()
+        return summaries

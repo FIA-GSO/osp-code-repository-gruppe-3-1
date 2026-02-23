@@ -1,16 +1,35 @@
-import { createFileRoute } from '@tanstack/react-router'; 
-import Sidebar from '@/components/layout/sidebar'; 
-import Topbar from '@/components/layout/topbar'; 
-import StatusCard from '@/components/ui/status-card'; 
-import Card from '@/components/ui/card'; 
-import { Link } from '@tanstack/react-router';
-import { useState } from 'react';
-import backgroundImage from '@/assets/Background.png'
+import { createFileRoute, Link } from '@tanstack/react-router';
+import { useEffect, useState } from 'react';
+import Sidebar from '@/components/layout/sidebar';
+import Topbar from '@/components/layout/topbar';
+import StatusCard from '@/components/ui/status-card';
+import Card from '@/components/ui/card';
+import { getRegistrations, changeStatus } from "../../api/registrationsApi";
+import backgroundImage from '@/assets/Background.png';
 import StatusIcon from "@/components/ui/StatusIcon";
 
 export const Route = createFileRoute('/dashboard-teacher/registrierungen')({
   component: RouteComponent,
 });
+
+function RouteComponent() {
+  const [registrations, setRegistrations] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+
+  // -------------------------------------
+  // Load all registrations
+  // -------------------------------------
+  useEffect(() => {
+    async function load() {
+      try {
+        const res = await getRegistrations();
+        setRegistrations(res);
+      } catch (err) {
+        console.error("Failed to load registrations:", err);
+      } finally {
+        setIsLoading(false);
+      }
 function RouteComponent() {
   /* =====================================================
      1️⃣ TESTDATEN (exakt eure bisherigen Tabellenzeilen)
@@ -69,10 +88,20 @@ function RouteComponent() {
     } catch (error) {
       console.error('Fehler beim Annehmen:', error);
     }
-  };
 
-  const handleReject = async (registration) => {
+    load();
+  }, []);
+
+
+  // -------------------------------------
+  // Update registration status
+  // -------------------------------------
+  async function updateStatus(id, newStatus) {
     try {
+      await changeStatus(id, newStatus);
+    } catch (err) {
+      console.error("Status update failed:", err);
+      alert("Konnte Status nicht aktualisieren.");
       await fetch('http://127.0.0.1:5000/mail/registration/status', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -86,69 +115,69 @@ function RouteComponent() {
     } catch (error) {
       console.error('Fehler beim Ablehnen:', error);
     }
-  };
+  }
 
+
+  // -------------------------------------
+  // Status counters
+  // -------------------------------------
+  const countAccepted = registrations.filter(r => r.status_id === 2).length;
+  const countRejected = registrations.filter(r => r.status_id === 3).length;
+  const countPending = registrations.filter(r => r.status_id === 1).length;
+
+
+  // -------------------------------------
+  // Loading screen
+  // -------------------------------------
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        Lade Registrierungen…
+      </div>
+    );
+  }
+
+
+  // -------------------------------------
+  // UI
+  // -------------------------------------
   return (
-    <div className="flex min-h-screen bg-cover bg-center bg-no-repeat"style={{backgroundImage: `linear-gradient(rgba(255,255,255,0.75),rgba(255,255,255,0.75)),url(${backgroundImage})`,
+    <div
+      className="flex min-h-screen bg-cover bg-center bg-no-repeat"
+      style={{
+        backgroundImage: `linear-gradient(rgba(255,255,255,0.75),rgba(255,255,255,0.75)),url(${backgroundImage})`,
       }}
     >
       <Sidebar />
+
       <main className="flex-1">
         <Topbar />
 
         <div className="max-w-[1100px] p-8">
           <h1 className="mb-6">Lehrer – Registrierungen</h1>
 
-          {/* STATUS */}
+          {/* STATUS CARDS */}
           <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3">
-            <StatusCard label="Angenommen" count={1} type="success" />
-            <StatusCard label="Offen" count={1} type="warning" />
-            <StatusCard label="Abgelehnt" count={1} type="danger" />
+            <StatusCard label="Angenommen" count={countAccepted} type="success" />
+            <StatusCard label="Offen" count={countPending} type="warning" />
+            <StatusCard label="Abgelehnt" count={countRejected} type="danger" />
           </div>
 
+          {/* TABLE */}
           <Card title="Alle Registrierungen">
-            {/* ================= FILTER ================= */}
-            <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2">
-              <select value={statusFilter}onChange={(e) => setStatusFilter(e.target.value)}
-                className="rounded-md border p-2"
-              >
-                <option value="">Alle Status</option>
-                <option value="offen">Offen</option>
-                <option value="angenommen">Angenommen</option>
-                <option value="abgelehnt">Abgelehnt</option>
-              </select>
+            <p>Filterung für Tag + Status machen</p>
 
-              <select value={eventFilter}onChange={(e) => setEventFilter(e.target.value)}
-                className="rounded-md border p-2"
-              >
-                <option value="">Alle Veranstaltungen</option>
-                <option value="Tag der Ausbildung 2026">
-                  Tag der Ausbildung 2026
-                </option>
-                <option value="Karrieretag IT 2026">
-                  Karrieretag IT 2026
-                </option>
-              </select>
-            </div>
-
-            {/* ================= TABELLE ================= */}
             <div className="block overflow-x-auto md:table md:w-full">
-              <table className="w-full border-separate"style={{ borderSpacing: '0 8px' }}
+              <table
+                className="w-full border-separate"
+                style={{ borderSpacing: '0 8px' }}
               >
                 <thead>
                   <tr>
-                    <th className="p-3 text-left text-[13px] text-muted">
-                      Veranstaltung
-                    </th>
-                    <th className="p-3 text-left text-[13px] text-muted">
-                      Firma
-                    </th>
-                    <th className="p-3 text-left text-[13px] text-muted">
-                      Status
-                    </th>
-                    <th className="p-3 text-left text-[13px] text-muted">
-                      Aktionen
-                    </th>
+                    <th className="p-3 text-left text-[13px] text-muted">Veranstaltung</th>
+                    <th className="p-3 text-left text-[13px] text-muted">Firma</th>
+                    <th className="p-3 text-left text-[13px] text-muted">Status</th>
+                    <th className="p-3 text-left text-[13px] text-muted">Aktionen</th>
                   </tr>
                 </thead>
 
@@ -218,6 +247,7 @@ function RouteComponent() {
                     </tr>
                   ))}
                 </tbody>
+
               </table>
             </div>
           </Card>

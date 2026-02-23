@@ -9,6 +9,7 @@ import backgroundImage from '@/assets/Background.png'
 import { Link } from '@tanstack/react-router';
 import { getCurrentUser, getUserId } from "../../api/authApi";
 import { getUserRegistrations } from "../../api/registrationsApi";
+import { getAllEvents } from "../../api/eventsApi";
 import StatusIcon from "@/components/ui/StatusIcon";
 
 export const Route = createFileRoute('/dashboard-user/')({
@@ -16,36 +17,25 @@ export const Route = createFileRoute('/dashboard-user/')({
 });
 
 function RouteComponent() {
-const events = [
-  {
-    id: 1,
-    name: 'Tag der Ausbildung 2026',
-    date: '15. März 2026',
-    is_locked: false, // Anmeldung OFFEN
-  },
-  {
-    id: 2,
-    name: 'Karrieretag IT 2026',
-    date: '10. Juni 2026',
-    is_locked: true, // Anmeldung GESPERRT
-  },
-];
-
- 
 
     const { t } = useTranslation();
 
     const [user, setUser] = useState(null);
     const [registrationsData, setRegistrationsData] = useState(null);
+    const [events, setEvents] = useState(null);
 
     useEffect(() => {
         getCurrentUser()
             .then(setUser)
-            .catch((err) => console.error("Failed to fetch current user:", err));
+            .catch(err => console.error("Failed to fetch current user:", err));
 
         getUserRegistrations(getUserId())
             .then(setRegistrationsData)
-            .catch((err) => console.error("Failed to fetch registrations for user:", err));
+            .catch(err => console.error("Failed to fetch registrations:", err));
+
+        getAllEvents()
+            .then(setEvents)
+            .catch(err => console.error("Failed to fetch events:", err));
     }, []);
 
     const getStatusLabel = (statusId) => {
@@ -118,7 +108,7 @@ const events = [
                                                         </td>
                                                         <td className={`status ${status.type}`}>{status.icon && <StatusIcon type={status.icon} />} {status.text}</td>
                                                         <td>
-                                                            <Link to="/dashboard-user/bearbeiten/infostand/1" className="rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]">
+                                                            <Link to={`/dashboard-user/bearbeiten/infostand/${reg.id}`} className="rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]">
                                                                 Bearbeiten</Link>
                                                         </td>
                                                     </tr>
@@ -130,47 +120,47 @@ const events = [
                             </Card>
                         </div>
                         {/* RECHTS */}
-                        <div className="flex">
-                           <Card title="Bevorstehende Veranstaltungen" className="w-[100%] ml-[4px] full-height">
-  {events.map((event) => (
-<div key={event.id} className="mb-4">
-      {/* Veranstaltungsname */}
-<p className="link font-medium">
-        {event.name}
-</p>
- 
-      {/* Datum */}
-<small className="text-muted">
-        {event.date}
-</small>
- 
-      {/* ANMELDEN BUTTON */}
-<div className="mt-2">
-<Link
-          to={`/dashboard-user/anmelden/${event.id}`}
-          className={`
-            block w-full rounded-md px-4 py-2 text-center text-sm font-medium
-            ${
-              event.is_locked
-                ? 'pointer-events-none cursor-not-allowed bg-gray-200 text-gray-400'
-                : 'bg-primary text-white hover:bg-primary/90'
-            }
-          `}
->
-          {event.is_locked
-            ? 'Anmeldung geschlossen'
-            : 'Jetzt anmelden'}
-</Link>
-</div>
- 
-      <hr className="mt-4" />
-</div>
-  ))}
-</Card>
+                        <div className="flex" >
+                           <Card title="Bevorstehende Veranstaltungen" className="full-height">
+                        {events.map((event) => (
+                            <div key={event.id} className="mb-4">
+                                {/* Veranstaltungsname */}
+                            <p className="link font-medium">
+                                    {event.name}
+                            </p>
+                            
+                                {/* Datum */}
+                            <small className="text-muted">
+                                    {event.event_date}
+                            </small>
+                            
+                                {/* ANMELDEN BUTTON */}
+                            <div className="mt-2">
+                            <Link
+                                    to={`/dashboard-user/anmelden/${event.id}`}
+                                    className={`
+                                        block w-full rounded-md px-4 py-2 text-center text-sm font-medium
+                                        ${
+                                        event.registration_locked
+                                            ? 'pointer-events-none cursor-not-allowed bg-gray-200 text-gray-400'
+                                            : 'bg-primary text-white hover:bg-primary/90'
+                                        }
+                                    `}
+                            >
+                                    {event.registration_locked
+                                        ? 'Anmeldung geschlossen'
+                                        : 'Jetzt anmelden'}
+                            </Link>
+                            </div>
+                            
+                                <hr className="mt-4" />
+                            </div>
+                            ))}
+                        </Card>
+                            </div>
                         </div>
-                    </div>
-                </div >
-            </main >
-        </div >
-    );
-}
+                    </div >
+                </main >
+            </div >
+        );
+    }

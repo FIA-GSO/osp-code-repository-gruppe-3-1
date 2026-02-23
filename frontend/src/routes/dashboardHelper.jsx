@@ -1,16 +1,39 @@
 import { createFileRoute } from '@tanstack/react-router'
-import Sidebar from '@/components/layout/sidebar'; import Topbar from '@/components/layout/topbar'; import Card from '@/components/ui/card';
-
+import Sidebar from '@/components/layout/sidebar'; 
+import Topbar from '@/components/layout/topbar'; 
+import Card from '@/components/ui/card';
+import backgroundImage from '@/assets/Background.png'
+import { useEffect, useState } from 'react';
+import { getAllEventSummaries } from '@/api/eventsApi';
 
 export const Route = createFileRoute('/dashboardHelper')({
-
     component: RouteComponent,
 })
 
 function RouteComponent() {
+    const [summaries, setSummaries] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+
     const handleExport = () => {
         console.log('Listenexport gestartet');
     };
+
+    useEffect(() => {
+        getAllEventSummaries()
+            .then(data => {
+                setSummaries(data);
+            })
+            .catch(err => console.error("Failed to load event summaries:", err))
+            .finally(() => setIsLoading(false));
+    }, []);
+
+    if (isLoading) {
+        return (
+            <div className="flex min-h-screen items-center justify-center">
+                Lade Eventübersicht…
+            </div>
+        );
+    }
 
     return (
         <div
@@ -20,22 +43,19 @@ function RouteComponent() {
             }}
         >
             <Sidebar />
-
             <main className="flex-1">
                 <Topbar />
-
                 <div className="max-w-[1100px] p-8">
                     <div className="mb-4 flex items-center justify-between">
                         <h1 className="text-text">Helfer Dashboard</h1>
-                        <button onClick={handleExport} className="rounded-md bg-[#f1f3f6] px-4 py-2 hover:bg-[#e5e9ef]"                        >
+                        <button onClick={handleExport} className="rounded-md bg-[#f1f3f6] px-4 py-2 hover:bg-[#e5e9ef]">
                             📄 Listen exportieren
                         </button>
                     </div>
 
                     <Card title="Material- & Ressourcenübersicht">
                         <div className="block overflow-x-auto md:table md:w-full">
-                            <table className="w-full border-separate" style={{ borderSpacing: '0 8px' }}
-                            >
+                            <table className="w-full border-separate" style={{ borderSpacing: '0 8px' }}>
                                 <thead>
                                     <tr>
                                         <th className="text-[13px] text-muted">Veranstaltung</th>
@@ -46,22 +66,15 @@ function RouteComponent() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr className="bg-[#fafbfc]">
-                                        <td className="p-3 text-primary">
-                                            Tag der Ausbildung 2026
-                                        </td>
-                                        <td className="p-3">60</td>
-                                        <td className="p-3">30</td>
-                                        <td className="p-3">Beamer</td>
-                                    </tr>
-                                    <tr className="bg-[#fafbfc]">
-                                        <td className="p-3 text-primary">
-                                            Karrieretag IT 2026
-                                        </td>
-                                        <td className="p-3">45</td>
-                                        <td className="p-3">20</td>
-                                        <td className="p-3">Stellwand</td>
-                                    </tr>
+                                    {summaries.map(event => (
+                                        <tr key={event[0].event_id} className="bg-[#fafbfc]">
+                                            <td className="p-3 text-primary">{event[0].event_name}</td>
+                                            <td className="p-3">{event[0].total_chairs}</td>
+                                            <td className="p-3">{event[0].total_tables}</td>
+                                            <td className="p-3">{event[0].combined_required_tech || '-'}</td>
+                                            <td className="p-3">{event[0].halls_needed}</td>
+                                        </tr>
+                                    ))}
                                 </tbody>
                             </table>
                         </div>
