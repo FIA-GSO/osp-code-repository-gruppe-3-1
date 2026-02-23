@@ -1,4 +1,10 @@
-import { createFileRoute, Link } from '@tanstack/react-router';import { useState } from 'react';import Sidebar from '@/components/layout/sidebar';import Topbar from '@/components/layout/topbar';import StatusCard from '@/components/ui/status-card';import Card from '@/components/ui/card';import backgroundImage from '@/assets/Background.png';
+import { createFileRoute } from '@tanstack/react-router'; 
+import Sidebar from '@/components/layout/sidebar'; 
+import Topbar from '@/components/layout/topbar'; 
+import StatusCard from '@/components/ui/status-card'; 
+import Card from '@/components/ui/card'; 
+import { Link } from '@tanstack/react-router';
+import backgroundImage from '@/assets/Background.png'
 export const Route = createFileRoute('/dashboard-teacher/registrierungen')({
   component: RouteComponent,
 });
