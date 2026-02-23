@@ -1,0 +1,33 @@
+{% extends "base_mail.html" %}
+ 
+{% block content %}
+ 
+<h2>Status Ihres Vortrags</h2>
+ 
+<p>Sehr geehrte/r {{ contact or "Referent/in" }},</p>
+ 
+<p>
+    vielen Dank für die Einreichung Ihres Vortrags
+<strong>"{{ lecture_title }}"</strong>.
+</p>
+ 
+<p>
+    Leider müssen wir Ihnen mitteilen, dass Ihr Beitrag
+    nicht berücksichtigt werden konnte.
+</p>
+ 
+<p>
+<strong>Veranstaltung:</strong> {{ event_name }}
+</p>
+ 
+<p>
+    Wir bedanken uns für Ihr Engagement und freuen uns,
+    wenn Sie bei zukünftigen Veranstaltungen erneut teilnehmen.
+</p>
+ 
+<p>
+    Mit freundlichen Grüßen<br>
+    Ihr Organisationsteam
+</p>
+ 
+{% endblock %}

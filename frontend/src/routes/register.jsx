@@ -5,21 +5,17 @@ import logo from '@/assets/logo-gso3.png';
 import { checkPasswordStrength } from '@/utils/password';
 import backgroundImage from '@/assets/Background.png'
 import { createUser } from '../api/userApi'
+import { useMutation } from "@tanstack/react-query";
 
 export const Route = createFileRoute('/register')({
     component: RouteComponent,
 });
 
 function RouteComponent() {
-
-
     const { t } = useTranslation();
     const [isSuccess, setIsSuccess] = useState(false);
     const [error, setError] = useState('');
-    const register = useRegister();
-
     const [acceptedPrivacy, setAcceptedPrivacy] = useState(false);
-
     const [form, setForm] = useState({
         company: '',
         contact: '',
@@ -28,7 +24,15 @@ function RouteComponent() {
         passwordConfirm: '',
     });
 
-    
+    const register = useMutation({
+  mutationFn: (data) =>
+    createUser(
+      data.email,
+      data.company,
+      data.contact,
+      data.password
+    ),
+});
 
     const passwordRules = checkPasswordStrength(form.password);
 
@@ -49,59 +53,39 @@ const isFormValid =
   isFormComplete &&
   isPasswordValid &&
   form.password === form.passwordConfirm &&
-  acceptedPrivacy &&
+  acceptedPrivacy 
+  &&
   !register.isPending;
+
 const handleSubmit = (e) => {
   e.preventDefault();
-  setError('');
-
-  if (!isFormValid) {
-    return;
-  }
-
-  if (form.password !== form.passwordConfirm) {
-    setError(t('errors.passwordMismatch'));
-    return;
-  }
-
-        if(!passwordRules.number || !passwordRules.length || !passwordRules.uppercase) {
-            setError(t("errors.passwordNotStrong"));
-            return;
-        }
-        
-
-        const res = createUser(form.email, form.company, form.contact, form.password);
-
-        if(res){
-            setIsSuccess(true);
-        }
-    };
+  setError("");
+ 
+  if (!isFormValid) return;
+ 
   register.mutate(
+    { ...form, privacyAccepted: true },
     {
-      ...form,
-      privacyAccepted: true, // 🔒 Backend-ready   
-       },
-    {
-      onSuccess: () => setIsSuccess(true),
+      onSuccess: () => {
+        setIsSuccess(true);
+      },
       onError: (err) => {
         setError(
           err.response?.data?.message ||
-            t('errors.registrationFailed')
+          t("errors.registrationFailed")
         );
       },
     }
   );
 };
-
     if (isSuccess) {
         return (
-            <div
-                className="flex min-h-screen items-center justify-center bg-cover bg-center bg-no-repeat p-5"
-                style={{
-                    backgroundImage:
-                        `linear-gradient(rgba(255,255,255,0.65), rgba(255,255,255,0.65)), url(${backgroundImage})`,
-                }}
-            >
+            <div className="flex min-h-screen items-center justify-center bg-cover bg-center bg-no-repeat p-5" 
+                        style={{
+                backgroundImage:
+                    `linear-gradient(rgba(255,255,255,0.75), rgba(255,255,255,0.75)),   url(${backgroundImage})`
+                ,
+            }}>
                 <div className="w-full max-w-[430px] overflow-hidden rounded-[10px] bg-white shadow-[0_10px_30px_rgba(0,0,0,0.15)]">
                     <div className="bg-primary p-[25px] text-center text-white">
                         <img src={logo} alt={t('common.logoAlt')} className="mx-auto mb-1.5 w-[120px]" />
@@ -142,7 +126,8 @@ const handleSubmit = (e) => {
             className="flex min-h-screen items-center justify-center bg-cover bg-center bg-no-repeat p-5"
             style={{
                 backgroundImage:
-                    "linear-gradient(rgba(255,255,255,0.65), rgba(255,255,255,0.65)), url(${backgroundImage})",
+                    `linear-gradient(rgba(255,255,255,0.75), rgba(255,255,255,0.75)),   url(${backgroundImage})`
+                ,
             }}
         >
             <div className="w-full max-w-[430px] overflow-hidden rounded-[10px] bg-white shadow-[0_10px_30px_rgba(0,0,0,0.15)]">
@@ -267,10 +252,9 @@ const handleSubmit = (e) => {
         ? 'bg-primary text-white hover:bg-primary-dark cursor-pointer'        : 'bg-[#d0d7e2] text-[#7a7a7a] cursor-not-allowed'    }
   `}
 >
-  {register.isPending    ? t('auth.registerPending')
-    : t('auth.register')}
+  {/* {register.isPending    ? t('auth.registerPending'): t('auth.register')} */}
 </button>
-                       
+
                     </form>
 
                     <div className="mt-4 text-sm text-muted">

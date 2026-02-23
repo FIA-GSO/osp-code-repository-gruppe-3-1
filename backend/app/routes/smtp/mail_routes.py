@@ -5,7 +5,7 @@ import os
 from flask_cors import CORS
 from flask import current_app, render_template
 
-mail_bp = Blueprint('mail', __name__, url_prefix="/api/smtp")
+mail_bp = Blueprint('mail', __name__, template_folder="templates")
 
 CORS(
     mail_bp,
@@ -13,30 +13,20 @@ CORS(
     supports_credentials=True
 )
 
-def send_template_mail(to: str, subject: str, template: str, context: dict):
-    """
-    Sendet eine HTML-Mail basierend auf einem Jinja-Template.
- 
-    Args:
-        to (str): Empfänger-E-Mail-Adresse
-        subject (str): Betreff der E-Mail
-        template (str): Name des HTML-Templates (z.B. 'registration_received.html')
-        context (dict): Kontext-Daten für das Template
-    """
- 
+def send_template_mail(to: str, subject: str, template: str, context: dict): 
     if not to:
         raise ValueError("No recipient email provided")
  
     # 🔹 HTML aus Template rendern
     html_body = render_template(
-        f"smtp/{template}",
+        template,
         **context,
         subject=subject
     )
  
     # 🔹 Plain-Text Fallback (wichtig für Mail-Clients)
     text_body = render_template(
-        f"smtp/{template}",
+        template,
         **context,
         subject=subject
     )
@@ -61,32 +51,7 @@ def send_template_mail(to: str, subject: str, template: str, context: dict):
         current_app.logger.error(
             f"Mail sending failed to {to}: {str(e)}"
         )
-        raise
-
-# @mail_bp.route('/send', methods=['POST'])
-# def send_raw_mail():
-#     data = request.get_json(force=True)
-#     recipient = data.get('to')
-#     subject = data.get('subject')
-#     body = data.get('body')
-
-#     if not all([recipient, subject, body]):
-#         return jsonify({"error": "Missing fields"}), 400
-
-#     msg = Message(
-#         subject=subject,
-#         recipients=[recipient],
-#         body=body,
-#         sender=os.getenv('MAIL_DEFAULT_SENDER')
-#     )
-
-#     try:
-#         mail.send(msg)
-#         return jsonify({"message": "Email sent successfully"}), 200
-#     except Exception as e:
-#         print("MAIL ERROR:", e)
-#         return jsonify({"error": str(e)}), 500
-    
+        raise    
     
 @mail_bp.route('/registration/received', methods=['POST'])
 def send_registration_received():
@@ -101,27 +66,39 @@ def send_registration_received():
 
     return jsonify({'message': 'Mail sent'}), 200 
 
-@mail_bp.route('/registration/status', methods=['POST']) 
+@mail_bp.route('/registration/status', methods=['POST'])
 def send_registration_status():
     data = request.json
-
+    status = data.get("status")
+    if status == "accepted":
+        template = "registration_status_accepted.html"
+    else:
+        template = "registration_status_rejected.html"
+ 
     send_template_mail(
         to=data['email'],
-        subject='Status Ihrer Registrierung',
-        template='registration_status_changed.html',
+        subject='Status Ihrer Veranstaltung',
+        template=template,
         context=data
     )
-
-    return jsonify({'message': 'Mail sent'}), 200 
+ 
+    return jsonify({'message': 'Event status mail sent'}), 200
 
 @mail_bp.route('/lecture/status', methods=['POST'])
 def send_lecture_status():
     data = request.json
  
+    status = data.get("status")
+ 
+    if status == "accepted":
+        template = "lecture_status_accepted.html"
+    else:
+        template = "lecture_status_rejected.html"
+ 
     send_template_mail(
         to=data['email'],
         subject='Status Ihres Vortrags',
-        template='lecture_status_changed.html',
+        template=template,
         context=data
     )
  

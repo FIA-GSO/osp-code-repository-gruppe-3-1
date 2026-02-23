@@ -93,15 +93,15 @@ const applyTemplate = (templateId) => {
    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        await fetch('/api/smtp/registration/received', {
+        await fetch('http://127.0.0.1:5000/mail/registration/received', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
                 email: user.email,
-                event: event.name,
-                hasLecture: registration.with_lecture,
+                event_name: event.name,
+                has_Lecture: registration.with_lecture,
             }),
         });
 

@@ -4,7 +4,10 @@ import Topbar from '@/components/layout/topbar';
 import StatusCard from '@/components/ui/status-card'; 
 import Card from '@/components/ui/card'; 
 import { Link } from '@tanstack/react-router';
+import { useState } from 'react';
 import backgroundImage from '@/assets/Background.png'
+import StatusIcon from "@/components/ui/StatusIcon";
+
 export const Route = createFileRoute('/dashboard-teacher/registrierungen')({
   component: RouteComponent,
 });
@@ -25,7 +28,7 @@ function RouteComponent() {
       event: 'Tag der Ausbildung 2026',
       company: 'FutureIT GmbH',
       status: 'offen',
-      email: 'kontakt@futureit.de',
+      email: 'pravingnanasooriyan@gmail.com',
     },
     {
       id: 3,
@@ -53,12 +56,12 @@ function RouteComponent() {
      ===================================================== */
     const handleAccept = async (registration) => {
     try {
-      await fetch('http://127.0.0.1:5000/api/smtp/registration/status', {
+      await fetch('http://127.0.0.1:5000/mail/registration/status', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email: registration.email,
-          status: 'angenommen',
+          status: 'accepted',
           event_name: registration.event,
         }),
       });
@@ -70,12 +73,12 @@ function RouteComponent() {
 
   const handleReject = async (registration) => {
     try {
-      await fetch('http://127.0.0.1:5000/api/smtp/registration/status', {
+      await fetch('http://127.0.0.1:5000/mail/registration/status', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email: registration.email,
-          status: 'abgelehnt',
+          status: 'rejected',
           event_name: registration.event,
         }),
       });
@@ -163,17 +166,23 @@ function RouteComponent() {
                       <td className="p-3">
                         {registration.status === 'offen' && (
                           <span className="text-warning-text">
-                            ⏳ Offen
+                          <button>
+  <StatusIcon type="pending" />
+</button>
                           </span>
                         )}
                         {registration.status === 'angenommen' && (
                           <span className="text-success-text">
-                            ✔ Angenommen
+                           <button>
+  <StatusIcon type="accepted" />
+</button>
                           </span>
                         )}
                         {registration.status === 'abgelehnt' && (
                           <span className="text-error-text">
-                            ✖ Abgelehnt
+                         <button>
+  <StatusIcon type="rejected" />
+</button>
                           </span>
                         )}
                       </td>
@@ -187,7 +196,7 @@ function RouteComponent() {
                               className="mr-2 rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]"
                               title="Annehmen"
                             >
-                              ✔
+                                <StatusIcon type="accepted" />
                             </button>
 
                             <button onClick={() =>
@@ -196,7 +205,7 @@ function RouteComponent() {
                               className="mr-2 rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]"
                               title="Ablehnen"
                             >
-                              ✖
+                                <StatusIcon type="rejected" />
                             </button>
                           </>                        )}
 

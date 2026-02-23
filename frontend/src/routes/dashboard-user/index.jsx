@@ -9,7 +9,7 @@ import backgroundImage from '@/assets/Background.png'
 import { Link } from '@tanstack/react-router';
 import { getCurrentUser, getUserId } from "../../api/authApi";
 import { getUserRegistrations } from "../../api/registrationsApi";
-
+import StatusIcon from "@/components/ui/StatusIcon";
 
 export const Route = createFileRoute('/dashboard-user/')({
     component: RouteComponent,
@@ -50,10 +50,10 @@ const events = [
 
     const getStatusLabel = (statusId) => {
         switch (statusId) {
-            case 1: return { label: "⏳ Eingereicht", type: "warning" };
-            case 2: return { label: "✔ Bestätigt", type: "success" };
-            case 3: return { label: "✖ Abgelehnt", type: "danger" };
-            default: return { label: "Unbekannt", type: "info" };
+            case 1: return { text: "Eingereicht", icon:"pending", type: "warning" };
+            case 2: return { text: "Bestätigt", icon:"accepted", type: "success" };
+            case 3: return { text: "Abgelehnt", icon:"rejected", type: "danger" };
+            default: return { label: "Unbekannt", icon: null, type: "info" };
         }
     };
 
@@ -116,7 +116,7 @@ const events = [
                                                         <td>
                                                             {reg.with_lecture ? "Ja" : "Nein"}
                                                         </td>
-                                                        <td className={`status ${status.type}`}>{status.label}</td>
+                                                        <td className={`status ${status.type}`}>{status.icon && <StatusIcon type={status.icon} />} {status.text}</td>
                                                         <td>
                                                             <Link to="/dashboard-user/bearbeiten/infostand/1" className="rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]">
                                                                 Bearbeiten</Link>

@@ -1,6 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'; import Sidebar from '@/components/layout/sidebar'; import Topbar from '@/components/layout/topbar'; import Card from '@/components/ui/card'; 
 import backgroundImage from '@/assets/Background.png'
 import { Link } from '@tanstack/react-router';
+import StatusIcon from "@/components/ui/StatusIcon";
+
+
 export const Route = createFileRoute('/dashboard-teacher/veranstaltungen')({
   // beforeLoad: () => {
   //   const role = useAuthStore.getState().user?.role;
@@ -58,9 +61,7 @@ function RouteComponent() {
                     </td>
                     <td className="p-3">GSO Köln</td>
                     <td className="p-3">
-                      <span className="text-success-text font-medium">
-                        Offen
-                      </span>
+                        <StatusIcon type="openText" />
                     </td>
                     <td className="p-3">
                       <button className="rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]">
@@ -75,9 +76,8 @@ function RouteComponent() {
                     </td>
                     <td className="p-3">Berufskolleg Südstadt</td>
                     <td className="p-3">
-                      <span className="text-error-text font-medium">
-                        Gesperrt
-                      </span>
+                                            <StatusIcon type="closedText" />
+
                     </td>
                     <td className="p-3">
                       <button className="rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]">

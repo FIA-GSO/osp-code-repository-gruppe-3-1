@@ -1,0 +1,31 @@
+{% extends "base_mail.html" %}
+ 
+{% block content %}
+ 
+<h2>Ihr Vortrag wurde angenommen 🎉</h2>
+ 
+<p>Sehr geehrte/r {{ contact or "Referent/in" }},</p>
+ 
+<p>
+    wir freuen uns, Ihnen mitteilen zu können, dass Ihr eingereichter Vortrag
+<strong>"{{ lecture_title }}"</strong>
+    angenommen wurde.
+</p>
+ 
+<p>
+<strong>Veranstaltung:</strong> {{ event_name }}<br>
+    {% if event_date %}
+<strong>Datum:</strong> {{ event_date }}
+    {% endif %}
+</p>
+ 
+<p>
+    Weitere organisatorische Informationen erhalten Sie in Kürze.
+</p>
+ 
+<p>
+    Mit freundlichen Grüßen<br>
+    Ihr Organisationsteam
+</p>
+ 
+{% endblock %}
