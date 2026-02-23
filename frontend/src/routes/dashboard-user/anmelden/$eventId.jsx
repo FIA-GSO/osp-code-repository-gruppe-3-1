@@ -94,6 +94,18 @@ function RouteComponent() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        await fetch('/api/smtp/registration/received', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: user.email,
+                event: event.name,
+                hasLecture: registration.with_lecture,
+            }),
+        });
+
         if (!acceptedPrivacy) {
             alert('Bitte stimmen Sie der Datenschutzerklärung zu.');
             return;
@@ -353,7 +365,7 @@ function RouteComponent() {
                         <span className="text-sm">
                             Ich habe die{' '}
                             <a
-                                href="https://www.gso-koeln.de/"
+                                href="https://www.gso-koeln.de/datenschutzerklaerung/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-primary underline"

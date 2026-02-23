@@ -20,7 +20,7 @@ export const Route = createFileRoute('/dashboard-teacher/vortraege')({
 
 
 function RouteComponent() {
-      const registration ={id: 1}
+      const lecture ={id: 1}
       const lectures = [
   {
     id: 1,
@@ -41,6 +41,45 @@ function RouteComponent() {
     status: 'abgelehnt',
   },
 ];
+
+const handleAccept = async (lecture) => {
+  // Status lokal ändern (oder API)
+  await fetch('/api/smtp/lecture/status', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      email: lecture.email,
+      status: 'angenommen',
+      event: lecture.event,
+    }),
+  });
+};
+
+const handleReject = async (lecture) => {
+  try {
+    // TODO (Backend):// PUT /api/lecture/{id}/status -> abgelehnt
+    await fetch('/api/smtp/lecture/status', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: lecture.email,
+        status: 'abgelehnt',
+        event_name: lecture.event,
+
+        // optional später:// reason: 'Alle Standplätze sind vergeben'  
+            }),
+    });
+
+    console.log('Infostand abgelehnt:', lecture.id);
+  } catch (error) {
+    console.error('Fehler beim Ablehnen (Infostand):', error);
+  }
+};
+
 const [statusFilter, setStatusFilter] = useState('');const [eventFilter, setEventFilter] = useState('');const [search, setSearch] = useState('');
 const filteredLectures = lectures.filter((lecture) => {
   return (
@@ -142,20 +181,18 @@ const filteredLectures = lectures.filter((lecture) => {
       <td className="p-3">
         {/* Nur wenn OFFEN */}
         {lecture.status === 'offen' && (
-          <><button className="mr-2 rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]"onClick={() =>
-                console.log('Vortrag annehmen', lecture.id)
-              }
-            >
-              ✔
-            </button>
+  <><button onClick={() => handleAccept(lecture)}
+      className="mr-2 rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]"
+    >
+      ✔
+    </button>
 
-            <button className="mr-2 rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]"onClick={() =>
-                console.log('Vortrag ablehnen', lecture.id)
-              }
-            >
-              ✖
-            </button>
-          </>        )}
+    <button onClick={() => handleReject(lecture)}
+      className="mr-2 rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]"
+    >
+      ✖
+    </button>
+  </>)}
 
         {/* Details immer */}
         <Link to={`/dashboard-teacher/details/lecture/${lecture.id}`}

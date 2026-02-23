@@ -1,0 +1,23 @@
+{% extends "base_mail.html" %}
+{% block content %}
+<p>Sehr geehrte Damen und Herren,</p>
+<p>
+  vielen Dank für Ihre Anmeldung zum
+  <strong>{{ event_name }}</strong>.</p>
+<p>
+  Ihre Registrierung ist erfolgreich bei uns eingegangen und wird derzeit vom Organisationsteam geprüft.</p>
+<ul>
+  <li><strong>Veranstaltung:</strong> {{ event_name }}</li>
+  <li><strong>Infostand:</strong> angemeldet</li>
+  {% if has_lecture %}
+    <li><strong>Vortrag:</strong> angemeldet</li>
+  {% else %}
+    <li><strong>Vortrag:</strong> nicht angemeldet</li>
+  {% endif %}</ul>
+<p>
+  Sie werden automatisch per E-Mail informiert, sobald sich der Status Ihrer Anmeldung ändert.</p>
+<p>
+  Mit freundlichen Grüßen<br />
+  <strong>Ihr GSO Marketplace Team</strong></p>
+
+{% endblock %}

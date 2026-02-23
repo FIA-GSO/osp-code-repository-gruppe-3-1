@@ -1,0 +1,21 @@
+{% extends "base_mail.html" %}
+{% block content %}
+<p>Sehr geehrte Damen und Herren,</p>
+<p>
+  leider müssen wir Ihnen mitteilen, dass Ihre Anmeldung für
+  <strong>{{ event_name }}</strong> nicht berücksichtigt werden konnte.</p>
+<ul>
+  <li><strong>Status:</strong> Abgelehnt</li>
+  <li><strong>Veranstaltung:</strong> {{ event_name }}</li></ul>
+
+{% if reason %}<p>
+  <strong>Begründung:</strong><br />
+  {{ reason }}</p>
+{% endif %}
+<p>
+  Wir bedanken uns dennoch für Ihr Interesse.</p>
+<p>
+  Mit freundlichen Grüßen<br />
+  <strong>Ihr GSO Marketplace Team</strong></p>
+
+{% endblock %}
