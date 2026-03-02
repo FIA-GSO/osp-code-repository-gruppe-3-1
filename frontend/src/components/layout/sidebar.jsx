@@ -1,22 +1,9 @@
 import { Link } from '@tanstack/react-router';
 
 import logo from '@/assets/Logo-GSO3.png'
-import { useTranslation } from 'react-i18next';
 import { getUserRole } from '@/api/authApi';
 
-/**
-
-* Zentrale Sidebar
-
-* – eine Sidebar für alle Rollen
-
-* – Navigation wird rollenabhängig angezeigt
-
-*/
-
 export default function Sidebar() {
-
-
     return (
         <aside className="w-[230px] bg-primary text-white"
             style={{
@@ -34,41 +21,28 @@ export default function Sidebar() {
             < nav className="flex flex-col" >
 
                 {/* ================= USER ================= */}
-
                 {
-                   getUserRole() === 'user' || getUserRole() === 'admin' &&
+                  (getUserRole() === 'user' || getUserRole() === 'admin') &&
                     (
                         <SidebarLink
-
                             to="/dashboard-user"
-
                             label="Dashboard"
-
                         />
-
                     )
                 }
 
                 {/* ================= LEHRER ================= */}
-
                 {
-                   getUserRole() === 'teacher' || getUserRole() === 'admin' && 
+                   (getUserRole() === 'teacher' || getUserRole() === 'admin') && 
                     (
                         <>
                             <SidebarLink
-
                                 to="/dashboard-teacher/registrierungen"
-
                                 label="Registrierungen"
-
                             />
-            
                             <SidebarLink
-
                                 to="/dashboard-teacher/veranstaltungen"
-
                                 label="Veranstaltungen"
-
                             />
                         </>
 
@@ -76,25 +50,19 @@ export default function Sidebar() {
                 }
 
                 {/* ================= HELFER ================= */}
-
                 {
-                   getUserRole() === 'helper' || getUserRole() === 'admin' && 
+                   (getUserRole() === 'helper' || getUserRole() === 'admin') && 
                     (
                         <SidebarLink
-
                             to="/dashboardHelper"
-
                             label="Helfer Dashboard"
-
                         />
-
                     )
                 }
             </nav >
         </aside >
 
     );
-
 }
 
 /**

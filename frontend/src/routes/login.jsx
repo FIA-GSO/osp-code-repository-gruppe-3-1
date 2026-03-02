@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import logo from '@/assets/logo-gso3.png';
 import backgroundImage from '@/assets/Background.png';
+import { getDashboardByRole } from "@/utils/roleRedirect";
 
 export const Route = createFileRoute('/login')({
     component: RouteComponent,
@@ -20,14 +21,11 @@ function RouteComponent() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
-
         try {
-            const data = await login(email, password);
-
-            saveSession(data);
-
-            navigate({ to: "/dashboard-user" }); 
-
+                const data = await login(email, password);
+                saveSession(data);
+                const redirectTo = getDashboardByRole();
+                navigate({ to: redirectTo });
         } catch (err) {
             console.log(err);
             if (err.response) {

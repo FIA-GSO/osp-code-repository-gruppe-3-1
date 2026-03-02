@@ -167,7 +167,7 @@ const uniqueEvents = [
 </select>
 
               <table
-                className="w-full border-separate"
+                className="w-full border-separate "
                 style={{ borderSpacing: '0 8px' }}
               >
                 <thead>
