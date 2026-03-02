@@ -14,6 +14,18 @@
 
 ---
 
+Zum testen, im Backend eine .env anlegen und dort folgende Daten eintragen:
+```
+DB_USER=root
+DB_PASSWORD=*passwort*
+DB_HOST=localhost
+DB_NAME=anmeldetoolmarketplace
+DB_PORT=3306
+
+MAIL_PORT = 4000
+```
+und MySQL script ausführen
+
 ## 2. MySQL Schema & Testdaten
 
 ```sql
@@ -179,15 +191,6 @@ INSERT INTO lecture (registration_id, title, description, speaker, required_tech
 
 ```
 
-Zum testen im Backend eine .env anlegen und dort folgende Daten eintragen:
-```
-DB_USER=root
-DB_PASSWORD=*passwort*
-DB_HOST=localhost
-DB_NAME=anmeldetoolmarketplace
-DB_PORT=3306
 
-MAIL_PORT = 4000
-```
 
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/ekD6YLNP)
