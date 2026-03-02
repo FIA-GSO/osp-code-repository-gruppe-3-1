@@ -4,3 +4,5 @@ flask-migrate
 pymysql
 python-dotenv
 flask-restx
+flask-mail
+flask-cors
