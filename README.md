@@ -8,6 +8,8 @@
 | kontakt@techsolutions.de    | USER   | Start123!   |
 | feser@gso-koeln.de          | LEHRER | Start123!   |
 | admin@gso-koeln.de          | ADMIN  | Start123!   |
+| helper@gso-koeln.de         | HELPER | Start123!   |
+
 
 
 ---
@@ -32,9 +34,9 @@ CREATE TABLE role (
 ) ENGINE=InnoDB;
 
 -- -------------------------
--- 2) USERS
+-- 2) USERS (user ist reserviert!)
 -- -------------------------
-CREATE TABLE users (
+CREATE TABLE user (
     id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(255) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
@@ -55,7 +57,7 @@ CREATE TABLE user_role (
     PRIMARY KEY (user_id, role_id),
     CONSTRAINT fk_user_role_user
         FOREIGN KEY (user_id)
-        REFERENCES users(id)
+        REFERENCES user(id)
         ON DELETE CASCADE,
     CONSTRAINT fk_user_role_role
         FOREIGN KEY (role_id)
@@ -98,7 +100,7 @@ CREATE TABLE registration (
         ON UPDATE CURRENT_TIMESTAMP,
     CONSTRAINT fk_registration_user
         FOREIGN KEY (user_id)
-        REFERENCES users(id)
+        REFERENCES user(id)
         ON DELETE CASCADE,
     CONSTRAINT fk_registration_event
         FOREIGN KEY (event_id)
@@ -130,27 +132,31 @@ CREATE TABLE lecture (
 -- TESTDATEN
 -- =====================================================
 
--- ROLES
+-- ROLE
 INSERT INTO role (id, name, description) VALUES
 (1, 'user', 'Ausbildungsbetrieb'),
 (2, 'teacher', 'Lehrer / Organisation'),
-(3, 'admin', 'Administrator');
+(3, 'admin', 'Administrator'),
+(4, 'helper', 'Helper');
+
 
 -- USERS
-INSERT INTO users (id, email, password_hash, company_name, contact_person, active) VALUES
+INSERT INTO user (id, email, password_hash, company_name, contact_person, active) VALUES
 (1, 'info@firma-mueller.de', 'scrypt:32768:8:1$NjwB4pz6G3icZhxX$c3826eb8ac6a18f8e795db7cfe2912ed620988701c3a5466f372f09731a13089d8c13520ce9bdb0d23641d6e5b13473935e4ced889221972e0a56c1a25661c1f', 'Müller GmbH', 'Max Müller', TRUE),
 (2, 'kontakt@techsolutions.de', 'scrypt:32768:8:1$NjwB4pz6G3icZhxX$c3826eb8ac6a18f8e795db7cfe2912ed620988701c3a5466f372f09731a13089d8c13520ce9bdb0d23641d6e5b13473935e4ced889221972e0a56c1a25661c1f', 'TechSolutions AG', 'Lisa Becker', TRUE),
-(3, 'feser@gso-koeln.de', 'scrypt:32768:8:1$NjwB4pz6G3icZhxX$c3826eb8ac6a18f8e795db7cfe2912ed620988701c3a5466f372f09731a13089d8c13520ce9bdb0d23641d6e5b13473935e4ced889221972e0a56c1a25661c1f', NULL, NULL, TRUE),
-(4, 'admin@gso-koeln.de', 'scrypt:32768:8:1$NjwB4pz6G3icZhxX$c3826eb8ac6a18f8e795db7cfe2912ed620988701c3a5466f372f09731a13089d8c13520ce9bdb0d23641d6e5b13473935e4ced889221972e0a56c1a25661c1f', NULL, NULL, TRUE);
+(3, 'feser@gso-koeln.de', 'scrypt:32768:8:1$NjwB4pz6G3icZhxX$c3826eb8ac6a18f8e795db7cfe2912ed620988701c3a5466f372f09731a13089d8c13520ce9bdb0d23641d6e5b13473935e4ced889221972e0a56c1a25661c1f', "Lehrer", NULL, TRUE),
+(4, 'admin@gso-koeln.de', 'scrypt:32768:8:1$NjwB4pz6G3icZhxX$c3826eb8ac6a18f8e795db7cfe2912ed620988701c3a5466f372f09731a13089d8c13520ce9bdb0d23641d6e5b13473935e4ced889221972e0a56c1a25661c1f', "Admin", NULL, TRUE),
+(5, 'helper@gso-koeln.de', 'scrypt:32768:8:1$NjwB4pz6G3icZhxX$c3826eb8ac6a18f8e795db7cfe2912ed620988701c3a5466f372f09731a13089d8c13520ce9bdb0d23641d6e5b13473935e4ced889221972e0a56c1a25661c1f', "Helper", NULL, TRUE);
 
 -- USER_ROLE
 INSERT INTO user_role (user_id, role_id) VALUES
 (1, 1),
 (2, 1),
 (3, 2),
-(4, 3);
+(4, 3),
+(5, 4);
 
--- EVENTS
+-- EVENT
 INSERT INTO event (id, name, event_date, registration_locked) VALUES
 (1, 'Tag der Ausbildung 2026', '2026-03-15', FALSE),
 (2, 'Karrieretag IT 2026', '2026-06-10', TRUE);
@@ -161,13 +167,13 @@ INSERT INTO status (id, name) VALUES
 (2, 'bestätigt'),
 (3, 'abgelehnt');
 
--- REGISTRATIONS
+-- REGISTRATION
 INSERT INTO registration (id, user_id, event_id, status_id, with_lecture, remarks, tables_needed, chairs_needed) VALUES
 (1, 1, 1, 1, FALSE, 'Benötigen Stromanschluss', 2, 4),
 (2, 2, 1, 2, TRUE, 'Vortrag im IT-Bereich', NULL, NULL),
 (3, 1, 2, 3, FALSE, 'Zu spät angemeldet', 1, 2);
 
--- LECTURES
+-- LECTURE
 INSERT INTO lecture (registration_id, title, description, speaker, required_tech, preferred_time) VALUES
 (2, 'IT Vortrag', 'Ein Vortrag über IT', 'Lisa Becker', 'Beamer, Laptop', '10:00 Uhr');
 
