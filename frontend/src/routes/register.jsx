@@ -31,7 +31,8 @@ function RouteComponent() {
       data.email,
       data.company,
       data.contact,
-      data.password
+      data.password,
+      data.roles
     ),
 });
 
@@ -85,6 +86,7 @@ const handleSubmit = (e) => {
       company: form.company,
       contact: form.contact,
       password: form.password,
+      roles: ["user"]
     },
     {
       onSuccess: () => {

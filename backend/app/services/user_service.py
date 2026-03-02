@@ -35,12 +35,18 @@ class UserService:
         db.session.flush()  # flush so user.id is available
 
         # Assign roles if provided
-        if roles:
+        if roles and len(roles) > 0:
+            # Rollen wurden explizit übergeben
             for role_name in roles:
                 role = Role.query.filter_by(name=role_name).first()
                 if role:
-                    user_role = UserRole(user_id=user.id, role_id=role.id)
-                    user.roles.append(user_role)
+                    user.roles.append(UserRole(role=role))
+        else:
+            # Default-Rolle "User" setzen
+            default_role = Role.query.filter_by(name="User").first()
+            if not default_role:
+                raise ValueError("Default role 'User' not found in database")
+            user.roles.append(UserRole(role=default_role))
 
         db.session.commit()
         return user
