@@ -24,7 +24,6 @@ export const Route = createFileRoute('/dashboard-user/')({
 });
 
 function RouteComponent() {
-
     const { t } = useTranslation();
 
     const [user, setUser] = useState(null);
@@ -60,16 +59,9 @@ function RouteComponent() {
     return (
         <div
             className="flex min-h-screen bg-cover bg-center bg-no-repeat"
-            style={{
-                backgroundImage:
-                    `linear-gradient(rgba(255,255,255,0.75), rgba(255,255,255,0.75)),   url(${backgroundImage})`
-                ,
-            }}
         >
-            <Sidebar />
-
             <main className="flex-1">
-                <Topbar />
+                
 
                 <div className="max-w-[1100px] p-8">
                     <h1 className="mb-[22px] text-text">Willkommen { user.company_name }</h1>

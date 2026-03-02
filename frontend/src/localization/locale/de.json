@@ -41,6 +41,7 @@
     "errors.serverUnreachable": "Server nicht erreichbar",
     "errors.passwordMismatch": "Passwörter stimmen nicht überein",
     "errors.registrationFailed": "Registrierung fehlgeschlagen",
+    "errors.registrationFailedEmail": "Email bereits vergeben",
 
     "navigation.dashboard": "Dashboard",
     "navigation.goToAbout": "Zur About-Seite",

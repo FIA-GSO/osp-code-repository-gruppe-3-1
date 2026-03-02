@@ -1,15 +1,45 @@
 import { Link } from '@tanstack/react-router';
-
 import logo from '@/assets/Logo-GSO3.png'
 import { getUserRole } from '@/api/authApi';
 
-export default function Sidebar() {
-    return (
-        <aside className="w-[230px] bg-primary text-white"
+import { useEffect, useRef } from "react";
+ 
+export default function Sidebar({ open, setOpen }) {
+  const sidebarRef = useRef(null);
+ 
+  useEffect(() => {
+    function handleClickOutside(event) {
+      const isMobile = window.innerWidth <= 768;
+ 
+      if (
+        isMobile &&
+        open &&
+        sidebarRef.current &&
+        !sidebarRef.current.contains(event.target)
+      ) {
+        setOpen(false);
+      }
+    }
+ 
+    document.addEventListener("mousedown", handleClickOutside);
+ 
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [open, setOpen]);
+ 
+  return (
+<div
+      ref={sidebarRef}
+      className={`sidebar ${open ? "open" : ""}`}
+>
+                    <button className="mobile-close" onClick={() => setOpen(false)}>✕</button>
+        <aside className="w-[250px] bg-primary text-white"
             style={{
                 justifyItems:
                     `center`
                 ,
+                height: "stretch",
             }}>
 
             {/* Logo */}
@@ -61,7 +91,7 @@ export default function Sidebar() {
                 }
             </nav >
         </aside >
-
+</div>
     );
 }
 

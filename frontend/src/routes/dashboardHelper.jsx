@@ -50,9 +50,8 @@ function RouteComponent() {
                 backgroundImage: `linear-gradient(rgba(255,255,255,0.75),rgba(255,255,255,0.75)),url(${backgroundImage})`,
             }}
         >
-            <Sidebar />
+       
             <main className="flex-1">
-                <Topbar />
                 <div className="max-w-[1100px] p-8">
                     <div className="mb-4 flex items-center justify-between">
                         <h1 className="text-text">Helfer Dashboard</h1>

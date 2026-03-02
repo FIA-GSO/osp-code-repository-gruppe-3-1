@@ -122,10 +122,9 @@ const uniqueEvents = [
         backgroundImage: `linear-gradient(rgba(255,255,255,0.75),rgba(255,255,255,0.75)),url(${backgroundImage})`,
       }}
     >
-      <Sidebar />
+    
 
       <main className="flex-1">
-        <Topbar />
 
         <div className="max-w-[1100px] p-8">
           <h1 className="mb-6">Lehrer – Registrierungen</h1>

@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import logo from '@/assets/logo-gso3.png';
 import backgroundImage from '@/assets/Background.png';
 import { getDashboardByRole } from "@/utils/roleRedirect";
+import { reloadResources } from "i18next";
 
 export const Route = createFileRoute('/login')({
     component: RouteComponent,
@@ -26,6 +27,9 @@ function RouteComponent() {
                 saveSession(data);
                 const redirectTo = getDashboardByRole();
                 navigate({ to: redirectTo });
+                setTimeout(() => {
+                    window.location.reload();
+                }, 50);
         } catch (err) {
             console.log(err);
             if (err.response) {

@@ -91,10 +91,7 @@ const handleSubmit = (e) => {
         setIsSuccess(true);
       },
       onError: (err) => {
-        setError(
-          err?.response?.data?.message ||
-          t("errors.registrationFailed")
-        );
+        setError(err?.response?.data?.message ||t("errors.registrationFailed"));
       },
     }
   );

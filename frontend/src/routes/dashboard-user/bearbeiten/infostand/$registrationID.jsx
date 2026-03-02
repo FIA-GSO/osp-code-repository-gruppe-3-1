@@ -225,9 +225,9 @@ function PageWrapper({ children }) {
         `,
       }}
     >
-      <Sidebar />
+    
       <main className="flex-1">
-        <Topbar />
+  
         <div className="max-w-[800px] p-8">{children}</div>
       </main>
     </div>

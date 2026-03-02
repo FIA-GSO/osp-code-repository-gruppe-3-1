@@ -1,5 +1,6 @@
 from flask_restx import Namespace, Resource, fields
 from app.services.user_service import UserService
+from flask import jsonify, request
 
 api = Namespace("users", description="User operations")
 
@@ -13,6 +14,7 @@ user_model = api.model("User", {
     "active": fields.Boolean,
     "created_at": fields.DateTime,
     "updated_at": fields.DateTime,
+    "error": fields.String(description="Error"),
     "roles": fields.List(
         fields.String,
         attribute="role_names", 
@@ -27,7 +29,8 @@ update_user_model = api.model("UpdateUser", {
     "company_name": fields.String(description="Company name (optional)"),
     "contact_person": fields.String(description="Contact person (optional)"),
     "active": fields.Boolean(description="Is user active"),
-    "roles": fields.List(fields.String, description="List of roles to assign")
+    "roles": fields.List(fields.String, description="List of roles to assign"),
+    "error": fields.String(description="Error")
 })
 
 # For creating a user (password required)
@@ -36,7 +39,8 @@ create_user_model = api.model("CreateUser", {
     "password": fields.String(required=True, description="Plain-text password"),
     "company_name": fields.String(description="Company name (optional)"),
     "contact_person": fields.String(description="Contact person (optional)"),
-    "roles": fields.List(fields.String, description="List of roles to assign", required=False)
+    "roles": fields.List(fields.String, description="List of roles to assign", required=False),
+    "error": fields.String(description="Error")
 })
 
 @api.route("/")
@@ -50,14 +54,21 @@ class UserList(Resource):
     @api.marshal_with(user_model, code=201)
     def post(self):
         """Create a new user"""
-        data = api.payload
-        return UserService.create_user(
-            email=data["email"],
-            password=data["password"],
-            company_name=data.get("company_name"),
-            contact_person=data.get("contact_person"),
-            roles=data.get("roles")  
-        ), 201
+        try:
+            data = api.payload
+            return UserService.create_user(
+                email=data["email"],
+                password=data["password"],
+                company_name=data.get("company_name"),
+                contact_person=data.get("contact_person"),
+                roles=data.get("roles")  
+            ), 201
+        except ValueError as e:
+             api.abort(409, str(e))
+
+        except Exception as e:
+             api.abort(500, str(e))
+        
 
 
 @api.route("/<int:user_id>")

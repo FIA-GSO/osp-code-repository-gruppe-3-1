@@ -1,10 +1,10 @@
 import { useNavigate } from '@tanstack/react-router';
 import avatarIconImage from '@/assets/avatar.jpg'
 import { useTranslation } from 'react-i18next';
-import { getCurrentUser } from '../../api/authApi';
+import { getCurrentUser, logout } from '../../api/authApi';
 import { useEffect, useState } from 'react';
 
-export default function Topbar() {
+export default function Topbar({ toggleSidebar }) {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
@@ -18,20 +18,25 @@ export default function Topbar() {
 
     const handleLogout = async () => {
         try {
-          await logoutApi();
+          await logout();
         } catch (err) {
           console.error("Logout failed:", err);
         } finally {
           localStorage.removeItem("name");
           localStorage.removeItem("userId");
+          localStorage.removeItem("userRole")
           navigate({ to: "/login" });
+          setTimeout(() => {
+                    window.location.reload();
+                }, 50);
         }
     };
     return (
-        <header className="flex h-[60px] items-center justify-end border-b border-border bg-white/85 px-7 backdrop-blur-sm">
-            <div className="flex items-center gap-[18px]">
-
-
+        <header className="flex h-[60px] items-center  border-b border-border bg-white/85 px-7 backdrop-blur-sm topbar">
+            <button className="burger justify-start" onClick={toggleSidebar}>
+            ☰
+            </button>
+            <div className="flex items-center gap-[18px] justify-end topbar-right">
                 <div className="flex items-center gap-2.5">
                     <img src={avatarIconImage} alt="User" className="h-8 w-8 rounded-full" />
                     <span>{user === null ? "loading..." : user.company_name}</span>

@@ -54,9 +54,7 @@ function RouteComponent() {
         url(${backgroundImage})
       `
     }}>
-      <Sidebar />
       <main className="flex-1">
-        <Topbar />
         <div className="max-w-[1100px] p-8">
           <h1 className="mb-6">Lehrer – Veranstaltungen</h1>
           <Card title="Veranstaltungen verwalten">
