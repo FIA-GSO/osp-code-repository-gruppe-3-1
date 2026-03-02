@@ -13,8 +13,6 @@ import { Route as RegisterRouteImport } from './routes/register'
 import { Route as PasswordForgottenRouteImport } from './routes/password-forgotten'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as DashboardHelperRouteImport } from './routes/dashboardHelper'
-import { Route as AboutRouteImport } from './routes/about'
-import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardUserIndexRouteImport } from './routes/dashboard-user/index'
 import { Route as DashboardTeacherVeranstaltungenRouteImport } from './routes/dashboard-teacher/veranstaltungen'
 import { Route as DashboardTeacherRegistrierungenRouteImport } from './routes/dashboard-teacher/registrierungen'
@@ -41,16 +39,6 @@ const LoginRoute = LoginRouteImport.update({
 const DashboardHelperRoute = DashboardHelperRouteImport.update({
   id: '/dashboardHelper',
   path: '/dashboardHelper',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardUserIndexRoute = DashboardUserIndexRouteImport.update({
@@ -96,8 +84,6 @@ const DashboardTeacherDetailsLectureRegistrationRoute =
   } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/dashboardHelper': typeof DashboardHelperRoute
   '/login': typeof LoginRoute
   '/password-forgotten': typeof PasswordForgottenRoute
@@ -111,8 +97,6 @@ export interface FileRoutesByFullPath {
   '/dashboard-user/bearbeiten/infostand/$registrationID': typeof DashboardUserBearbeitenInfostandRegistrationIDRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/dashboardHelper': typeof DashboardHelperRoute
   '/login': typeof LoginRoute
   '/password-forgotten': typeof PasswordForgottenRoute
@@ -127,8 +111,6 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/dashboardHelper': typeof DashboardHelperRoute
   '/login': typeof LoginRoute
   '/password-forgotten': typeof PasswordForgottenRoute
@@ -144,8 +126,6 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
-    | '/about'
     | '/dashboardHelper'
     | '/login'
     | '/password-forgotten'
@@ -159,8 +139,6 @@ export interface FileRouteTypes {
     | '/dashboard-user/bearbeiten/infostand/$registrationID'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
-    | '/about'
     | '/dashboardHelper'
     | '/login'
     | '/password-forgotten'
@@ -174,8 +152,6 @@ export interface FileRouteTypes {
     | '/dashboard-user/bearbeiten/infostand/$registrationID'
   id:
     | '__root__'
-    | '/'
-    | '/about'
     | '/dashboardHelper'
     | '/login'
     | '/password-forgotten'
@@ -190,8 +166,6 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
   DashboardHelperRoute: typeof DashboardHelperRoute
   LoginRoute: typeof LoginRoute
   PasswordForgottenRoute: typeof PasswordForgottenRoute
@@ -233,20 +207,6 @@ declare module '@tanstack/react-router' {
       path: '/dashboardHelper'
       fullPath: '/dashboardHelper'
       preLoaderRoute: typeof DashboardHelperRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard-user/': {
@@ -302,8 +262,6 @@ declare module '@tanstack/react-router' {
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
   DashboardHelperRoute: DashboardHelperRoute,
   LoginRoute: LoginRoute,
   PasswordForgottenRoute: PasswordForgottenRoute,

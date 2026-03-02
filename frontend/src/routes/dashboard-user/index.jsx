@@ -16,7 +16,6 @@ import { redirect } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/dashboard-user/')({
           beforeLoad: () => {
-            console.log(getUserRole())
     if (getUserRole() !== "user" && getUserRole() !== "admin") {
       throw redirect({ to: '/login' });
     }
@@ -90,13 +89,13 @@ function RouteComponent() {
                             ,
                         }}>
                         {/* LINKS */}
-                        <div className="flex flex-col gap-[22px]">
+                        <div className="flex flex-col gap-[22px] w-[101.5%]">
                             <Card title="Meine Registrierungen">
-                                <div className="block overflow-x-auto md:table md:w-full w-[101.5%]" style={{
+                                <div className="block overflow-x-auto md:table md:w-full" style={{
                                     height:
                                         `55vh`,
                                 }}>
-                                    <table className="w-full border-separate" style={{ borderSpacing: '0 8px' }}>
+                                    <table className="w-full border-separate text-center" style={{ borderSpacing: '0 8px' }}>
                                         <thead>
                                             <tr>
                                                 <th className="text-[13px] text-muted">{t('dashboard.event')}</th>
@@ -109,7 +108,7 @@ function RouteComponent() {
                                             {registrationsData.registrations.map((reg) => {
                                                 const status = getStatusLabel(reg.status_id);
                                                 return (
-                                                    <tr key={reg.id}>
+                                                    <tr className="h-10" key={reg.id}>
                                                         <td className="link">{reg.event?.name}</td>
                                                         <td>
                                                             {reg.with_lecture ? "Ja" : "Nein"}
