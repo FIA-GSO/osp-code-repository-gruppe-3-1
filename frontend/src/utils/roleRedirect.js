@@ -5,7 +5,7 @@ export function getDashboardByRole() {
  
     switch (role) {
         case "admin":
-            return "/dashboard-user";   // Admin sieht alles
+            return "/dashboard-user";
         case "user":
             return "/dashboard-user";
         case "teacher":

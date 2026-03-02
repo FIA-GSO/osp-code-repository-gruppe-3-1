@@ -61,7 +61,6 @@ class EventService:
         total_chairs = sum(r.chairs_needed or 0 for r in registrations)
         total_tables = sum(r.tables_needed or 0 for r in registrations)
 
-        # Combine all required techs from lectures
         combined_required_tech = ", ".join(
             r.lecture.required_tech for r in registrations if r.with_lecture and r.lecture and r.lecture.required_tech
         )

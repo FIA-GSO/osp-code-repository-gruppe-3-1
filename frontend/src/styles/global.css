@@ -26,10 +26,6 @@ body{
   background-position: center;
 }
 
-/* ============================= */
-/* RESPONSIVE SIDEBAR BEHAVIOUR */
-/* ============================= */
-
 .app-layout {
   display: flex;
   min-height: 100vh;
@@ -41,8 +37,6 @@ body{
   flex-direction: column;
 }
 
-
-/* Mobile Anpassungen */
 @media (max-width: 768px) {
   .sidebar {
     position: fixed;
@@ -87,7 +81,6 @@ body{
   }
 }
 
-/* Desktop */
 .burger {
   display: none;
   background: none;

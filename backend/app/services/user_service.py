@@ -31,18 +31,15 @@ class UserService:
             company_name=company_name,
             contact_person=contact_person
         )
-        db.session.add(user)
-        db.session.flush()  # flush so user.id is available
+        db.session.add(user)  
+        db.session.flush()
 
-        # Assign roles if provided
         if roles and len(roles) > 0:
-            # Rollen wurden explizit übergeben
             for role_name in roles:
                 role = Role.query.filter_by(name=role_name).first()
                 if role:
                     user.roles.append(UserRole(role=role))
         else:
-            # Default-Rolle "User" setzen
             default_role = Role.query.filter_by(name="User").first()
             if not default_role:
                 raise ValueError("Default role 'User' not found in database")
@@ -66,11 +63,9 @@ class UserService:
                 else:
                     setattr(user, field, kwargs[field])
 
-        # Update roles if provided
         if "roles" in kwargs and kwargs["roles"] is not None:
-            # Clear current roles
             user.roles.clear()
-            db.session.flush()  # ensure changes propagate before adding new roles
+            db.session.flush()  
             for role_name in kwargs["roles"]:
                 role = Role.query.filter_by(name=role_name).first()
                 if role:

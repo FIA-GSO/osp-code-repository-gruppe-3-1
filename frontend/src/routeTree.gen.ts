@@ -20,7 +20,6 @@ import { Route as DashboardTeacherRegistrierungenRouteImport } from './routes/da
 import { Route as DashboardUserAnmeldenEventIdRouteImport } from './routes/dashboard-user/anmelden/$eventId'
 import { Route as DashboardUserBearbeitenInfostandRegistrationIDRouteImport } from './routes/dashboard-user/bearbeiten/infostand/$registrationID'
 import { Route as DashboardTeacherDetailsRegistrationRegistrationIdRouteImport } from './routes/dashboard-teacher/details/registration/$registrationId'
-import { Route as DashboardTeacherDetailsLectureRegistrationRouteImport } from './routes/dashboard-teacher/details/lecture/$registration'
 
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
@@ -82,12 +81,6 @@ const DashboardTeacherDetailsRegistrationRegistrationIdRoute =
     path: '/dashboard-teacher/details/registration/$registrationId',
     getParentRoute: () => rootRouteImport,
   } as any)
-const DashboardTeacherDetailsLectureRegistrationRoute =
-  DashboardTeacherDetailsLectureRegistrationRouteImport.update({
-    id: '/dashboard-teacher/details/lecture/$registration',
-    path: '/dashboard-teacher/details/lecture/$registration',
-    getParentRoute: () => rootRouteImport,
-  } as any)
 
 export interface FileRoutesByFullPath {
   '/dashboardHelper': typeof DashboardHelperRoute
@@ -99,7 +92,6 @@ export interface FileRoutesByFullPath {
   '/dashboard-teacher/veranstaltungen': typeof DashboardTeacherVeranstaltungenRoute
   '/dashboard-user/': typeof DashboardUserIndexRoute
   '/dashboard-user/anmelden/$eventId': typeof DashboardUserAnmeldenEventIdRoute
-  '/dashboard-teacher/details/lecture/$registration': typeof DashboardTeacherDetailsLectureRegistrationRoute
   '/dashboard-teacher/details/registration/$registrationId': typeof DashboardTeacherDetailsRegistrationRegistrationIdRoute
   '/dashboard-user/bearbeiten/infostand/$registrationID': typeof DashboardUserBearbeitenInfostandRegistrationIDRoute
 }
@@ -113,7 +105,6 @@ export interface FileRoutesByTo {
   '/dashboard-teacher/veranstaltungen': typeof DashboardTeacherVeranstaltungenRoute
   '/dashboard-user': typeof DashboardUserIndexRoute
   '/dashboard-user/anmelden/$eventId': typeof DashboardUserAnmeldenEventIdRoute
-  '/dashboard-teacher/details/lecture/$registration': typeof DashboardTeacherDetailsLectureRegistrationRoute
   '/dashboard-teacher/details/registration/$registrationId': typeof DashboardTeacherDetailsRegistrationRegistrationIdRoute
   '/dashboard-user/bearbeiten/infostand/$registrationID': typeof DashboardUserBearbeitenInfostandRegistrationIDRoute
 }
@@ -128,7 +119,6 @@ export interface FileRoutesById {
   '/dashboard-teacher/veranstaltungen': typeof DashboardTeacherVeranstaltungenRoute
   '/dashboard-user/': typeof DashboardUserIndexRoute
   '/dashboard-user/anmelden/$eventId': typeof DashboardUserAnmeldenEventIdRoute
-  '/dashboard-teacher/details/lecture/$registration': typeof DashboardTeacherDetailsLectureRegistrationRoute
   '/dashboard-teacher/details/registration/$registrationId': typeof DashboardTeacherDetailsRegistrationRegistrationIdRoute
   '/dashboard-user/bearbeiten/infostand/$registrationID': typeof DashboardUserBearbeitenInfostandRegistrationIDRoute
 }
@@ -144,7 +134,6 @@ export interface FileRouteTypes {
     | '/dashboard-teacher/veranstaltungen'
     | '/dashboard-user/'
     | '/dashboard-user/anmelden/$eventId'
-    | '/dashboard-teacher/details/lecture/$registration'
     | '/dashboard-teacher/details/registration/$registrationId'
     | '/dashboard-user/bearbeiten/infostand/$registrationID'
   fileRoutesByTo: FileRoutesByTo
@@ -158,7 +147,6 @@ export interface FileRouteTypes {
     | '/dashboard-teacher/veranstaltungen'
     | '/dashboard-user'
     | '/dashboard-user/anmelden/$eventId'
-    | '/dashboard-teacher/details/lecture/$registration'
     | '/dashboard-teacher/details/registration/$registrationId'
     | '/dashboard-user/bearbeiten/infostand/$registrationID'
   id:
@@ -172,7 +160,6 @@ export interface FileRouteTypes {
     | '/dashboard-teacher/veranstaltungen'
     | '/dashboard-user/'
     | '/dashboard-user/anmelden/$eventId'
-    | '/dashboard-teacher/details/lecture/$registration'
     | '/dashboard-teacher/details/registration/$registrationId'
     | '/dashboard-user/bearbeiten/infostand/$registrationID'
   fileRoutesById: FileRoutesById
@@ -187,7 +174,6 @@ export interface RootRouteChildren {
   DashboardTeacherVeranstaltungenRoute: typeof DashboardTeacherVeranstaltungenRoute
   DashboardUserIndexRoute: typeof DashboardUserIndexRoute
   DashboardUserAnmeldenEventIdRoute: typeof DashboardUserAnmeldenEventIdRoute
-  DashboardTeacherDetailsLectureRegistrationRoute: typeof DashboardTeacherDetailsLectureRegistrationRoute
   DashboardTeacherDetailsRegistrationRegistrationIdRoute: typeof DashboardTeacherDetailsRegistrationRegistrationIdRoute
   DashboardUserBearbeitenInfostandRegistrationIDRoute: typeof DashboardUserBearbeitenInfostandRegistrationIDRoute
 }
@@ -271,13 +257,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardTeacherDetailsRegistrationRegistrationIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/dashboard-teacher/details/lecture/$registration': {
-      id: '/dashboard-teacher/details/lecture/$registration'
-      path: '/dashboard-teacher/details/lecture/$registration'
-      fullPath: '/dashboard-teacher/details/lecture/$registration'
-      preLoaderRoute: typeof DashboardTeacherDetailsLectureRegistrationRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
@@ -291,8 +270,6 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardTeacherVeranstaltungenRoute: DashboardTeacherVeranstaltungenRoute,
   DashboardUserIndexRoute: DashboardUserIndexRoute,
   DashboardUserAnmeldenEventIdRoute: DashboardUserAnmeldenEventIdRoute,
-  DashboardTeacherDetailsLectureRegistrationRoute:
-    DashboardTeacherDetailsLectureRegistrationRoute,
   DashboardTeacherDetailsRegistrationRegistrationIdRoute:
     DashboardTeacherDetailsRegistrationRegistrationIdRoute,
   DashboardUserBearbeitenInfostandRegistrationIDRoute:

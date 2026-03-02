@@ -1,11 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
-import Sidebar from '@/components/layout/sidebar';
-import Topbar from '@/components/layout/topbar';
 import Card from '@/components/ui/card';
 import { getAllEvents, toggleEventLock } from '../../api/eventsApi';
-import backgroundImage from '@/assets/Background.png'
-import { Link } from '@tanstack/react-router';
 import StatusIcon from "@/components/ui/StatusIcon";
 import { getUserRole } from '@/api/authApi';
 import { redirect } from '@tanstack/react-router';
@@ -48,12 +44,7 @@ function RouteComponent() {
   }
 
   return (
-    <div className="flex min-h-screen bg-cover bg-center" style={{
-      backgroundImage: `
-        linear-gradient(rgba(255,255,255,0.75), rgba(255,255,255,0.75)),
-        url(${backgroundImage})
-      `
-    }}>
+    <div className="flex min-h-screen bg-cover bg-center">
       <main className="flex-1">
         <div className="max-w-[1100px] p-8">
           <h1 className="mb-6">Lehrer – Veranstaltungen</h1>
@@ -72,15 +63,10 @@ function RouteComponent() {
                     <tr key={event.id} className="bg-[#fafbfc]">
                       <td className="cursor-pointer p-3 text-primary">{event.name}</td>
                       <td className="p-3">
-   
                           {event.registration_locked ? <StatusIcon type="closedFull" /> : <StatusIcon type="openFull" />}
-                      
                       </td>
                       <td className="p-3">
-                        <button
-                          className="rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]"
-                          onClick={() => handleToggleLock(event.id, event.registration_locked)}
-                        >
+                        <button className="rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]" onClick={() => handleToggleLock(event.id, event.registration_locked)}>
                           {event.registration_locked ? "Entsperren" : "Sperren"}
                         </button>
                       </td>

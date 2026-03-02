@@ -3,9 +3,9 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import logo from '@/assets/logo-gso3.png';
 import { checkPasswordStrength } from '@/utils/password';
-import backgroundImage from '@/assets/Background.png'
 import { createUser } from '../api/userApi'
 import { useMutation } from "@tanstack/react-query";
+import StatusIcon from "@/components/ui/StatusIcon";
 
 export const Route = createFileRoute('/register')({
     component: RouteComponent,
@@ -59,17 +59,14 @@ const isFormValid =
 const handleSubmit = (e) => {
   e.preventDefault();
   setError("");
- 
-  // Formular vollständig?
+
   if (!isFormValid) return;
  
-  // Passwortgleichheit prüfen
   if (form.password !== form.passwordConfirm) {
     setError(t("errors.passwordMismatch"));
     return;
   }
  
-  // Passwortstärke prüfen
   if (
     !passwordRules.length ||
     !passwordRules.uppercase ||
@@ -79,7 +76,6 @@ const handleSubmit = (e) => {
     return;
   }
  
-  // Registrierung ausführen
   register.mutate(
     {
       email: form.email,
@@ -100,12 +96,7 @@ const handleSubmit = (e) => {
 };
     if (isSuccess) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-cover bg-center bg-no-repeat p-5" 
-                        style={{
-                backgroundImage:
-                    `linear-gradient(rgba(255,255,255,0.75), rgba(255,255,255,0.75)),   url(${backgroundImage})`
-                ,
-            }}>
+            <div className="flex min-h-screen items-center justify-center bg-cover bg-center bg-no-repeat p-5" >
                 <div className="w-full max-w-[430px] overflow-hidden rounded-[10px] bg-white shadow-[0_10px_30px_rgba(0,0,0,0.15)]">
                     <div className="bg-primary p-[25px] text-center text-white">
                         <img src={logo} alt={t('common.logoAlt')} className="mx-auto mb-1.5 w-[120px]" />
@@ -125,7 +116,7 @@ const handleSubmit = (e) => {
 
                     <div className="p-[30px] text-center">
                         <div className="mx-auto mb-[15px] flex h-[70px] w-[70px] items-center justify-center rounded-full bg-[#8bc34a] text-4xl text-white">
-                            ✔
+                           ✓
                         </div>
                         <h1 className="text-text">{t('auth.registrationSuccess')}</h1>
                         <p className="text-muted">{t('auth.registrationSuccessMessage')}</p>
@@ -142,14 +133,7 @@ const handleSubmit = (e) => {
     }
 
     return (
-        <div
-            className="flex min-h-screen items-center justify-center bg-cover bg-center bg-no-repeat p-5"
-            style={{
-                backgroundImage:
-                    `linear-gradient(rgba(255,255,255,0.75), rgba(255,255,255,0.75)),   url(${backgroundImage})`
-                ,
-            }}
-        >
+        <div className="flex min-h-screen items-center justify-center bg-cover bg-center bg-no-repeat p-5">
             <div className="w-full max-w-[430px] overflow-hidden rounded-[10px] bg-white shadow-[0_10px_30px_rgba(0,0,0,0.15)]">
                 <div className="bg-primary p-[25px] text-center text-white">
                     <img src={logo} alt={t('common.logoAlt')} className="mx-auto mb-1.5 w-[120px]" />
@@ -157,13 +141,9 @@ const handleSubmit = (e) => {
                 </div>
 
                 <div className="mt-[15px] flex items-center justify-center">
-                    <div className="flex h-[26px] w-[26px] items-center justify-center rounded-full bg-primary text-sm text-white">
-                        1
-                    </div>
+                    <div className="flex h-[26px] w-[26px] items-center justify-center rounded-full bg-primary text-sm text-white">1</div>
                     <div className="h-1 w-20 bg-primary"></div>
-                    <div className="flex h-[26px] w-[26px] items-center justify-center rounded-full bg-[#d0d7e2] text-sm text-white">
-                        2
-                    </div>
+                    <div className="flex h-[26px] w-[26px] items-center justify-center rounded-full bg-[#d0d7e2] text-sm text-white">2</div>
                 </div>
                 <p className="text-center text-sm text-[#7a7a7a]">{t('auth.step', { current: 1, total: 2 })}</p>
 

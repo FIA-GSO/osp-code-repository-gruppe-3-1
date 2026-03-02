@@ -1,9 +1,6 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
-import Sidebar from '@/components/layout/sidebar';
-import Topbar from '@/components/layout/topbar';
 import Card from '@/components/ui/card';
-import backgroundImage from '@/assets/background.png';
 import { getUserRegistrations, postFormRegistration } from '../../../api/registrationsApi';
 import { getEventById } from '../../../api/eventsApi';
 import { getUserId } from '../../../api/authApi';
@@ -137,18 +134,8 @@ function RouteComponent() {
 
     function PageWrapper({ children }) {
         return (
-            <div
-                className="flex min-h-screen bg-cover bg-center"
-                style={{
-                    backgroundImage: `
-                        linear-gradient(rgba(255,255,255,0.75), rgba(255,255,255,0.75)),
-                        url(${backgroundImage})
-                    `,
-                }}
-            >
-             
+            <div className="flex min-h-screen bg-cover bg-center">
                 <main className="flex-1">
- 
                     <div className="max-w-[900px] p-8">{children}</div>
                 </main>
             </div>
@@ -194,11 +181,7 @@ function RouteComponent() {
                     disabled={!acceptedPrivacy}
                     className={`
                         rounded-md px-6 py-2 text-white
-                        ${
-                            acceptedPrivacy
-                                ? 'bg-primary hover:bg-primary/90'
-                                : 'cursor-not-allowed bg-gray-300 text-gray-500'
-                        }
+                        ${acceptedPrivacy? 'bg-primary hover:bg-primary/90' : 'cursor-not-allowed bg-gray-300 text-gray-500'}
                     `}
                 >
                     Registrierung einreichen
@@ -217,17 +200,11 @@ function RouteComponent() {
 
     return (
         <PageWrapper>
-            <h1 className="mb-2 text-xl font-semibold">
-                Registrierung – {event.name}
-            </h1>
+            <h1 className="mb-2 text-xl font-semibold">Registrierung – {event.name}</h1>
             <p className="mb-6 text-muted">{event.date}</p>
-
             <form onSubmit={handleSubmit} className="space-y-6">
                 <Card title="Vorlage">
-                    <p className="mb-2 text-sm text-muted">
-                        Frühere Anmeldungen als Vorlage verwenden
-                    </p>
-
+                    <p className="mb-2 text-sm text-muted">Frühere Anmeldungen als Vorlage verwenden</p>
                     <select
                         value={selectedTemplateId}
                         onChange={(e) => {
@@ -247,9 +224,7 @@ function RouteComponent() {
                     }
                     </select>
 
-                    <p className="mt-2 text-xs text-muted">
-                        Beim Auswählen werden die Felder automatisch ausgefüllt.
-                    </p>
+                    <p className="mt-2 text-xs text-muted">Beim Auswählen werden die Felder automatisch ausgefüllt.</p>
                 </Card>
 
                 <Card title="Registrierung für Infostand">

@@ -16,15 +16,13 @@ CORS(
 def send_template_mail(to: str, subject: str, template: str, context: dict): 
     if not to:
         raise ValueError("No recipient email provided")
- 
-    # 🔹 HTML aus Template rendern
+
     html_body = render_template(
         template,
         **context,
         subject=subject
     )
  
-    # 🔹 Plain-Text Fallback (wichtig für Mail-Clients)
     text_body = render_template(
         template,
         **context,

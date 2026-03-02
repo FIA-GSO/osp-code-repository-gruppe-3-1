@@ -1,8 +1,5 @@
-import { createFileRoute } from '@tanstack/react-router'
-import Sidebar from '@/components/layout/sidebar'; 
-import Topbar from '@/components/layout/topbar'; 
+import { createFileRoute } from '@tanstack/react-router';
 import Card from '@/components/ui/card';
-import backgroundImage from '@/assets/Background.png'
 import { useEffect, useState } from 'react';
 import { getAllEventSummaries } from '@/api/eventsApi';
 import { getUserRole } from '@/api/authApi';
@@ -22,10 +19,6 @@ function RouteComponent() {
     const [summaries, setSummaries] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
-    const handleExport = () => {
-        console.log('Listenexport gestartet');
-    };
-
     useEffect(() => {
         getAllEventSummaries()
             .then(data => {
@@ -44,20 +37,11 @@ function RouteComponent() {
     }
 
     return (
-        <div
-            className="flex min-h-screen bg-cover bg-center bg-no-repeat"
-            style={{
-                backgroundImage: `linear-gradient(rgba(255,255,255,0.75),rgba(255,255,255,0.75)),url(${backgroundImage})`,
-            }}
-        >
-       
+        <div className="flex min-h-screen bg-cover bg-center bg-no-repeat">
             <main className="flex-1">
                 <div className="max-w-[1100px] p-8">
                     <div className="mb-4 flex items-center justify-between">
                         <h1 className="text-text">Helfer Dashboard</h1>
-                        <button onClick={handleExport} className="rounded-md bg-[#f1f3f6] px-4 py-2 hover:bg-[#e5e9ef]">
-                            📄 Listen exportieren
-                        </button>
                     </div>
 
                     <Card title="Material- & Ressourcenübersicht">

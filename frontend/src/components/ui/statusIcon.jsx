@@ -25,32 +25,9 @@ export default function StatusIcon({ type }) {
   if (!current) return null;
  
   return (
-<span style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
-      {current.showIcon && (
-<span
-          style={{
-            color: "#000000",
-            fontWeight: "bold",
-            fontFamily: "Arial, Helvetica, sans-serif",
-            width: "18px",
-            textAlign: "center"
-          }}
->
-          {current.icon}
-</span>
-      )}
- 
-      {current.showText && (
-<span
-          style={{
-            color: current.color,
-            fontWeight: 600,
-            fontSize: "14px"
-          }}
->
-          {current.text}
-</span>
-      )}
-</span>
+    <span style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+          {current.showIcon && ( <span style={{color: "#000000",fontWeight: "bold",fontFamily: "Arial, Helvetica, sans-serif",width: "18px",textAlign: "center"}}>{current.icon}</span>)}
+          {current.showText && (<span style={{color: current.color,fontWeight: 600,fontSize: "14px"}}>{current.text}</span>)}
+    </span>
   );
 }

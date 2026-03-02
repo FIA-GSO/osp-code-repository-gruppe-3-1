@@ -95,16 +95,6 @@ export default function Sidebar({ open, setOpen }) {
     );
 }
 
-/**
-
-* Einheitlicher Sidebar-Link
-
-* – Active-State über TanStack Router
-
-* – vermeidet doppeltes Styling
-
-*/
-
 function SidebarLink({ to, label }) {
     return (
         <Link to={to} className={({ isActive }) => `px-6 py-3 text-white no-underline${isActive ? 'bg-white/20' : 'hover:bg-white/10'}`}>

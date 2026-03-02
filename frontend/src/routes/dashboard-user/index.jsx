@@ -1,11 +1,8 @@
 import { useEffect, useState } from "react";
 import { createFileRoute } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
-import Sidebar from '@/components/layout/sidebar';
-import Topbar from '@/components/layout/topbar';
 import StatusCard from '@/components/ui/status-card';
 import Card from '@/components/ui/card';
-import backgroundImage from '@/assets/Background.png'
 import { Link } from '@tanstack/react-router';
 import { getCurrentUser, getUserId } from "../../api/authApi";
 import { getUserRegistrations } from "../../api/registrationsApi";
@@ -53,19 +50,15 @@ function RouteComponent() {
         }
     };
 
-    if (!user || !registrationsData || !events) return <div>Laden...</div>; // Loading state
+    if (!user || !registrationsData || !events) return <div>Laden...</div>;
 
 
     return (
-        <div
-            className="flex min-h-screen bg-cover bg-center bg-no-repeat"
-        >
+        <div className="flex min-h-screen bg-cover bg-center bg-no-repeat">
             <main className="flex-1">
-                
-
                 <div className="max-w-[1100px] p-8">
                     <h1 className="mb-[22px] text-text">Willkommen { user.company_name }</h1>
-
+                
                     {/* STATUS */}
                     <div className="mb-[26px] grid grid-cols-1 gap-4 md:grid-cols-3">
                         <StatusCard label="Bestätigt" count={registrationsData.CountBestaetigt} type="success" />
@@ -75,18 +68,12 @@ function RouteComponent() {
 
                     {/* HAUPTGRID */}
                     <div className="grid grid-cols-1 gap-6 lg:grid-cols-[2fr_1fr]"
-                        style={{
-                            height:
-                                `55vh`
-                            ,
-                        }}>
+                        style={{height:`55vh`,}}
+                    >
                         {/* LINKS */}
                         <div className="flex flex-col gap-[22px] w-[101.5%]">
                             <Card title="Meine Registrierungen">
-                                <div className="block overflow-x-auto md:table md:w-full" style={{
-                                    height:
-                                        `55vh`,
-                                }}>
+                                <div className="block overflow-x-auto md:table md:w-full" style={{height:`55vh`,}}>
                                     <table className="w-full border-separate text-center" style={{ borderSpacing: '0 8px' }}>
                                         <thead>
                                             <tr>
@@ -108,7 +95,7 @@ function RouteComponent() {
                                                         <td>{status}</td>
                                                         <td>
                                                             <Link to={`/dashboard-user/bearbeiten/infostand/${reg.id}`} className="rounded-md bg-[#f1f3f6] px-3 py-1.5 hover:bg-[#e5e9ef]">
-                                                                Bearbeiten</Link>
+                                                                   {reg.status_id === 1 ? 'Bearbeiten' : 'Anzeigen'}</Link>
                                                         </td>
                                                     </tr>
                                                 );
@@ -124,15 +111,9 @@ function RouteComponent() {
                         {events.map((event) => (
                             <div key={event.id} className="mb-4">
                                 {/* Veranstaltungsname */}
-                            <p className="link font-medium">
-                                    {event.name}
-                            </p>
-                            
+                            <p className="link font-medium">{event.name}</p>
                                 {/* Datum */}
-                            <small className="text-muted">
-                                    {event.event_date}
-                            </small>
-                            
+                            <small className="text-muted">{event.event_date}</small>
                                 {/* ANMELDEN BUTTON */}
                             <div className="mt-2">
                             <Link

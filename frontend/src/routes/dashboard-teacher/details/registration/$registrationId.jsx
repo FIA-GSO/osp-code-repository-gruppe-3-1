@@ -1,10 +1,6 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
-
-import Sidebar from '@/components/layout/sidebar';
-import Topbar from '@/components/layout/topbar';
 import Card from '@/components/ui/card';
-import backgroundImage from '@/assets/background.png';
 
 import { getRegistrationById } from '@/api/registrationsApi';
 
@@ -83,15 +79,7 @@ function PageWrapper({ children }) {
   return (
     <div
       className="flex min-h-screen bg-cover bg-center"
-      style={{
-        backgroundImage: `
-          linear-gradient(
-            rgba(255,255,255,0.75),
-            rgba(255,255,255,0.75)
-          ),
-          url(${backgroundImage})
-        `,
-      }}
+      
     >
      
       <main className="flex-1">

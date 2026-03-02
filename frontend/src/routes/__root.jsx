@@ -1,5 +1,4 @@
 import { createRootRoute, Outlet } from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { useState } from "react"
 import Sidebar from '@/components/layout/sidebar';
 import Topbar from '@/components/layout/topbar';
