@@ -1,10 +1,14 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import Card from '@/components/ui/card';
-
 import { getRegistrationById } from '@/api/registrationsApi';
 
 export const Route = createFileRoute('/dashboard-teacher/details/registration/$registrationId')({
+  beforeLoad: () => {
+      if (getUserRole() !== "teacher" && getUserRole() !== "admin") {
+        throw redirect({ to: '/notFound' });
+      }
+    },
   component: RouteComponent,
 });
 

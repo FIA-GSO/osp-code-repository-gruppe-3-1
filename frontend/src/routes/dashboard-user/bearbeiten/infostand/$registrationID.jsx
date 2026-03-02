@@ -7,6 +7,11 @@ import { getRegistrationById, updateRegistration } from '@/api/registrationsApi'
 export const Route = createFileRoute(
   '/dashboard-user/bearbeiten/infostand/$registrationID'
 )({
+      beforeLoad: () => {
+      if (getUserRole() !== "user" && getUserRole() !== "admin") {
+        throw redirect({ to: '/notFound' });
+      }
+    },
   component: RouteComponent,
 });
 

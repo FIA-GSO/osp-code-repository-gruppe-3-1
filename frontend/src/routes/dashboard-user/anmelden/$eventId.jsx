@@ -6,6 +6,11 @@ import { getEventById } from '../../../api/eventsApi';
 import { getUserId } from '../../../api/authApi';
 
 export const Route = createFileRoute('/dashboard-user/anmelden/$eventId')({
+        beforeLoad: () => {
+        if (getUserRole() !== "user" && getUserRole() !== "admin") {
+          throw redirect({ to: '/notFound' });
+        }
+      },
     component: RouteComponent,
 });
 
