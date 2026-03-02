@@ -2,22 +2,22 @@ export default function StatusIcon({ type }) {
   const config = {
     // --- ICON ONLY ---
     accepted: { showIcon: true, showText: false, icon: "✓", text: "Angenommen", color: "#15803d" },
-    rejected: { showIcon: true, showText: false, icon: "✕", text: "Abgelehnt", color: "#b91c1c" },
-    pending:  { showIcon: true, showText: false, icon: "⌛︎", text: "Wartend", color: "#b45309" },
+    rejected: { showIcon: true, showText: false, icon: "✕", text: "Abgelehnt", color: "hsl(0, 74%, 42%)" },
+    pending:  { showIcon: true, showText: false, icon: "⌛︎", text: "Wartend", color: "rgb(214 133 55)" },
     closed:   { showIcon: true, showText: false, icon: "🔒︎", text: "Geschlossen", color: "#b91c1c" },
  
     // --- TEXT ONLY ---
     acceptedText: { showIcon: false, showText: true, icon: "✓", text: "Angenommen", color: "#15803d" },
     openText: { showIcon: false, showText: true, icon: "✓", text: "Offen", color: "#15803d" },
     rejectedText: { showIcon: false, showText: true, icon: "✕", text: "Abgelehnt", color: "#b91c1c" },
-    pendingText:  { showIcon: false, showText: true, icon: "⌛︎", text: "Wartend", color: "#b45309" },
+    pendingText:  { showIcon: false, showText: true, icon: "⌛︎", text: "Wartend", color: "rgb(214 133 55)" },
     closedText:   { showIcon: false, showText: true, icon: "🔒︎", text: "Geschlossen", color: "#b91c1c" },
  
     // --- ICON + TEXT ---
     acceptedFull: { showIcon: true, showText: true, icon: "✓", text: "Angenommen", color: "#15803d" },
     openFull: { showIcon: true, showText: true, icon: "🔓︎", text: "Offen", color: "#15803d" },
     rejectedFull: { showIcon: true, showText: true, icon: "✕", text: "Abgelehnt", color: "#b91c1c" },
-    pendingFull:  { showIcon: true, showText: true, icon: "⌛︎", text: "Wartend", color: "#b45309" },
+    pendingFull:  { showIcon: true, showText: true, icon: "⌛︎", text: "Wartend", color: "rgb(214 133 55)" },
     closedFull:   { showIcon: true, showText: true, icon: "🔒︎", text: "Geschlossen", color: "#b91c1c" }
   };
  

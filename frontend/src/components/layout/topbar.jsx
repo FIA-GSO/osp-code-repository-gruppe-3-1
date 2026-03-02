@@ -33,11 +33,10 @@ export default function Topbar({ toggleSidebar }) {
     };
     return (
         <header className="flex h-[60px] items-center  border-b border-border bg-white/85 px-7 backdrop-blur-sm topbar">
-            <button className="burger justify-start" onClick={toggleSidebar}>
-            ☰
-            </button>
+            <button className="burger justify-start" onClick={toggleSidebar}>☰</button>
             <div className="flex items-center gap-[18px] justify-end topbar-right">
                 <div className="flex items-center gap-2.5">
+                    <a href="https://www.gso-koeln.de/2026/01/28/tage-der-ausbildung-fuer-it-und-medien-am-gso-bk-2/" target='_blank'>FAQ</a>
                     <img src={avatarIconImage} alt="User" className="h-8 w-8 rounded-full" />
                     <span>{user === null ? "loading..." : user.company_name}</span>
                     <button
