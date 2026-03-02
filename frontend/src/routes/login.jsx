@@ -40,7 +40,9 @@ function RouteComponent() {
         <div
             className="flex min-h-screen w-full items-center justify-center bg-cover bg-center bg-no-repeat p-5"
             style={{
-                backgroundImage: `linear-gradient rgba(255,255,255,0.6),rgba(255,255,255,0.6)), url(${backgroundImage})`,
+                backgroundImage:
+                    `linear-gradient(rgba(255,255,255,0.75), rgba(255,255,255,0.75)),   url(${backgroundImage})`
+                ,
             }}
         >
             <div className="w-full max-w-[420px] overflow-hidden rounded-[10px] bg-white shadow-[0_10px_30px_rgba(0,0,0,0.15)]">

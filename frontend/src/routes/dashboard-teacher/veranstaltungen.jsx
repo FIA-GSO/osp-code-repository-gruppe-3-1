@@ -61,12 +61,12 @@ function RouteComponent() {
           <h1 className="mb-6">Lehrer – Veranstaltungen</h1>
           <Card title="Veranstaltungen verwalten">
             <div className="block overflow-x-auto md:table md:w-full">
-              <table className="w-full border-separate" style={{ borderSpacing: '0 8px' }}>
+              <table className="w-full border-separate text-center" style={{ borderSpacing: '0 8px' }}>
                 <thead>
                   <tr>
-                    <th className="p-3 text-left text-[13px] text-muted">Veranstaltung</th>
-                    <th className="p-3 text-left text-[13px] text-muted">Status</th>
-                    <th className="p-3 text-left text-[13px] text-muted">Aktion</th>
+                    <th className="p-3 text-left text-[13px]" style={{ textAlign: 'center', }}>Veranstaltung</th>
+                    <th className="p-3 text-left text-[13px]" style={{ textAlign: 'center', }}>Status</th>
+                    <th className="p-3 text-left text-[13px]" style={{ textAlign: 'center', }}>Aktion</th>
                   </tr>
                 </thead>
                 <tbody>

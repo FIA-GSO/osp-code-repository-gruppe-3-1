@@ -98,19 +98,19 @@ function RouteComponent() {
                                     <table className="w-full border-separate text-center" style={{ borderSpacing: '0 8px' }}>
                                         <thead>
                                             <tr>
-                                                <th className="text-[13px] text-muted">{t('dashboard.event')}</th>
-                                                <th className="text-[13px] text-muted">{t('dashboard.type')}</th>
-                                                <th className="text-[13px] text-muted">{t('status.status')}</th>
-                                                <th className="text-[13px] text-muted">{t('dashboard.actions')}</th>
+                                                <th className="text-[13px]">{t('dashboard.event')}</th>
+                                                <th className="text-[13px]">{t('dashboard.type')}</th>
+                                                <th className="text-[13px]">{t('status.status')}</th>
+                                                <th className="text-[13px]">{t('dashboard.actions')}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {registrationsData.registrations.map((reg) => {
                                                 const status = getStatusLabel(reg.status_id);
                                                 return (
-                                                    <tr className="h-10" key={reg.id}>
+                                                    <tr className="h-11" key={reg.id}>
                                                         <td className="link">{reg.event?.name}</td>
-                                                        <td>
+                                                        <td >
                                                             {reg.with_lecture ? "Ja" : "Nein"}
                                                         </td>
                                                         <td>{status}</td>
@@ -128,7 +128,7 @@ function RouteComponent() {
                         </div>
                         {/* RECHTS */}
                         <div className="flex" >
-                           <Card title="Bevorstehende Veranstaltungen" className="full-height">
+                           <Card title="Bevorstehende Veranstaltungen" className="full-height w-[100%]">
                         {events.map((event) => (
                             <div key={event.id} className="mb-4">
                                 {/* Veranstaltungsname */}
@@ -159,7 +159,6 @@ function RouteComponent() {
                                         : 'Jetzt anmelden'}
                             </Link>
                             </div>
-                            
                                 <hr className="mt-4" />
                             </div>
                             ))}

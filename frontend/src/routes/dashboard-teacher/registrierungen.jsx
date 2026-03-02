@@ -144,7 +144,7 @@ const uniqueEvents = [
 <select
   value={statusFilter}
   onChange={(e) => setStatusFilter(Number(e.target.value))}
-  className="rounded-md border p-2"
+  className="rounded-md border p-2 mr-4"
 >
   <option value={0}>Alle Status</option>
   <option value={1}>Offen</option>
@@ -167,15 +167,15 @@ const uniqueEvents = [
 </select>
 
               <table
-                className="w-full border-separate "
-                style={{ borderSpacing: '0 8px' }}
+                className="w-full border-separate text-center"
+                style={{ borderSpacing: '0 8px', }}
               >
                 <thead>
                   <tr>
-                    <th className="p-3 text-left text-[13px] text-muted">Veranstaltung</th>
-                    <th className="p-3 text-left text-[13px] text-muted">Firma</th>
-                    <th className="p-3 text-left text-[13px] text-muted">Status</th>
-                    <th className="p-3 text-left text-[13px] text-muted">Aktionen</th>
+                    <th className="p-3 text-left text-[13px]" style={{ textAlign: 'center', }}>Veranstaltung</th>
+                    <th className="p-3 text-left text-[13px]" style={{ textAlign: 'center', }}>Firma</th>
+                    <th className="p-3 text-left text-[13px]" style={{ textAlign: 'center', }}>Status</th>
+                    <th className="p-3 text-left text-[13px]" style={{ textAlign: 'center', }}>Aktionen</th>
                   </tr>
                 </thead>
 

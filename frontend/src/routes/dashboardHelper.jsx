@@ -63,13 +63,13 @@ function RouteComponent() {
 
                     <Card title="Material- & Ressourcenübersicht">
                         <div className="block overflow-x-auto md:table md:w-full">
-                            <table className="w-full border-separate" style={{ borderSpacing: '0 8px' }}>
+                            <table className="w-full border-separate text-center" style={{ borderSpacing: '0 8px' }}>
                                 <thead>
                                     <tr>
-                                        <th className="text-[13px] text-muted">Veranstaltung</th>
-                                        <th className="text-[13px] text-muted">Stühle</th>
-                                        <th className="text-[13px] text-muted">Tische</th>
-                                        <th className="text-[13px] text-muted">Weiteres</th>
+                                        <th className="text-[13px]" style={{ textAlign: 'center', }}>Veranstaltung</th>
+                                        <th className="text-[13px]" style={{ textAlign: 'center', }}>Stühle</th>
+                                        <th className="text-[13px]" style={{ textAlign: 'center', }}>Tische</th>
+                                        <th className="text-[13px]" style={{ textAlign: 'center', }}>Weiteres</th>
                                         <th>Hallenanzahl benutzen</th>
                                     </tr>
                                 </thead>
