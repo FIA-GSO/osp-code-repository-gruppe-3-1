@@ -14,7 +14,7 @@ import { redirect } from '@tanstack/react-router';
 export const Route = createFileRoute('/dashboard-teacher/veranstaltungen')({
         beforeLoad: () => {
     if (getUserRole() !== "teacher" && getUserRole() !== "admin") {
-      throw redirect({ to: '/login' });
+      throw redirect({ to: '/notFound' });
     }
   },
   component: RouteComponent,

@@ -3,6 +3,7 @@ from flask_restx import Api
 from .config import Config
 from .extensions import db, mail
 from flask_cors import CORS
+from flask import jsonify
 
 def create_app():
     app = Flask(__name__)
@@ -11,7 +12,7 @@ def create_app():
      resources={r"/*": {"origins": "*"}}
 )
     app.config.from_object(Config)
-
+    
     db.init_app(app)
     mail.init_app(app)
 

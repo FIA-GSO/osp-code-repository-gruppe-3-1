@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as PasswordForgottenRouteImport } from './routes/password-forgotten'
+import { Route as NotFoundRouteImport } from './routes/notFound'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as DashboardHelperRouteImport } from './routes/dashboardHelper'
 import { Route as DashboardUserIndexRouteImport } from './routes/dashboard-user/index'
@@ -29,6 +30,11 @@ const RegisterRoute = RegisterRouteImport.update({
 const PasswordForgottenRoute = PasswordForgottenRouteImport.update({
   id: '/password-forgotten',
   path: '/password-forgotten',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotFoundRoute = NotFoundRouteImport.update({
+  id: '/notFound',
+  path: '/notFound',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -86,6 +92,7 @@ const DashboardTeacherDetailsLectureRegistrationRoute =
 export interface FileRoutesByFullPath {
   '/dashboardHelper': typeof DashboardHelperRoute
   '/login': typeof LoginRoute
+  '/notFound': typeof NotFoundRoute
   '/password-forgotten': typeof PasswordForgottenRoute
   '/register': typeof RegisterRoute
   '/dashboard-teacher/registrierungen': typeof DashboardTeacherRegistrierungenRoute
@@ -99,6 +106,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/dashboardHelper': typeof DashboardHelperRoute
   '/login': typeof LoginRoute
+  '/notFound': typeof NotFoundRoute
   '/password-forgotten': typeof PasswordForgottenRoute
   '/register': typeof RegisterRoute
   '/dashboard-teacher/registrierungen': typeof DashboardTeacherRegistrierungenRoute
@@ -113,6 +121,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/dashboardHelper': typeof DashboardHelperRoute
   '/login': typeof LoginRoute
+  '/notFound': typeof NotFoundRoute
   '/password-forgotten': typeof PasswordForgottenRoute
   '/register': typeof RegisterRoute
   '/dashboard-teacher/registrierungen': typeof DashboardTeacherRegistrierungenRoute
@@ -128,6 +137,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/dashboardHelper'
     | '/login'
+    | '/notFound'
     | '/password-forgotten'
     | '/register'
     | '/dashboard-teacher/registrierungen'
@@ -141,6 +151,7 @@ export interface FileRouteTypes {
   to:
     | '/dashboardHelper'
     | '/login'
+    | '/notFound'
     | '/password-forgotten'
     | '/register'
     | '/dashboard-teacher/registrierungen'
@@ -154,6 +165,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/dashboardHelper'
     | '/login'
+    | '/notFound'
     | '/password-forgotten'
     | '/register'
     | '/dashboard-teacher/registrierungen'
@@ -168,6 +180,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   DashboardHelperRoute: typeof DashboardHelperRoute
   LoginRoute: typeof LoginRoute
+  NotFoundRoute: typeof NotFoundRoute
   PasswordForgottenRoute: typeof PasswordForgottenRoute
   RegisterRoute: typeof RegisterRoute
   DashboardTeacherRegistrierungenRoute: typeof DashboardTeacherRegistrierungenRoute
@@ -193,6 +206,13 @@ declare module '@tanstack/react-router' {
       path: '/password-forgotten'
       fullPath: '/password-forgotten'
       preLoaderRoute: typeof PasswordForgottenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notFound': {
+      id: '/notFound'
+      path: '/notFound'
+      fullPath: '/notFound'
+      preLoaderRoute: typeof NotFoundRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -264,6 +284,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   DashboardHelperRoute: DashboardHelperRoute,
   LoginRoute: LoginRoute,
+  NotFoundRoute: NotFoundRoute,
   PasswordForgottenRoute: PasswordForgottenRoute,
   RegisterRoute: RegisterRoute,
   DashboardTeacherRegistrierungenRoute: DashboardTeacherRegistrierungenRoute,
